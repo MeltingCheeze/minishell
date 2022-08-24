@@ -49,7 +49,7 @@ char	*readcmdline(void)
 {
 	char	*line;
 
-	line = readline("Minishell>");
+	line = readline("minishell$");
 	if (line == NULL)
 	{
 		printf("exit\n");

@@ -13,10 +13,8 @@ static char	*find_quote(char *line)
 		if ((!has && ((*(line + i) == SINGLE) || (*(line + i) == DOUBLE)))
 			|| (has && (*(line + i) == has)))
 		{
-			q = (line + i);
-			if ((i > 1 && (*(q - 1) == BSLASH) && (*(q - 2) != BSLASH))
-				|| (i == 1 && (*(q - 1) == BSLASH)))
-				q = 0;
+			if (check_quote(line, i))
+				q = (line + i);
 		}
 	}
 	if (has)
@@ -30,15 +28,21 @@ static char	*add_token(t_token **token, char *line, char *sep, int n)
 {
 	char	*content;
 	int		is_quote;
+	int		c_quote;
 	char	c;
 
 	is_quote = 0;
+	c_quote = 0;
 	c = check_quote(line, sep - line);
-	if (c != SINGLE && c != DOUBLE)
-		c = SPACE;
-	if (*sep == SINGLE || *sep == DOUBLE)
+	if (c == SINGLE || c == DOUBLE)
 		is_quote = 1;
-	content = ft_strndup(line, sep + is_quote - line);
+	else
+	{
+		c = SPACE;
+		if (*sep == SINGLE || *sep == DOUBLE)
+			c_quote = 1;
+	}
+	content = ft_strndup(line + is_quote, sep + c_quote - is_quote - line);
 	if (content == NULL)
 		ft_error("malloc fail(strdup) : ");
 	tokenadd_back(token, tokennew(content, n, c));
