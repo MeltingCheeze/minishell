@@ -4,7 +4,8 @@
 #include <stdlib.h>
 #include <readline/readline.h>
 #include <errno.h>
-#include "libft/libft.h"
+#include "../../lib/libft/libft.h"
+# include <termios.h>
 
 #define MAXARGS   128
 #define	MAXLINE	 8192  /* Max text line length */
@@ -23,31 +24,33 @@ void	unix_error(char *msg);
 int	main(void)
 {
 	char	*cmdline;
+	struct termios	save;
 
+	tcgetattr(0, &save);
+	cmdline = NULL;
 	while (1)
 	{
-		cmdline = Readline();
-		if (__sfeof(stdin))
-			exit(0);
+		cmdline = Readline(&save);
+		//if (__sfeof(stdin))
+		//	exit(0);
 		/* Evaluate */
 		eval(cmdline);
 		free(cmdline);
 	}
 }
 
-char	*Readline()
+char	*Readline(struct termios *save)
 {
 	char *line;
 
-	line = NULL;
-	if (line)
-	{
-		free(line);
-		line = NULL;
-	}
 	line = readline("Minishell>");
-	if (line)
-		add_history(line);
+	if (line == NULL)
+	{
+		tcsetattr(STDIN_FILENO, TCSANOW, save);
+		printf("exit\n");
+		exit(0);
+	}
+	add_history(line);
 	return (line);
 }
 

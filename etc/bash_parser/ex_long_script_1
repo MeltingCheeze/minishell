@@ -1,0 +1,46 @@
+{
+	"type": "Script",
+	"commands": [
+		{
+			"type": "Command",
+			"name": {
+				"text": "echo",
+				"type": "Word"
+			},
+			"suffix": [
+				{
+					"text": "$(date +%D)",
+					"expansion": [
+						{
+							"loc": {
+								"start": 0,
+								"end": 10
+							},
+							"command": "date +%D",
+							"type": "CommandExpansion",
+							"commandAST": {
+								"type": "Script",
+								"commands": [
+									{
+										"type": "Command",
+										"name": {
+											"text": "date",
+											"type": "Word"
+										},
+										"suffix": [
+											{
+												"text": "+%D",
+												"type": "Word"
+											}
+										]
+									}
+								]
+							}
+						}
+					],
+					"type": "Word"
+				}
+			]
+		}
+	]
+}

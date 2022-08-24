@@ -1,0 +1,86 @@
+notice
+// [metacharacter] Not interpret unclosed quotes or unspecified special characters like \ or ;.
+// [metacharacter-quotes]
+//     ' inhibit all interpretation of a sequence of characters.
+//     [expansion] " inhibit all interpretation of a sequence of characters except for $.
+
+
+0 - metacharacter
+
+ex00 - PIPE
+echo -n hello world | wc -l
+
+ex01 - redirection
+// << it doesn’t need to update history!
+ls > dirlist 2>&1
+n=file_descriptor
+n=4
+4 < word
+$n < word
+
+ex02 - ?
+echo $?
+
+
+1 - builtins
+
+ex10 - echo
+echo djfdios
+echo -n "heyjenn\neee"
+
+ex11 - cd
+cd /urs/bin
+cd Downloads
+
+ex12 - pwd
+pwd
+
+ex13 - export
+export aaa=5
+export bce=ctrl
+export bbb=dkjfkd
+
+ex14 - unset
+unset
+
+ex15 - env
+env
+
+ex16 - exit
+exit
+
+2 - Expansion
+// Environment variables ($ followed by characters)
+
+ex20 - CommandExpansion
+echo $(date +%D)
+
+ex21 - ParameterExpansion
+echo $$aaa $aaa $bce
+
+
+
+echo "djfdios
+echo 'dj"fdios
+
+
+====
+https://github.com/madebypixel02/minishell/blob/master/tests/test.sh
+
+
+==구조==
+Script , Pipeline - type, commands
+Command - type, name, commands, prefix, suffix
+suffix - type, text, opt, fd_in, fd_out
+
+
+
+==hierarchy==
+Script -> Pipeline / Command
+Pipeline -> Command
+	env | grep "PATH" | wc -l
+	pipe 단위임
+Command
+	prefix/suffix -> Redirect/
+		Redirect (opt, file, numberIo)
+			cat /tmp/error.txt > aaa 2>&1

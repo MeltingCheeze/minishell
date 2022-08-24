@@ -1,0 +1,368 @@
+
+
+{
+	"type": "Script",
+	"commands": [
+		{
+			"type": "Command",
+			"name": {
+				"text": "export",
+				"type": "Word"
+			},
+			"suffix": [
+				{
+					"text": "aaa=5",
+					"type": "Word"
+				}
+			]
+		},
+		{
+			"type": "Command",
+			"name": {
+				"text": "export",
+				"type": "Word"
+			},
+			"suffix": [
+				{
+					"text": "bce=ctrl",
+					"type": "Word"
+				}
+			]
+		},
+		{
+			"type": "Command",
+			"name": {
+				"text": "echo",
+				"type": "Word"
+			},
+			"suffix": [
+				{
+					"text": "$$aaa",
+					"expansion": [
+						{
+							"loc": {
+								"start": 0,
+								"end": 1
+							},
+							"parameter": "$",
+							"type": "ParameterExpansion",
+							"kind": "shell-process-id"
+						}
+					],
+					"type": "Word"
+				},
+				{
+					"text": "$aaa",
+					"expansion": [
+						{
+							"loc": {
+								"start": 0,
+								"end": 3
+							},
+							"parameter": "aaa",
+							"type": "ParameterExpansion"
+						}
+					],
+					"type": "Word"
+				},
+				{
+					"text": "$bce",
+					"expansion": [
+						{
+							"loc": {
+								"start": 0,
+								"end": 3
+							},
+							"parameter": "bce",
+							"type": "ParameterExpansion"
+						}
+					],
+					"type": "Word"
+				}
+			]
+		},
+		{
+			"type": "Pipeline",
+			"commands": [
+				{
+					"type": "Command",
+					"name": {
+						"text": "echo",
+						"expansion": [
+							{
+								"loc": {
+									"start": -5,
+									"end": -2
+								},
+								"parameter": "bce",
+								"type": "ParameterExpansion"
+							}
+						],
+						"type": "Word"
+					},
+					"suffix": [
+						{
+							"text": "-n",
+							"type": "Word"
+						},
+						{
+							"text": "hello",
+							"type": "Word"
+						},
+						{
+							"text": "world",
+							"type": "Word"
+						}
+					]
+				},
+				{
+					"type": "Command",
+					"name": {
+						"text": "wc",
+						"type": "Word"
+					},
+					"suffix": [
+						{
+							"text": "-l",
+							"type": "Word"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "Command",
+			"name": {
+				"text": "echo",
+				"type": "Word"
+			},
+			"suffix": [
+				{
+					"text": "-n",
+					"type": "Word"
+				},
+				{
+					"text": "heyjenn\neee",
+					"type": "Word"
+				}
+			]
+		},
+		{
+			"type": "Command",
+			"name": {
+				"text": "cd",
+				"type": "Word"
+			},
+			"suffix": [
+				{
+					"text": "/urs/bin",
+					"type": "Word"
+				}
+			]
+		},
+		{
+			"type": "Command",
+			"name": {
+				"text": "cd",
+				"type": "Word"
+			},
+			"suffix": [
+				{
+					"text": "Downloads",
+					"type": "Word"
+				}
+			]
+		},
+		{
+			"type": "Command",
+			"name": {
+				"text": "pwd",
+				"type": "Word"
+			}
+		},
+		{
+			"type": "Command",
+			"name": {
+				"text": "export",
+				"type": "Word"
+			},
+			"suffix": [
+				{
+					"text": "bbb=dkjfkd",
+					"type": "Word"
+				}
+			]
+		},
+		{
+			"type": "Command",
+			"name": {
+				"text": "unset",
+				"type": "Word"
+			}
+		},
+		{
+			"type": "Command",
+			"name": {
+				"text": "env",
+				"type": "Word"
+			}
+		},
+		{
+			"type": "Command",
+			"name": {
+				"text": "exit",
+				"type": "Word"
+			}
+		},
+		{
+			"type": "Command",
+			"name": {
+				"text": "echo",
+				"type": "Word"
+			},
+			"suffix": [
+				{
+					"text": "$?",
+					"expansion": [
+						{
+							"loc": {
+								"start": 0,
+								"end": 1
+							},
+							"parameter": "?",
+							"type": "ParameterExpansion",
+							"kind": "last-exit-status"
+						}
+					],
+					"type": "Word"
+				}
+			]
+		},
+		{
+			"type": "Command",
+			"name": {
+				"text": "ls",
+				"expansion": [
+					{
+						"loc": {
+							"start": -3,
+							"end": -2
+						},
+						"parameter": "?",
+						"type": "ParameterExpansion",
+						"kind": "last-exit-status"
+					}
+				],
+				"type": "Word"
+			},
+			"suffix": [
+				{
+					"type": "Redirect",
+					"op": {
+						"text": ">",
+						"type": "great"
+					},
+					"file": {
+						"text": "dirlist",
+						"type": "Word"
+					}
+				},
+				{
+					"type": "Redirect",
+					"op": {
+						"text": ">&",
+						"type": "greatand"
+					},
+					"file": {
+						"text": "1",
+						"type": "Word"
+					},
+					"numberIo": {
+						"text": "2",
+						"type": "io_number"
+					}
+				}
+			]
+		},
+		{
+			"type": "Command",
+			"name": {
+				"text": "",
+				"type": "Word"
+			},
+			"prefix": [
+				{
+					"text": "n=file_descriptor",
+					"type": "AssignmentWord"
+				}
+			]
+		},
+		{
+			"type": "Command",
+			"name": {
+				"text": "",
+				"type": "Word"
+			},
+			"prefix": [
+				{
+					"text": "n=4",
+					"type": "AssignmentWord"
+				}
+			]
+		},
+		{
+			"type": "Command",
+			"name": {
+				"text": "",
+				"type": "Word"
+			},
+			"prefix": [
+				{
+					"type": "Redirect",
+					"op": {
+						"text": "<",
+						"type": "less"
+					},
+					"file": {
+						"text": "word",
+						"type": "Word"
+					},
+					"numberIo": {
+						"text": "4",
+						"type": "io_number"
+					}
+				}
+			]
+		},
+		{
+			"type": "Command",
+			"name": {
+				"text": "$n",
+				"expansion": [
+					{
+						"loc": {
+							"start": 0,
+							"end": 1
+						},
+						"parameter": "n",
+						"type": "ParameterExpansion"
+					}
+				],
+				"type": "Word"
+			},
+			"suffix": [
+				{
+					"type": "Redirect",
+					"op": {
+						"text": "<",
+						"type": "less"
+					},
+					"file": {
+						"text": "word",
+						"type": "Word"
+					}
+				}
+			]
+		}
+	]
+}

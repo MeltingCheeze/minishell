@@ -46,7 +46,9 @@ void	set_sigaction(struct sigaction *sa_ptr,
 	(*sa_ptr).sa_sigaction = handler;
 	sigemptyset(&(*sa_ptr).sa_mask);
 	if (sigaction(SIGINT, sa_ptr, 0) == -1)
-		exception("signal(SIGINT) error");
+		ft_error("signal(SIGINT) error");
+	if (sigaction(SIGQUIT, sa_ptr, 0) == -1)
+		ft_error("signal(SIGQUIT) error");
 }
 
 void	shell_sigaction(int signo, siginfo_t *info, void *context)
@@ -57,8 +59,11 @@ void	shell_sigaction(int signo, siginfo_t *info, void *context)
 	{
 		printf("\n");
 		rl_on_new_line();
-		//rl_replace_line("", 0);
 		rl_redisplay();
+	}
+	if (signo == SIGQUIT)
+	{
+		exit(0);
 	}
 }
 
@@ -74,6 +79,5 @@ int	main(void)
 		line = ft_readline();
 		if (__sfeof(stdin))
 			exit(0);
-		printf("%s\n", line);
 	}
 }
