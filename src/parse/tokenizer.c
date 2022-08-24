@@ -30,14 +30,18 @@ static char	*add_token(t_token **token, char *line, char *sep, int n)
 {
 	char	*content;
 	int		is_quote;
+	char	c;
 
 	is_quote = 0;
+	c = check_quote(line, sep - line);
+	if (c != SINGLE && c != DOUBLE)
+		c = SPACE;
 	if (*sep == SINGLE || *sep == DOUBLE)
 		is_quote = 1;
 	content = ft_strndup(line, sep + is_quote - line);
 	if (content == NULL)
 		ft_error("malloc fail(strdup) : ");
-	tokenadd_back(token, tokennew(content, n, *sep));
+	tokenadd_back(token, tokennew(content, n, c));
 	line = sep + 1;
 	while (*line == SPACE)
 		line++;
@@ -51,6 +55,8 @@ static char	*extend_token(t_token **token, char *line, char *quote1, int n)
 	int		is_first;
 
 	is_first = 1;
+	if ((quote1 - 1) && (*(quote1 - 1) != SPACE))
+		line = add_token(token, line, quote1 - 1, n);
 	delim = ft_strchr(line, SPACE);
 	while (line && *line && (is_first || *(line - 1) != SPACE))
 	{
@@ -64,11 +70,8 @@ static char	*extend_token(t_token **token, char *line, char *quote1, int n)
 			line = add_token(token, line, quote2, n);
 		quote1 = find_quote(line);
 		delim = ft_strchr(line, SPACE);
-		if (*line && !quote1 && !delim)
-		{
-			tokenadd_back(token, tokennew(ft_strdup(line), n, SPACE));
-			line = 0;
-		}
+		if (!quote1 && !delim)
+			break ;
 	}
 	return (line);
 }
@@ -92,12 +95,11 @@ static void	make_tokens(t_token **token, char *line)
 		}
 		if (quote)
 			line = extend_token(token, line, quote, n++);
-		else
-		{
-			tokenadd_back(token, tokennew(ft_strdup(line), n, SPACE));
-			line = 0;
-		}
+		if (!quote && !delim)
+			break ;
 	}
+	if (line && *line)
+		tokenadd_back(token, tokennew(ft_strdup(line), n, SPACE));
 }
 
 t_token	*tokenizer(char *line)

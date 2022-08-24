@@ -2,7 +2,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-static char	check_quote(const char *line, int i)
+char	check_quote(const char *line, int i)
 {
 	char	c;
 
