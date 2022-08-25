@@ -2,6 +2,23 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+char	check_quote(const char *line, int i)
+{
+	char	c;
+
+	c = *(line + i);
+	if (c == SINGLE || c == DOUBLE)
+	{
+		if (i > 1
+			&& *(line + i - 1) == BSLASH
+			&& *(line + i - 2) != BSLASH)
+			c = 0;
+		if (i == 1 && *(line + i - 1) == BSLASH)
+			c = 0;
+	}
+	return (c);
+}
+
 static int	is_valid_quotes(const char *line, int has)
 {
 	char	c;
@@ -10,7 +27,7 @@ static int	is_valid_quotes(const char *line, int has)
 	i = 0;
 	while (*(line + i))
 	{
-		c = *(line + i);
+		c = check_quote(line, i);
 		if (c == SINGLE && has == 0)
 			has += SINGLE;
 		else if (c == SINGLE && has == SINGLE)

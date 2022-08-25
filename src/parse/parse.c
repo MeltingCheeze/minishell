@@ -14,7 +14,7 @@ int	parse(t_script *script, char *line)
 	t_token	*token;
 
 	(void)script;
-	token = tokenizer(line); //1. Devide the input into *tokens* (words and operators)
+	token = tokenizer(line, ft_strlen(line)); //1. Devide the input into *tokens* (words and operators)
 	//tokens_to_cmds();   //2. Parse these tokens into commands and *other constructs* ()
 	//expand_tokens();
 	tokenclear(&token);

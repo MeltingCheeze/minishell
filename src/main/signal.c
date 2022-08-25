@@ -1,5 +1,5 @@
 #include "minishell.h"
-# include <readline/readline.h>
+#include <readline/readline.h>
 
 void	set_sigaction(struct sigaction *sa_ptr,
 						void (*handler)(int, siginfo_t *, void *))
@@ -15,16 +15,28 @@ void	set_sigaction(struct sigaction *sa_ptr,
 
 void	shell_sigaction(int signo, siginfo_t *info, void *context)
 {
-	(void)info;
 	(void)context;
 	if (signo == SIGINT)
 	{
-		printf("\n");
-		//rl_on_new_line();
-		rl_redisplay();
+		if (info->si_pid != 0)
+		{
+			ft_putchar_fd('\n', STDOUT_FILENO);
+			rl_on_new_line();
+			rl_replace_line("", 0);
+			rl_redisplay();
+		}
+		else
+		{
+			printf(">>>fork ... si_pid : %d\n", info->si_pid);
+		}
 	}
 	if (signo == SIGQUIT)
 	{
-		exit(0); //end_flag = 1;
+		//ft_putstr_fd("", STDERR_FILENO);
+		ft_putchar_fd('\n', STDOUT_FILENO);
+		//ft_putchar_fd('\n', STDERR_FILENO);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		//rl_redisplay();
 	}
 }

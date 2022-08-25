@@ -6,7 +6,7 @@
 #    By: chaejkim <chaejkim@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/22 02:33:06 by chaejkim          #+#    #+#              #
-#    Updated: 2022/08/23 05:50:39 by chaejkim         ###   ########.fr        #
+#    Updated: 2022/08/25 00:26:00 by chaejkim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,9 +17,12 @@ CFLAGS = -Wall -Werror -Wextra
 SAN_FLAG = -g3 -fsanitize=address
 
 LFT = lib/libft/libft.a
+LOCAL_RL_DIR = /opt/homebrew/Cellar/readline/8.1.2
+#LOCAL_RL_DIR = /opt/homebrew/opt/readline
+CLUSTER_RL_DIR = $(HOME)/.brew/opt/readline
 
-INC = -Iinclude -Ilib/libft
-LIB = -Llib/libft -lft -lreadline
+INC = -Iinclude -Ilib/libft -I$(LOCAL_RL_DIR)/include
+LIB = -Llib/libft -lft -L$(LOCAL_RL_DIR)/lib -lreadline
 
 SRC = src/main/minishell.c \
 	  src/main/signal.c \

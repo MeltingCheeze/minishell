@@ -1,0 +1,15 @@
+make --dry-run --keep-going --print-directory
+make: Entering directory `/Users/chaejkim/workspace/minishell/chaejkim_01'
+cc -Wall -Werror -Wextra -g3 -fsanitize=address -Iinclude -Ilib/libft -I/opt/homebrew/Cellar/readline/8.1.2/include -o obj/main/signal.o -c src/main/signal.c
+ 
+cc -Wall -Werror -Wextra -g3 -fsanitize=address -Iinclude -Ilib/libft -I/opt/homebrew/Cellar/readline/8.1.2/include -o obj/env/env.o -c src/env/env.c
+cc -Wall -Werror -Wextra -g3 -fsanitize=address -Iinclude -Ilib/libft -I/opt/homebrew/Cellar/readline/8.1.2/include -o obj/iostream/readcmdline.o -c src/iostream/readcmdline.c
+cc -Wall -Werror -Wextra -g3 -fsanitize=address -Iinclude -Ilib/libft -I/opt/homebrew/Cellar/readline/8.1.2/include -o obj/parse/parse.o -c src/parse/parse.c
+cc -Wall -Werror -Wextra -g3 -fsanitize=address -Iinclude -Ilib/libft -I/opt/homebrew/Cellar/readline/8.1.2/include -o obj/parse/token.o -c src/parse/token.c
+ 
+cc -Wall -Werror -Wextra -g3 -fsanitize=address -Iinclude -Ilib/libft -I/opt/homebrew/Cellar/readline/8.1.2/include -o obj/parse/tokenizer.o -c src/parse/tokenizer.c
+ 
+cc -Wall -Werror -Wextra -g3 -fsanitize=address -Iinclude -Ilib/libft -I/opt/homebrew/Cellar/readline/8.1.2/include -o obj/utile/ft_error.o -c src/utile/ft_error.c
+cc -Wall -Werror -Wextra -g3 -fsanitize=address -o minishell obj/main/minishell.o obj/main/signal.o obj/env/env.o obj/iostream/readcmdline.o obj/parse/parse.o obj/parse/token.o obj/parse/tokenizer.o obj/utile/ft_error.o -Llib/libft -lft -L/opt/homebrew/Cellar/readline/8.1.2/lib -lreadline
+make: Leaving directory `/Users/chaejkim/workspace/minishell/chaejkim_01'
+ 

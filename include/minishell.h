@@ -5,6 +5,8 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <signal.h>
+//# include <readline/readline.h>
+//# include <readline/history.h>
 
 # include "libft.h"
 # include "struct.h"
@@ -42,7 +44,6 @@ void	shell_sigaction(int signo, siginfo_t *info, void *context);
 
 /* iostream */
 char	*readcmdline(void);
-char	check_quote(const char *line, int i);
 
 /* utile */
 void	ft_error(char *msg);

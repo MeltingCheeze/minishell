@@ -10,6 +10,7 @@
 
 dfd "fj " fjl"" 'fjdl "'""
 
+echo dfd "fj " fjl\'"" 'fjdl "'""
 
 ge aaa"fdf ""bb  "
 

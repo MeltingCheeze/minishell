@@ -6,7 +6,7 @@
 //int		parse(t_sh *sh, char *line);
 int		parse(t_script *script, char *line);
 
-t_token	*tokenizer(char *line);
+t_token	*tokenizer(char *line, size_t len);
 
 void	token_init(t_token *token);
 t_token	*tokennew(char *word, int n, char sep);

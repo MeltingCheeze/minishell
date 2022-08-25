@@ -62,6 +62,7 @@ echo $$aaa $aaa $bce
 
 echo "djfdios
 echo 'dj"fdios
+echo dfd "fj " fjl\'"" 'fjdl "'""
 
 
 ====
@@ -84,3 +85,4 @@ Command
 	prefix/suffix -> Redirect/
 		Redirect (opt, file, numberIo)
 			cat /tmp/error.txt > aaa 2>&1
+
