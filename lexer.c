@@ -1,23 +1,10 @@
-#include <stdio.h>
+#include "minishell.h"
 
-typedef struct s_token
-{
-    char            *content;
-    char            *type;
-    // int              n;
-    // char         sep;
-    struct s_token  *next;
-}               t_token;
-// typedef  struct  s_cmd
-// {
-//  t_token *first_token;
-//  t_token *next;
-// }                t_cmd;
 int ft_strcmp(char *s1, char *s2)
 {
     int i;
     i = 0;
-    while (s1[i] != ‘\0’ && s2[i] != ‘\0’)
+    while (s1[i] != '\0' && s2[i] != '\0')
     {
         if (s1[i] == s2[i])
             i++;
@@ -26,51 +13,23 @@ int ft_strcmp(char *s1, char *s2)
     }
     return (s1[i] - s2[i]);
 }
+
 void    check_type(t_token *line)
 {
-    // while (line)
-    // {
-    //  line->type = “cmd”;
-    //  if (line->next != NULL)
-    //      line = line->next;
-    //  else
-    //      break ;
-    //  line->type = “pipe”;
-    //  while (ft_strcmp(line->content, “|”) != 0)
-    //
-    //      if (ft_strcmp(line->content, “>”) == 0 || ft_strcmp(line->content, “>>“) == 0
-    //          || ft_strcmp(line->content, “<”) == 0 || ft_strcmp(line->content, “<<“) == 0)
-    //      {
-    //          line->type = “redir”;
-    //      }
-    //      else
-    //      {
-    //          line->type = “word”;
-    //      }
-    //      if (line->next != NULL)
-    //          line = line->next;
-    //      else
-    //          break ;
-    //  }
-    //  if (line->next != NULL)
-    //      line = line->next;
-    //  else
-    //      break ;
-    // }
     while (line)
     {
-        if (ft_strcmp(line->content, “|”) == 0)
+        if (ft_strcmp(line->content, "|") == 0)
         {
-            line->type = “pipe”;
+            line->type = 'p';
         }
-        else if (ft_strcmp(line->content, “>”) == 0 || ft_strcmp(line->content, “>>“) == 0
-            || ft_strcmp(line->content, “<”) == 0 || ft_strcmp(line->content, “<<“) == 0)
+        else if (ft_strcmp(line->content, ">") == 0 || ft_strcmp(line->content, ">>") == 0
+            || ft_strcmp(line->content, "<") == 0 || ft_strcmp(line->content, "<<") == 0)
         {
-            line->type = “redir”;
+            line->type = 'r';
         }
         else
         {
-            line->type = “word”;
+            line->type = 'w';
         }
         if (line->next)
             line = line->next;
@@ -78,41 +37,126 @@ void    check_type(t_token *line)
             break;
     }
 }
-void    lexical_analysis(t_token *line)
+
+void    check_cmd(t_token *line)
+{
+    if (line->type == 'w')
+        line->type = 'c';
+    while (line)
+    {
+        if (line->type == 'p' && line->next->type == 'w')
+            line->next->type = 'c';
+        line = line->next;
+    }
+}
+
+int check_gram(t_token *line)
+{
+    if (line->type == 'p') //first token
+        return (-1);
+    while (line)
+    {
+        if (line->type == 'c' && line->next != NULL) //cmd
+        {
+            if (line->next->type == 'c')
+                return (-1);
+        }
+        else if (line->type == 'w' && line->next != NULL) //word
+        {
+            if (line->next->type == 'c')
+                return (-1);
+        }
+        else if (line->type == 'p' && line->next != NULL) //pipe
+        {
+            if (line->next->type == 'w')
+                return (-1);
+            else if (line->next->type == 'p')
+                return (-1);
+        }
+        else if (line->type == 'r' == 0 && line->next != NULL) //redir
+        {
+            if (line->next->type != 'w')
+                return (-1);
+        }
+        if (!line->next && (line->type == 'r' || line->type == 'p')) //last token
+            return (-1);
+        line = line->next;
+    }
+    return (0);
+}
+
+int    lexcial_analyze(t_token *line)
 {
     check_type(line);
-    lexcial_analyze(line);
+    check_cmd(line);
+    if (check_gram(line) < 0)
+        return (-1);
+    return (0);
 }
-int main(void)
+
+t_script	*ft_lstnew(t_token *token)
 {
-    t_token t_1;
-    t_token t_2;
-    t_token t_3;
-    t_token t_4;
-    t_token t_5;
-    t_1.content = “echo”;
-    t_2.content = “hello world”;
-    t_3.content = “|”;
-    t_4.content = “ls”;
-    t_5.content = “>>“;
-    t_1.next = &t_2;
-    t_2.next = &t_3;
-    t_3.next = &t_4;
-    t_4.next = &t_5;
-    t_5.next = NULL;
-    t_token *token;
-    token = &t_1;
-    while (token)
+	t_script	*new;
+
+	new = malloc(sizeof(t_script));
+	// if (new == NULL)
+		// return (NULL);
+	new->cmd = token;
+	new->next = NULL;
+	return (new);
+}
+
+t_script	*ft_lstlast(t_script *script)
+{
+	if (script == NULL)
+		return (script);
+	while (script->next != NULL)
+		script = script->next;
+	return (script);
+}
+
+void	ft_lstadd_back(t_script *script, t_script *new)
+{
+	t_script	*last;
+
+	// if (script == NULL || new == NULL)
+	// 	return ;
+	// if (*script == NULL)
+	// {
+	// 	*script = new;
+	// 	return ;
+	// }
+	last = ft_lstlast(script);
+	last->next = new;
+}
+
+void    split_cmd(t_token *line)
+{
+    t_script    *script;
+    script = malloc(sizeof(t_script));
+    script->cmd = line;
+    script->next = NULL;
+    t_script    *new;
+
+    while (line)
     {
-        printf(“%s\n”, token->content);
-        token = token->next;
+        if (line->type == 'p')
+        {
+            new = ft_lstnew(line->next);
+            ft_lstadd_back(script, new);
+            line->next = NULL;
+        }
+        line = line->next;
     }
-    printf(“----------------\n”);
-    token = &t_1;
-    lexing(token);
-    while (token)
+    while (script)
     {
-        printf(“%s\n”, token->type);
-        token = token->next;
+        printf("here\n");
+        while (script->cmd)
+        {
+            printf("%s\n", script->cmd->content);
+            script->cmd = script->cmd->next;
+        }
+        printf("----------\n");
+        script->cmd = script->next->cmd;
     }
 }
