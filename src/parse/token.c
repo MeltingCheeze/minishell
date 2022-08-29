@@ -14,7 +14,7 @@ t_token	*tokennew(char *content)
 	if (!new)
 		ft_error("malloc error(tokennew) : ");
 	new->content = content;
-	//new->size = ft_strlen(content);
+	new->type = 0;
 	new->next = 0;
 	return (new);
 }
@@ -44,7 +44,6 @@ void	tokenprint(t_token **token)
 	while (cur)
 	{
 		printf("\033[0;33m%s\033[0m\n", cur->content);
-		// printf("\n");
 		cur = cur->next;
 	}
 }
@@ -60,8 +59,9 @@ void	tokenclear(t_token **token)
 		tmp = cur;
 		cur = cur->next;
 		free(tmp->content);
-		tmp->content = NULL;
+		tmp->content = 0;
 		free(tmp);
-		tmp = NULL;
+		tmp = 0;
 	}
+	*token = 0; // hiko!! help!!!!
 }

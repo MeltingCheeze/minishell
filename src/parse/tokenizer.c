@@ -2,10 +2,10 @@
 
 static void	destroy_token(t_token **token, char *line, size_t cnt)
 {
-	*(line + cnt) = 0;
+	tokenclear(token);
+	*(line + cnt - 1) = 0;
 	ft_putstr_fd("minishell: syntax error near unexpected token ", 2);
 	ft_putendl_fd(line, 2);
-	tokenclear(token);
 }
 
 static int	add_token(t_token **token, char *line, size_t *size, char sep)
@@ -19,12 +19,12 @@ static int	add_token(t_token **token, char *line, size_t *size, char sep)
 	{
 		while (*(line + *size) == *(line + *size + cnt))
 			cnt++;
-		if (cnt > 2)
+		if (cnt > 2 || (cnt > 1 && (*(line + *size) == '|')))
 		{
-			destroy_token(token, line, cnt);
+			destroy_token(token, line + *size, cnt);
 			return (1);
 		}
-		if (!ft_strchr(SEPS, *line))
+		if (size && !ft_strchr(SEPS, *line))
 			tokenadd_back(token, tokennew(ft_strndup(line, *size)));
 		tokenadd_back(token, tokennew(ft_strndup(line + *size, cnt)));
 		*size += cnt;
@@ -59,8 +59,7 @@ static void	make_token(t_token **token, char *line)
 		tokenadd_back(token, tokennew(ft_strndup(line, size)));
 }
 
-
-t_token *tokenizer(char *line)
+t_token	*tokenizer(char *line)
 {
 	t_token	*token;
 
@@ -68,6 +67,7 @@ t_token *tokenizer(char *line)
 	while (*line == SPACE)
 		line++;
 	make_token(&token, line);
-	tokenprint(&token);
+	if (token)
+		tokenprint(&token);
 	return (token);
 }
