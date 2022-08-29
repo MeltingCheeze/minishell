@@ -39,7 +39,7 @@
 
 /* signal */
 void	set_sigaction(struct sigaction *sa_ptr,
-						void (*handler)(int, siginfo_t *, void *));
+			void (*handler)(int, siginfo_t *, void *));
 void	shell_sigaction(int signo, siginfo_t *info, void *context);
 
 /* iostream */

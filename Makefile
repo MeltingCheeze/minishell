@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: chaejkim <chaejkim@student.42seoul.kr>     +#+  +:+       +#+         #
+#    By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/22 02:33:06 by chaejkim          #+#    #+#              #
-#    Updated: 2022/08/25 00:26:00 by chaejkim         ###   ########.fr        #
+#    Updated: 2022/08/29 15:07:49 by chaejkim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,13 +18,12 @@ SAN_FLAG = -g3 -fsanitize=address
 
 LFT = lib/libft/libft.a
 LOCAL_RL_DIR = /opt/homebrew/Cellar/readline/8.1.2
-#LOCAL_RL_DIR = /opt/homebrew/opt/readline
 CLUSTER_RL_DIR = $(HOME)/.brew/opt/readline
 
-INC = -Iinclude -Ilib/libft -I$(LOCAL_RL_DIR)/include
-LIB = -Llib/libft -lft -L$(LOCAL_RL_DIR)/lib -lreadline
+INC = -Iinclude -Ilib/libft -I$(CLUSTER_RL_DIR)/include
+LIB = -Llib/libft -lft -L$(CLUSTER_RL_DIR)/lib -lreadline
 
-SRC = src/main/minishell.c \
+SRC = src/main/main.c \
 	  src/main/signal.c \
 	  src/env/env.c \
 	  src/iostream/readcmdline.c \

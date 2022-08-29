@@ -13,30 +13,36 @@ void	set_sigaction(struct sigaction *sa_ptr,
 		ft_error("signal(SIGQUIT) error");
 }
 
+static void	sigint(int si_pid)
+{
+	if (si_pid != 0)
+	{
+		ft_putchar_fd('\n', STDOUT_FILENO);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
+	else
+	{
+		printf(">>>fork ... si_pid : %d\n", si_pid);
+	}
+}
+
+static void	sigquit(void)
+{
+	//ft_putstr_fd("", STDERR_FILENO);
+	ft_putchar_fd('\n', STDOUT_FILENO);
+	//ft_putchar_fd('\n', STDERR_FILENO);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	//rl_redisplay();
+}
+
 void	shell_sigaction(int signo, siginfo_t *info, void *context)
 {
 	(void)context;
 	if (signo == SIGINT)
-	{
-		if (info->si_pid != 0)
-		{
-			ft_putchar_fd('\n', STDOUT_FILENO);
-			rl_on_new_line();
-			rl_replace_line("", 0);
-			rl_redisplay();
-		}
-		else
-		{
-			printf(">>>fork ... si_pid : %d\n", info->si_pid);
-		}
-	}
-	if (signo == SIGQUIT)
-	{
-		//ft_putstr_fd("", STDERR_FILENO);
-		ft_putchar_fd('\n', STDOUT_FILENO);
-		//ft_putchar_fd('\n', STDERR_FILENO);
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		//rl_redisplay();
-	}
+		sigint(info->si_pid);
+	else if (signo == SIGQUIT)
+		sigquit();
 }

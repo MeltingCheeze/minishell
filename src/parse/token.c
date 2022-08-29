@@ -2,22 +2,19 @@
 
 void	token_init(t_token *token)
 {
-	token->word = 0;
-	token->n = 0;
+	token->content = 0;
 	token->next = 0;
 }
 
-t_token	*tokennew(char *word, int n, char sep)
+t_token	*tokennew(char *content)
 {
 	t_token	*new;
 
 	new = (t_token *)malloc(sizeof(t_token));
 	if (!new)
 		ft_error("malloc error(tokennew) : ");
-	new->word = word;
-	new->n = n;
-	new->sep = sep;
-	//new->size = ft_strlen(word);
+	new->content = content;
+	//new->size = ft_strlen(content);
 	new->next = 0;
 	return (new);
 }
@@ -43,11 +40,12 @@ void	tokenprint(t_token **token)
 {
 	t_token	*cur;
 
-	cur= *token;
+	cur = *token;
 	while (cur)
 	{
-		printf("%s\033[0;33m(%c, %d)\033[0m\n", cur->word, cur->sep, cur->n);
-		cur= cur->next;
+		printf("\033[0;33m%s\033[0m\n", cur->content);
+		// printf("\n");
+		cur = cur->next;
 	}
 }
 
@@ -60,9 +58,9 @@ void	tokenclear(t_token **token)
 	while (cur)
 	{
 		tmp = cur;
-		cur= cur->next;
-		free(tmp->word);
-		tmp->word = NULL;
+		cur = cur->next;
+		free(tmp->content);
+		tmp->content = NULL;
 		free(tmp);
 		tmp = NULL;
 	}
