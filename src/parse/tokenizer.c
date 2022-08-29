@@ -1,5 +1,37 @@
 #include "minishell.h"
 
+static void	destroy_token(t_token **token, char *line, size_t cnt)
+{
+	*(line + cnt) = 0;
+	ft_putstr_fd("minishell: syntax error near unexpected token ", 2);
+	ft_putendl_fd(line, 2);
+	tokenclear(token);
+}
+
+static int	add_token(t_token **token, char *line, size_t *size, char sep)
+{
+	size_t	cnt;
+
+	cnt = 0;
+	if (sep == SPACE)
+		tokenadd_back(token, tokennew(ft_strndup(line, *size)));
+	else
+	{
+		while (*(line + *size) == *(line + *size + cnt))
+			cnt++;
+		if (cnt > 2)
+		{
+			destroy_token(token, line, cnt);
+			return (1);
+		}
+		if (!ft_strchr(SEPS, *line))
+			tokenadd_back(token, tokennew(ft_strndup(line, *size)));
+		tokenadd_back(token, tokennew(ft_strndup(line + *size, cnt)));
+		*size += cnt;
+	}
+	return (0);
+}
+
 static void	make_token(t_token **token, char *line)
 {
 	char	has;
@@ -13,21 +45,20 @@ static void	make_token(t_token **token, char *line)
 			has = *(line + size);
 		else if (has && (has == *(line + size)))
 			has = 0;
-		else
+		else if (!has && ft_strchr(SEPS, *(line + size)))
 		{
-			if (!has && (*(line + size) == SPACE))
-			{
-				tokenadd_back(token, tokennew(ft_strndup(line, size)));
-				line += size;
-				size = -1;
-				while (*line == SPACE)
-					line++;
-			}
+			if (add_token(token, line, &size, *(line + size)) != 0)
+				return ;
+			line += size;
+			size = -1;
+			while (*line == SPACE)
+				line++;
 		}
 	}
 	if (size)
 		tokenadd_back(token, tokennew(ft_strndup(line, size)));
 }
+
 
 t_token *tokenizer(char *line)
 {
