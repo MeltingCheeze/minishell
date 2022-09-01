@@ -5,7 +5,7 @@ static int	minishell(t_sh *sh)
 	char				*line;
 	struct sigaction	sa;
 
-	set_sigaction(&sa, shell_sigaction);
+	set_sigaction(&sa, shell_sigaction); //sigaction 사용 가능?
 	line = NULL;
 	while (42)
 	{
