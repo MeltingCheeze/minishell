@@ -19,5 +19,6 @@ int		expansion(t_sh *sh, t_token *token); // test
 
 void	parameter_expansion(t_sh *sh, t_token *token);
 int		cmdpath_expansion(t_sh *sh, t_token *token);
+int		input_file_checker(t_token *token);
 
 #endif

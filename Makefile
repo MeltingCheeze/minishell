@@ -6,7 +6,7 @@
 #    By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/22 02:33:06 by chaejkim          #+#    #+#              #
-#    Updated: 2022/09/03 06:15:00 by chaejkim         ###   ########.fr        #
+#    Updated: 2022/09/03 06:59:16 by chaejkim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,6 +34,7 @@ SRC = src/main/main.c \
 	  src/expansion/expansion.c \
 	  src/expansion/parameter_expansion.c \
 	  src/expansion/cmdpath_expansion.c \
+	  src/expansion/input_file_checker.c \
 	  src/parser/parser.c \
 	  src/utile/ft_error.c \
 	  src/tmp/print.c
