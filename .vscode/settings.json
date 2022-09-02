@@ -23,7 +23,17 @@
         "vector": "c",
         "__locale": "c",
         "bitset": "c",
-        "utility": "c"
+        "utility": "c",
+        "fcntl.h": "c",
+        "unistd.h": "c",
+        "__config": "c",
+        "__functional_03": "c",
+        "__functional_base": "c",
+        "chrono": "c",
+        "exception": "c",
+        "functional": "c",
+        "tuple": "c",
+        "stat.h": "c"
     },
     "editor.insertSpaces": false
 }

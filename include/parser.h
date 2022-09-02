@@ -4,6 +4,9 @@
 # include <stdlib.h>
 # include "struct.h"
 
+# define UNCLOSED_QUOTE_MSG "syntax error unclosed quote"
+# define SYNTAX_ERROR_MSG "syntax error near unexpected token `"
+
 # define SPACE ' '
 # define SINGLE '\''
 # define DOUBLE '"'
