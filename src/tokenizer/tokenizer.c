@@ -68,6 +68,6 @@ t_token	*tokenizer(char *line)
 		line++;
 	make_token(&token, line);
 	if (token)
-		tokenprint(&token);
+		tokenprint(token);
 	return (token);
 }

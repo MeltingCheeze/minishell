@@ -1,4 +1,7 @@
-//int	expand_tokens()
+#include "minishell.h"
+#include "libft.h"
+
+//int   expand_tokens()
 //{
 	//  [todo] = += 대입연산
 	//  3. parameter and variable expansion [$ 매개변수 확장]
@@ -7,16 +10,20 @@
 	//  7. filename expansion
 //}
 
-void	do_line(t_token **token)
+void	expand_tokens(t_token **token)
 {
+	t_token	*pre;
 	t_token	*cur;
 	char	*new;
 
 	cur = *token;
+	pre = 0;
 	while (cur)
 	{
 		new = 0;
-		if ((cur->type == 'w') || (cur->type == 'c')) // !(cur->type & heardoc)   cur->type == CMD
+		RD_HEREDOC
+		if (!pre
+			|| ((pre && (pre->type != RD_HEREDOC)) && (cur->type <= FILENAME)))
 		{
 			new = cur->content;
 			while (new)
@@ -24,14 +31,17 @@ void	do_line(t_token **token)
 				new = ft_strchr(cur->content, '$');
 				parameter_expansion();
 			}
-			if  (file_expansion()) // && file
+			if ((cur->type == CMD) && cmdpath_expansion())
+				return (127);
+			else if (cur->type == CMD && filename_expansion())
 				return (1);
 		}
+		pre = cur;
 		cur = cur->next;
 	}
 }
 
-int	expansion(t_sh *sh)
+int expansion(t_sh *sh)
 {
 	t_script	*cmd;
 	t_token		*t;
@@ -45,3 +55,4 @@ int	expansion(t_sh *sh)
 	}
 
 }
+

@@ -1,4 +1,5 @@
-#include "minishell.h"
+#include "env.h"
+#include "libft.h"
 
 int	env_init(t_env **env, char **envp)
 {
@@ -32,10 +33,10 @@ int	env_terminate(t_env **env)
 {
 	t_env	*cur;
 	char	**value;
-	int	i;
+	int		i;
 
 	cur = *env;
-	while(cur->next)
+	while (cur->next)
 	{
 		free(cur->key);
 		value = cur->value;
@@ -57,8 +58,8 @@ t_env	*envnew(char *key, char **value)
 	t_env	*new;
 
 	new = (t_env *)malloc(sizeof(t_env));
-	if (!new)
-		ft_error("malloc error(envnew) : ");
+	// if (!new)
+	// 	ft_error("malloc error(envnew) : ");
 	new->key = key;
 	new->value = value;
 	new->next = 0;
@@ -70,10 +71,7 @@ void	envadd_back(t_env **env, t_env *new)
 	t_env	*cur;
 
 	if (env == NULL)
-	{
-		printf("env == NULL\n");
 		return ;
-	}
 	if (*env == NULL)
 	{
 		*env = new;
@@ -90,14 +88,11 @@ char	**find_env_value(t_env **env, char *key)
 	t_env	*cur;
 
 	if (env == NULL)
-	{
-		printf("env == NULL\n");
 		return (NULL);
-	}
 	cur = *env;
 	while (cur)
 	{
-		if(ft_strcmp(cur->key, key))
+		if (ft_strcmp(cur->key, key))
 			return (cur->value);
 		cur = cur->next;
 	}

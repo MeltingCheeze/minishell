@@ -11,8 +11,8 @@ t_token	*tokennew(char *content)
 	t_token	*new;
 
 	new = (t_token *)malloc(sizeof(t_token));
-	if (!new)
-		ft_error("malloc error(tokennew) : ");
+	// if (!new)
+	// 	ft_error("malloc error(tokennew) : ");
 	new->content = content;
 	new->type = 0;
 	new->next = 0;

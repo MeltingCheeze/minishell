@@ -1,6 +1,7 @@
 #ifndef ENV_H
 # define ENV_H
 
+# include <stdlib.h>
 # include "struct.h"
 
 int		env_init(t_env **env, char **envp);

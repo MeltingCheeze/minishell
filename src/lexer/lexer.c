@@ -1,9 +1,11 @@
-#include "minishell.h"
+#include "parser.h"
+#include "libft.h"
+#include <stdio.h> // 나중에 지우기
 
 static void	check_type(t_token *line)
 {
 	t_type	t;
-	
+
 	t = PIPE;
 	printf("ttt : %d\n", (int)t);
 	while (line)

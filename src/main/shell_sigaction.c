@@ -1,17 +1,6 @@
 #include "minishell.h"
+#include "libft.h"
 #include <readline/readline.h>
-
-void	set_sigaction(struct sigaction *sa_ptr,
-						void (*handler)(int, siginfo_t *, void *))
-{
-	(*sa_ptr).sa_flags = SA_SIGINFO;
-	(*sa_ptr).sa_sigaction = handler;
-	sigemptyset(&(*sa_ptr).sa_mask);
-	if (sigaction(SIGINT, sa_ptr, 0) == -1)
-		ft_error("signal(SIGINT) error");
-	if (sigaction(SIGQUIT, sa_ptr, 0) == -1)
-		ft_error("signal(SIGQUIT) error");
-}
 
 static void	sigint(int si_pid)
 {
@@ -24,7 +13,10 @@ static void	sigint(int si_pid)
 	}
 	else
 	{
-		printf(">>>fork ... si_pid : %d\n", si_pid);
+		ft_putstr_fd(">>>fork ... si_pid : ", STDOUT_FILENO);
+		ft_putnbr_fd(si_pid, STDOUT_FILENO);
+		ft_putchar_fd('\n', STDOUT_FILENO);
+		// printf(">>>fork ... si_pid : %d\n", si_pid);
 		// heexit 
 	}
 }

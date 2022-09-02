@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+         #
+#    By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/22 02:33:06 by chaejkim          #+#    #+#              #
-#    Updated: 2022/08/30 16:27:28 by hyko             ###   ########.fr        #
+#    Updated: 2022/09/02 14:42:11 by chaejkim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,8 +24,9 @@ INC = -Iinclude -Ilib/libft -I$(CLUSTER_RL_DIR)/include
 LIB = -Llib/libft -lft -L$(CLUSTER_RL_DIR)/lib -lreadline
 
 SRC = src/main/main.c \
-	  src/main/signal.c \
 	  src/main/readcmdline.c \
+	  src/main/set_sigaction.c \
+	  src/main/shell_sigaction.c \
 	  src/env/env.c \
 	  src/tokenizer/token.c \
 	  src/tokenizer/tokenizer.c \

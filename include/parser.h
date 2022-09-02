@@ -1,8 +1,12 @@
 #ifndef PARSER_H
 # define PARSER_H
 
-# include "minishell.h"
+# include <stdlib.h>
+# include "struct.h"
 
+# define SPACE ' '
+# define SINGLE '\''
+# define DOUBLE '"'
 # define SEPS " ><|"
 
 //int		parse(t_sh *sh, char *line);
@@ -16,7 +20,6 @@ void	tokenadd_back(t_token **token, t_token *new);
 // void	tokenprint(t_token **token);
 void	tokenclear(t_token **token);
 
-
-int    lexcial_analyze(t_token *line);
+int		lexcial_analyze(t_token *line);
 
 #endif

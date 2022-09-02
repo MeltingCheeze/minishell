@@ -1,4 +1,6 @@
 #include "parser.h"
+#include "libft.h" // 나중에 고치기
+// #include "minishell.h" // 나중에 지우기
 
 static int	is_valid_quote(char *line)
 {
@@ -41,7 +43,7 @@ int	parser(t_script *script, char *line)
 	// if (token && (*token == NULL))
 	// 	return (1);
 	lexcial_analyze(token);
-	print_type(token);
+	// print_type(token);
 	//tokens_to_cmds();   //2. Parse these tokens into commands and *other constructs* ()
 	// expand(script);
 	//tokenclear(&token);
