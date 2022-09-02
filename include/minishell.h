@@ -24,6 +24,7 @@ void	ft_error(char *msg);
 //void	ft_free_pptr(char *msg);
 
 /* print */
+void	envprint(t_env *env);
 void	tokenprint(t_token *token);
 void	print_type(t_token *token);
 void	scriptprint(t_script *script);

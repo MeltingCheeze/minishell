@@ -1,5 +1,4 @@
-#include "minishell.h"
-#include "libft.h"
+#include "expansion.h"
 
 //int   expand_tokens()
 //{
@@ -10,49 +9,40 @@
 	//  7. filename expansion
 //}
 
-void	expand_tokens(t_token **token)
+// static void	expand_tokens(t_sh *sh)
+static void	expand_tokens(t_sh *sh, t_token *token) // test
 {
-	t_token	*pre;
-	t_token	*cur;
-	char	*new;
+	// t_token	*token;
+	t_type	prev_type;
 
-	cur = *token;
-	pre = 0;
-	while (cur)
+	// token = sh->script->cmd;
+	prev_type = 0;
+	while (token)
 	{
-		new = 0;
-		RD_HEREDOC
-		if (!pre
-			|| ((pre && (pre->type != RD_HEREDOC)) && (cur->type <= FILENAME)))
-		{
-			new = cur->content;
-			while (new)
-			{
-				new = ft_strchr(cur->content, '$');
-				parameter_expansion();
-			}
-			if ((cur->type == CMD) && cmdpath_expansion())
-				return (127);
-			else if (cur->type == CMD && filename_expansion())
-				return (1);
-		}
-		pre = cur;
-		cur = cur->next;
+		if ((prev_type != RD_HEREDOC) && (token->type <= WORD))
+			parameter_expansion(sh, token);
+		// if ((token->type == CMD) && cmdpath_expansion(sh, token))
+		// 	return (127);
+		// else if (is_filename(prev_type, token) && filename_expansion(sh))
+		// 	return (1);
+		prev_type = token->type;
+		token = token->next;
 	}
 }
 
-int expansion(t_sh *sh)
+// int expansion(t_sh *sh)
+int	expansion(t_sh *sh, t_token *token) // test
 {
-	t_script	*cmd;
-	t_token		*t;
+	// t_script	*cmd;
+	// t_token		*t;
 
-	cmd = sh->script;
-	while (cmd)
-	{
-		t = cmd->cmd;
-		expand_tokens();
-		cmd = cmd->next;
-	}
-
+	// cmd = sh->script;
+	// while (cmd)
+	// {
+	// 	t = cmd->cmd;
+	// 	expand_tokens(sh);
+	// 	cmd = cmd->next;
+	// }
+	expand_tokens(sh, token);
+	return (0);
 }
-

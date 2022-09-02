@@ -11,7 +11,6 @@ typedef enum e_type
 {
 	CMD,
 	WORD,
-	FILENAME,
 	PIPE,
 	RD_IN,
 	RD_OUT,
@@ -37,13 +36,13 @@ typedef struct s_script
 typedef struct s_env
 {
 	char			*key;
-	char			**value;
+	char			*value;
 	struct s_env	*next;
 }				t_env;
 
 typedef struct s_sh
 {
-	t_script	script;
+	t_script	*script;
 	t_env		*env;
 	int			last_exit_value;
 }				t_sh;

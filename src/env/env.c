@@ -6,7 +6,7 @@ int	env_init(t_env **env, char **envp)
 	int		i;
 	int		j;
 	char	*key;
-	char	**value;
+	char	*value;
 	t_env	*new;
 
 	i = -1;
@@ -19,7 +19,7 @@ int	env_init(t_env **env, char **envp)
 			if (envp[i][j] == '=')
 			{
 				key = ft_substr(envp[i], 0, j);
-				value = ft_split(envp[i] + j + 1, ':');
+				value = ft_strdup(envp[i] + j+ 1);
 				break ;
 			}
 		}
@@ -32,28 +32,21 @@ int	env_init(t_env **env, char **envp)
 int	env_terminate(t_env **env)
 {
 	t_env	*cur;
-	char	**value;
-	int		i;
 
 	cur = *env;
-	while (cur->next)
+	while (cur)
 	{
 		free(cur->key);
-		value = cur->value;
+		free(cur->value);
+		cur->key = 0;
+		cur->value = 0;
 		cur = cur->next;
-		i = -1;
-		while (value[++i])
-		{
-			free(value[i]);
-			value[i] = 0;
-		}
-		free(value);
 	}
-	value = 0;
+	*env = 0;
 	return (0);
 }
 
-t_env	*envnew(char *key, char **value)
+t_env	*envnew(char *key, char *value)
 {
 	t_env	*new;
 
@@ -83,18 +76,15 @@ void	envadd_back(t_env **env, t_env *new)
 	cur->next = new;
 }
 
-char	**find_env_value(t_env **env, char *key)
+char	*find_env_value(t_env *env, char *key)
 {
-	t_env	*cur;
-
 	if (env == NULL)
 		return (NULL);
-	cur = *env;
-	while (cur)
+	while (env)
 	{
-		if (ft_strcmp(cur->key, key))
-			return (cur->value);
-		cur = cur->next;
+		if (!ft_strcmp(env->key, key))
+			return (env->value);
+		env = env->next;
 	}
 	return (NULL);
 }

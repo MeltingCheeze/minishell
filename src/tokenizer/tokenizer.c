@@ -1,6 +1,7 @@
-#include "minishell.h"
+#include "parser.h"
+#include "libft.h"
 
-static void	destroy_token(t_token **token, char *line, size_t cnt)
+static void	destroy_token(t_token **token, char *line, int cnt)
 {
 	tokenclear(token);
 	*(line + cnt - 1) = 0;
@@ -8,9 +9,9 @@ static void	destroy_token(t_token **token, char *line, size_t cnt)
 	ft_putendl_fd(line, 2);
 }
 
-static int	add_token(t_token **token, char *line, size_t *size, char sep)
+static int	add_token(t_token **token, char *line, int *size, char sep)
 {
-	size_t	cnt;
+	int	cnt;
 
 	cnt = 0;
 	if (sep == SPACE)
@@ -35,7 +36,7 @@ static int	add_token(t_token **token, char *line, size_t *size, char sep)
 static void	make_token(t_token **token, char *line)
 {
 	char	has;
-	size_t	size;
+	int		size;
 
 	has = 0;
 	size = -1;
@@ -67,7 +68,5 @@ t_token	*tokenizer(char *line)
 	while (*line == SPACE)
 		line++;
 	make_token(&token, line);
-	if (token)
-		tokenprint(token);
 	return (token);
 }

@@ -6,7 +6,7 @@
 #    By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/22 02:33:06 by chaejkim          #+#    #+#              #
-#    Updated: 2022/09/02 14:42:11 by chaejkim         ###   ########.fr        #
+#    Updated: 2022/09/03 02:34:43 by chaejkim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,8 @@ SRC = src/main/main.c \
 	  src/tokenizer/token.c \
 	  src/tokenizer/tokenizer.c \
 	  src/lexer/lexer.c \
+	  src/expansion/expansion.c \
+	  src/expansion/parameter_expansion.c \
 	  src/parser/parser.c \
 	  src/utile/ft_error.c \
 	  src/tmp/print.c
@@ -66,6 +68,7 @@ obj:
 	@mkdir -p obj/main
 	@mkdir -p obj/builtins
 	@mkdir -p obj/env
+	@mkdir -p obj/expansion
 	@mkdir -p obj/tokenizer
 	@mkdir -p obj/lexer
 	@mkdir -p obj/parser
