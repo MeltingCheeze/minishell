@@ -1,4 +1,3 @@
-#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -17,7 +16,7 @@ int main(void)
 		if (cmd_cnt != 0)
 			pipe(pipeline);
 		pid = fork();
-		if (!pid)
+		if (!pid) //child
 		{
 			// no use
 			if (cmd_cnt != 0)
@@ -39,10 +38,10 @@ int main(void)
 				NULL
 			};
 
-			execve("/bin/cat", argv, environ); // should pass envp here
+			execve("/bin/ls", argv, environ); // should pass envp here
 			exit(1);
 		}
-		else
+		else //parent
 		{
 			if (cmd_cnt != 0)
 				close(pipeline[1]);
