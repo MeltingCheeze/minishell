@@ -1,1 +1,0 @@
-	char	single[2];

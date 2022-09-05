@@ -1,5 +1,6 @@
 #include "env.h"
 #include "libft.h"
+#include <stdlib.h>
 
 int	env_init(t_env **env, char **envp)
 {
@@ -19,7 +20,7 @@ int	env_init(t_env **env, char **envp)
 			if (envp[i][j] == '=')
 			{
 				key = ft_substr(envp[i], 0, j);
-				value = ft_strdup(envp[i] + j+ 1);
+				value = ft_strdup(envp[i] + j + 1);
 				break ;
 			}
 		}

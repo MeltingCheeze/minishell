@@ -25,7 +25,7 @@ void	tokenprint(t_token *token)
 	}
 }
 
-void	 print_type(t_token *token)
+void	print_type(t_token *token)
 {
 	t_token *curr;
 
@@ -35,7 +35,7 @@ void	 print_type(t_token *token)
 		printf("content : %s  | type : %d\n", curr->content, curr->type);
 		curr = curr->next;
 	}
-    printf("=======================\n");
+	printf("=======================\n");
 }
 
 void	scriptprint(t_script *script)

@@ -15,11 +15,10 @@
 
 t_bool	is_file_exists(char *file_name);
 
-// int		expansion(t_sh *sh);
-int		expansion(t_sh *sh, t_token *token); // test
+int		expansion(t_sh *sh);
 
 void	parameter_expansion(t_sh *sh, t_token *token);
 int		cmdpath_expansion(t_sh *sh, t_token *token);
-int		input_file_checker(t_token *token);
+int		input_file_checker(t_sh *sh, char *cmd, t_token *token);
 
 #endif

@@ -1,7 +1,7 @@
 #include "parser.h"
 #include "libft.h" // 나중에 고치기
 #include "minishell.h" // 나중에 지우기
-int	expansion(t_sh *sh, t_token *token); // test
+int	expansion(t_sh *sh); // 나중에 고치기
 
 static int	quote_err(int *exit_value)
 {
@@ -17,7 +17,7 @@ static int	is_valid_quote(char *line)
 	quote = 0;
 	while (*line)
 	{
-		if (!quote && (*line == SINGLE || *line == DOUBLE))
+		if (!quote && (*line == '\'' || *line == '"'))
 		{
 			quote = *line;
 			while (quote && *(line + 1))
@@ -40,22 +40,20 @@ int	parser(t_sh *sh, char *line)
 	t_token	*token;
 
 	(void)sh;
-	// envprint(sh->env);
 	if (is_valid_quote(line) && quote_err(&sh->last_exit_value))
 		return (1);
-	token = tokenizer(line); //1. Devide the input into *tokens* (words and operators)
-	if (token == NULL)
+	token = tokenizer(line);
+	if (token == NULL || lexcial_analyze(token))
 		return (1);
-	else
-	{
-		// expansion(sh);
-		expansion(sh, token); // test
-		tokenprint(token);
-	}
-	// lexcial_analyze(token);
-	// print_type(token);
-	// tokens_to_cmds();   //2. Parse these tokens into commands and *other constructs* ()
-	// expand(script);
-	// quote removal(&token);
+	//tokenprint(token);
+	print_type(token);
+	tokens_to_cmds(sh, token);
+	//printf("before expasion\n");
+	//tokenprint(token);
+	//scriptprint(sh->script);
+	expansion(sh);
+	//printf("after expasion\n");
+	scriptprint(sh->script);
+	// quote_removal(&token);
 	return (0);
 }

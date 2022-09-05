@@ -49,7 +49,6 @@ void	tokenclear(t_token **token)
 		free(tmp->content);
 		tmp->content = 0;
 		free(tmp);
-		tmp = 0;
 	}
-	*token = 0; // hiko!! help!!!!
+	*token = 0;
 }

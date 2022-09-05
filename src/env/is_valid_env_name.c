@@ -1,3 +1,4 @@
+#include "env.h"
 #include "libft.h"
 
 int	is_valid_env_name(char c)

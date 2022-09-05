@@ -7,10 +7,8 @@
 # define UNCLOSED_QUOTE_MSG "syntax error unclosed quote"
 # define SYNTAX_ERROR_MSG "syntax error near unexpected token `"
 
-# define SPACE ' '
-# define SINGLE '\''
-# define DOUBLE '"'
-# define SEPS " ><|"
+# define SEPS " \t\n"
+# define DELIMS " \t\n><|"
 
 int		parser(t_sh *sh, char *line);
 
@@ -22,5 +20,7 @@ void	tokenadd_back(t_token **token, t_token *new);
 void	tokenclear(t_token **token);
 
 int		lexcial_analyze(t_token *line);
+
+void	tokens_to_cmds(t_sh *sh, t_token *token);
 
 #endif

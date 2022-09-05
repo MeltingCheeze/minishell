@@ -7,7 +7,7 @@ static void	check_type(t_token *line)
 	t_type	t;
 
 	t = PIPE;
-	printf("ttt : %d\n", (int)t);
+	//printf("ttt : %d\n", (int)t);
 	while (line)
 	{
 		if (ft_strcmp(line->content, "|") == 0)
@@ -41,16 +41,20 @@ static void	check_type(t_token *line)
 	}
 }
 
-static void    check_cmd(t_token *line)
+static int	 check_cmd(t_token *line)
 {
 	if (line->type == WORD)
 		line->type = CMD;
-	while (line)
+	while (line->next) // 이거 세그 폴트때매 일단 수정
 	{
 		if (line->type == PIPE && line->next->type == WORD)
 			line->next->type = CMD;
 		line = line->next;
 	}
+	if (line->type == PIPE)
+		return (-1);
+		//syntax error
+	return (0);
 }
 
 static int	check_gram(t_token *line)
@@ -91,8 +95,7 @@ static int	check_gram(t_token *line)
 int	lexcial_analyze(t_token *line)
 {
 	check_type(line);
-	check_cmd(line);
-	if (check_gram(line) < 0)
+	if (check_cmd(line) || check_gram(line))
 		return (-1);
 	return (0);
 }
