@@ -10,4 +10,6 @@ t_env	*envnew(char *key, char *value);
 void	envadd_back(t_env **env, t_env *new);
 char	*find_env_value(t_env *env, char *key);
 
+int		is_valid_env_name(char c);
+
 #endif

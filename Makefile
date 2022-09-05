@@ -6,7 +6,7 @@
 #    By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/22 02:33:06 by chaejkim          #+#    #+#              #
-#    Updated: 2022/09/03 06:59:16 by chaejkim         ###   ########.fr        #
+#    Updated: 2022/09/05 15:31:36 by chaejkim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ SRC = src/main/main.c \
 	  src/main/set_sigaction.c \
 	  src/main/shell_sigaction.c \
 	  src/env/env.c \
+	  src/env/is_valid_env_name.c \
 	  src/tokenizer/token.c \
 	  src/tokenizer/tokenizer.c \
 	  src/lexer/lexer.c \
@@ -37,6 +38,7 @@ SRC = src/main/main.c \
 	  src/expansion/input_file_checker.c \
 	  src/parser/parser.c \
 	  src/utile/ft_error.c \
+	  src/utile/is_file_exist.c \
 	  src/tmp/print.c
 
 #  src/exec/exec.c \

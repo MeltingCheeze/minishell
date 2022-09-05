@@ -1,13 +1,5 @@
 #include "expansion.h"
 
-
-static t_bool	is_file_exists(char *file_name)
-{
-	struct stat	buf;
-
-	return (stat(file_name, &buf) == 0);
-}
-
 static char	**find_paths(t_env *env)
 {
 	char	*value;
