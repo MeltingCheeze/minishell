@@ -23,4 +23,6 @@ int		lexcial_analyze(t_token *line);
 
 void	tokens_to_cmds(t_sh *sh, t_token *token);
 
+void	remove_quote(t_script *script);
+
 #endif

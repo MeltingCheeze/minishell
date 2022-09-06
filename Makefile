@@ -6,7 +6,7 @@
 #    By: chaejkim <chaejkim@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/22 02:33:06 by chaejkim          #+#    #+#              #
-#    Updated: 2022/09/06 04:13:30 by chaejkim         ###   ########.fr        #
+#    Updated: 2022/09/06 15:30:56 by chaejkim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +39,7 @@ SRC = src/main/main.c \
 	  src/expansion/input_file_checker.c \
 	  src/parser/parser.c \
 	  src/parser/tokens_to_cmds.c \
+	  src/parser/remove_quote.c \
 	  src/utile/ft_error.c \
 	  src/utile/is_file_exist.c \
 	  src/tmp/print.c

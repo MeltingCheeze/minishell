@@ -12,7 +12,7 @@ static char	*find_expand(t_env *env, int len, char *content)
 	return (value);
 }
 
-static char	*join_expand(char *joined, char *expand)
+static char	*attach_str(char *joined, char *expand)
 {
 	char	*result;
 
@@ -31,7 +31,7 @@ static char	*do_expand(t_env *env, char *joined, char **start, char **cur)
 	else
 	{
 		value = ft_substr(*start, 0, *cur - *start);
-		joined = join_expand(joined, value);
+		joined = attach_str(joined, value);
 		free(value);
 	}
 	len = keylen(*cur + 1);
@@ -39,13 +39,12 @@ static char	*do_expand(t_env *env, char *joined, char **start, char **cur)
 	{
 		value = find_expand(env, len, *cur + 1);
 		if (value)
-			joined = join_expand(joined, value);
+			joined = attach_str(joined, value);
 	}
 	*start = *cur + len + 1;
 	*cur = *start - 1;
 	return (joined);
 }
-//echo '$USER'"$USER""""$a"
 
 void	parameter_expansion(t_sh *sh, t_token *token)
 {
@@ -69,7 +68,7 @@ void	parameter_expansion(t_sh *sh, t_token *token)
 		cur++;
 	}
 	if (start)
-		result = join_expand(result, start);
+		result = attach_str(result, start);
 	if (!result)
 		return ;
 	free(token->content);

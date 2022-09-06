@@ -24,10 +24,7 @@ static int	is_valid_quote(char *line)
 			{
 				line++;
 				if (*line == quote)
-				{
 					quote = 0;
-					break ;
-				}
 			}
 		}
 		line++;
@@ -46,14 +43,15 @@ int	parser(t_sh *sh, char *line)
 	if (token == NULL || lexcial_analyze(token))
 		return (1);
 	//tokenprint(token);
-	print_type(token);
+	//print_type(token);
 	tokens_to_cmds(sh, token);
 	//printf("before expasion\n");
 	//tokenprint(token);
 	//scriptprint(sh->script);
 	expansion(sh);
 	//printf("after expasion\n");
+	//scriptprint(sh->script);
+	remove_quote(sh->script);
 	scriptprint(sh->script);
-	// quote_removal(&token);
 	return (0);
 }
