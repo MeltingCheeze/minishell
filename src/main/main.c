@@ -12,7 +12,7 @@ static int	minishell(t_sh *sh)
 		line = readcmdline();
 		if (line == NULL || !*line)
 			continue ;
-		if (parser(&sh->script, line))
+		if (parser(sh, line))
 			continue ;
 		//exec();
 		free(line);

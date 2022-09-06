@@ -1,58 +1,43 @@
-#include "minishell.h"
-#include "libft.h"
+#include "expansion.h"
 
-//int   expand_tokens()
-//{
-	//  [todo] = += 대입연산
-	//  3. parameter and variable expansion [$ 매개변수 확장]
-	//  5. command substitution [echo $(date +%D)]
-	//  6. word splitting
-	//  7. filename expansion
-//}
-
-void	expand_tokens(t_token **token)
+static int	expand_tokens(t_sh *sh, t_script *script)
 {
-	t_token	*pre;
-	t_token	*cur;
-	char	*new;
+	t_token	*token;
+	char	*cmd;
+	int		is_in_file;
 
-	cur = *token;
-	pre = 0;
-	while (cur)
+	token = script->cmd;
+	is_in_file = 0;
+	cmd = 0;
+	while (token)
 	{
-		new = 0;
-		RD_HEREDOC
-		if (!pre
-			|| ((pre && (pre->type != RD_HEREDOC)) && (cur->type <= FILENAME)))
-		{
-			new = cur->content;
-			while (new)
-			{
-				new = ft_strchr(cur->content, '$');
-				parameter_expansion();
-			}
-			if ((cur->type == CMD) && cmdpath_expansion())
-				return (127);
-			else if (cur->type == CMD && filename_expansion())
-				return (1);
-		}
-		pre = cur;
-		cur = cur->next;
+		if ((is_in_file != RD_HEREDOC) && (token->type <= WORD))
+			parameter_expansion(sh, token);
+		if ((is_in_file == RD_HEREDOC) || (token->type == RD_IN))
+			is_in_file = TRUE;
+		else if (token->type == RD_HEREDOC)
+			is_in_file = RD_HEREDOC;
+		else if ((token->type == CMD) && cmdpath_expansion(sh, token))
+			return (127);
+		else if ((is_in_file == TRUE) && input_file_checker(sh, cmd, token))
+			return (1);
+		if (token->type == CMD)
+			cmd = token->content;
+		token = token->next;
 	}
+	return (0);
 }
 
 int expansion(t_sh *sh)
 {
-	t_script	*cmd;
-	t_token		*t;
+	t_script	*script;
 
-	cmd = sh->script;
-	while (cmd)
+	script = sh->script;
+	while (script)
 	{
-		t = cmd->cmd;
-		expand_tokens();
-		cmd = cmd->next;
+		if (expand_tokens(sh, script))
+			return(1);
+		script = script->next;
 	}
-
+	return (0);
 }
-

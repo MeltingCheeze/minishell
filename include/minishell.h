@@ -21,9 +21,11 @@ char	*readcmdline(void);
 
 /* utile */
 void	ft_error(char *msg);
+// t_bool	is_file_exists(char *file_name);
 //void	ft_free_pptr(char *msg);
 
 /* print */
+void	envprint(t_env *env);
 void	tokenprint(t_token *token);
 void	print_type(t_token *token);
 void	scriptprint(t_script *script);

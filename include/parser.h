@@ -4,22 +4,25 @@
 # include <stdlib.h>
 # include "struct.h"
 
-# define SPACE ' '
-# define SINGLE '\''
-# define DOUBLE '"'
-# define SEPS " ><|"
+# define UNCLOSED_QUOTE_MSG "syntax error unclosed quote"
+# define SYNTAX_ERROR_MSG "syntax error near unexpected token `"
 
-//int		parse(t_sh *sh, char *line);
-int		parser(t_script *script, char *line);
+# define SEPS " \t\n"
+# define DELIMS " \t\n><|"
+
+int		parser(t_sh *sh, char *line);
 
 t_token	*tokenizer(char *line);
 
 void	token_init(t_token *token);
 t_token	*tokennew(char *content);
 void	tokenadd_back(t_token **token, t_token *new);
-// void	tokenprint(t_token **token);
 void	tokenclear(t_token **token);
 
 int		lexcial_analyze(t_token *line);
+
+void	tokens_to_cmds(t_sh *sh, t_token *token);
+
+void	remove_quote(t_script *script);
 
 #endif

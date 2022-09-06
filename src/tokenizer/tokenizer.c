@@ -1,6 +1,7 @@
-#include "minishell.h"
+#include "parser.h"
+#include "libft.h"
 
-static void	destroy_token(t_token **token, char *line, size_t cnt)
+static void	destroy_token(t_token **token, char *line, int cnt)
 {
 	tokenclear(token);
 	*(line + cnt - 1) = 0;
@@ -8,55 +9,57 @@ static void	destroy_token(t_token **token, char *line, size_t cnt)
 	ft_putendl_fd(line, 2);
 }
 
-static int	add_token(t_token **token, char *line, size_t *size, char sep)
+static int	add_token(t_token **token, char **start, char **cur, size_t len)
 {
-	size_t	cnt;
+	int	cnt;
 
-	cnt = 0;
-	if (sep == SPACE)
-		tokenadd_back(token, tokennew(ft_strndup(line, *size)));
+	cnt = 1;
+	if (ft_strchr(SEPS, **cur))
+		tokenadd_back(token, tokennew(ft_substr(*start, 0, len)));
 	else
 	{
-		while (*(line + *size) == *(line + *size + cnt))
+		while (**cur == *(*cur + cnt))
 			cnt++;
-		if (cnt > 2 || (cnt > 1 && (*(line + *size) == '|')))
+		if (cnt > 2 || (cnt > 1 && (**cur == '|')))
 		{
-			destroy_token(token, line + *size, cnt);
+			destroy_token(token, *cur, cnt);
 			return (1);
 		}
-		if (size && !ft_strchr(SEPS, *line))
-			tokenadd_back(token, tokennew(ft_strndup(line, *size)));
-		tokenadd_back(token, tokennew(ft_strndup(line + *size, cnt)));
-		*size += cnt;
+		if (len && !ft_strchr(SEPS, **cur))
+			tokenadd_back(token, tokennew(ft_substr(*start, 0, len)));
+		tokenadd_back(token, tokennew(ft_substr(*cur, 0, cnt)));
 	}
+	*start += len + cnt;
+	while (**start && ft_strchr(SEPS, **start))
+		(*start)++;
+	*cur = *start - 1;
 	return (0);
 }
 
-static void	make_token(t_token **token, char *line)
+static void	make_token(t_token **token, char *cur)
 {
 	char	has;
-	size_t	size;
+	char	*start;
 
 	has = 0;
-	size = -1;
-	while (*(line + (++size)))
+	while (*cur && ft_strchr(SEPS, *cur))
+		cur++;
+	start = cur;
+	while (*cur)
 	{
-		if (!has && (*(line + size) == DOUBLE || *(line + size) == SINGLE))
-			has = *(line + size);
-		else if (has && (has == *(line + size)))
+		if (!has && (*cur == '"' || *cur == '\''))
+			has = *cur;
+		else if (has && (has == *cur))
 			has = 0;
-		else if (!has && ft_strchr(SEPS, *(line + size)))
+		else if (!has && ft_strchr(DELIMS, *cur))
 		{
-			if (add_token(token, line, &size, *(line + size)) != 0)
+			if (add_token(token, &start, &cur, cur - start) != 0)
 				return ;
-			line += size;
-			size = -1;
-			while (*line == SPACE)
-				line++;
 		}
+		cur++;
 	}
-	if (size)
-		tokenadd_back(token, tokennew(ft_strndup(line, size)));
+	if (cur - start)
+		tokenadd_back(token, tokennew(ft_strdup(start)));
 }
 
 t_token	*tokenizer(char *line)
@@ -64,10 +67,6 @@ t_token	*tokenizer(char *line)
 	t_token	*token;
 
 	token = 0;
-	while (*line == SPACE)
-		line++;
 	make_token(&token, line);
-	if (token)
-		tokenprint(token);
 	return (token);
 }

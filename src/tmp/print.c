@@ -1,6 +1,18 @@
 #include "struct.h"
 #include <stdio.h>
 
+void	envprint(t_env *env)
+{
+	t_env	*cur;
+
+	cur = env;
+	while (cur)
+	{
+		printf("\033[0;33m%s\033[0m=%s\n", cur->key, cur->value);
+		cur = cur->next;
+	}
+}
+
 void	tokenprint(t_token *token)
 {
 	t_token	*cur;
@@ -13,7 +25,7 @@ void	tokenprint(t_token *token)
 	}
 }
 
-void	 print_type(t_token *token)
+void	print_type(t_token *token)
 {
 	t_token *curr;
 
@@ -23,7 +35,7 @@ void	 print_type(t_token *token)
 		printf("content : %s  | type : %d\n", curr->content, curr->type);
 		curr = curr->next;
 	}
-    printf("=======================\n");
+	printf("=======================\n");
 }
 
 void	scriptprint(t_script *script)

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+         #
+#    By: chaejkim <chaejkim@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/22 02:33:06 by chaejkim          #+#    #+#              #
-#    Updated: 2022/09/02 14:42:11 by chaejkim         ###   ########.fr        #
+#    Updated: 2022/09/06 15:30:56 by chaejkim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,19 +20,28 @@ LFT = lib/libft/libft.a
 LOCAL_RL_DIR = /opt/homebrew/Cellar/readline/8.1.2
 CLUSTER_RL_DIR = $(HOME)/.brew/opt/readline
 
-INC = -Iinclude -Ilib/libft -I$(CLUSTER_RL_DIR)/include
-LIB = -Llib/libft -lft -L$(CLUSTER_RL_DIR)/lib -lreadline
+INC = -Iinclude -Ilib/libft -I$(LOCAL_RL_DIR)/include
+LIB = -Llib/libft -lft -L$(LOCAL_RL_DIR)/lib -lreadline
 
 SRC = src/main/main.c \
 	  src/main/readcmdline.c \
 	  src/main/set_sigaction.c \
 	  src/main/shell_sigaction.c \
 	  src/env/env.c \
+	  src/env/is_valid_env_name.c \
+	  src/env/keylen.c \
 	  src/tokenizer/token.c \
 	  src/tokenizer/tokenizer.c \
 	  src/lexer/lexer.c \
+	  src/expansion/expansion.c \
+	  src/expansion/parameter_expansion.c \
+	  src/expansion/cmdpath_expansion.c \
+	  src/expansion/input_file_checker.c \
 	  src/parser/parser.c \
+	  src/parser/tokens_to_cmds.c \
+	  src/parser/remove_quote.c \
 	  src/utile/ft_error.c \
+	  src/utile/is_file_exist.c \
 	  src/tmp/print.c
 
 #  src/exec/exec.c \
@@ -66,6 +75,7 @@ obj:
 	@mkdir -p obj/main
 	@mkdir -p obj/builtins
 	@mkdir -p obj/env
+	@mkdir -p obj/expansion
 	@mkdir -p obj/tokenizer
 	@mkdir -p obj/lexer
 	@mkdir -p obj/parser
