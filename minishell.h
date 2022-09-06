@@ -34,7 +34,7 @@ typedef struct s_env
 
 typedef struct s_sh
 {
-	t_script	script;
+	t_script	*script;
 	t_env		*env;
 }				t_sh;
 
