@@ -1,14 +1,5 @@
 #include "expansion.h"
 
-//int   expand_tokens()
-//{
-	//  [todo] = += 대입연산
-	//  3. parameter and variable expansion [$ 매개변수 확장]
-	//  5. command substitution [echo $(date +%D)]
-	//  6. word splitting
-	//  7. filename expansion
-//}
-
 static int	expand_tokens(t_sh *sh, t_script *script)
 {
 	t_token	*token;
@@ -20,12 +11,12 @@ static int	expand_tokens(t_sh *sh, t_script *script)
 	cmd = 0;
 	while (token)
 	{
-		if ((is_in_file != 2) && (token->type <= WORD))
+		if ((is_in_file != RD_HEREDOC) && (token->type <= WORD))
 			parameter_expansion(sh, token);
-		if ((is_in_file == 2) || (token->type == RD_IN))
-			is_in_file = 1;
+		if ((is_in_file == RD_HEREDOC) || (token->type == RD_IN))
+			is_in_file = TRUE;
 		else if (token->type == RD_HEREDOC)
-			is_in_file = 2;
+			is_in_file = RD_HEREDOC;
 		else if ((token->type == CMD) && cmdpath_expansion(sh, token))
 			return (127);
 		else if ((is_in_file == TRUE) && input_file_checker(sh, cmd, token))
