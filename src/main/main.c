@@ -14,7 +14,7 @@ static int	minishell(t_sh *sh)
 			continue ;
 		if (parser(sh, line))
 			continue ;
-		//exec();
+		execute(sh);
 		free(line);
 	}
 }

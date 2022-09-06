@@ -30,4 +30,8 @@ void	tokenprint(t_token *token);
 void	print_type(t_token *token);
 void	scriptprint(t_script *script);
 
+/* execute -> 헤더 쪼개기 */
+void execute(t_sh *sh);
+
+
 #endif

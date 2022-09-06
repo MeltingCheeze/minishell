@@ -6,7 +6,7 @@
 #    By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/22 02:33:06 by chaejkim          #+#    #+#              #
-#    Updated: 2022/09/06 19:13:44 by hyko             ###   ########.fr        #
+#    Updated: 2022/09/07 02:52:16 by hyko             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,9 +56,9 @@ SRC = src/main/main.c \
 	  src/parser/remove_quote.c \
 	  src/utile/ft_error.c \
 	  src/utile/is_file_exist.c \
-	  src/tmp/print.c 
-#  src/executor/redirection.c \
-#  src/executor/execute.c
+	  src/tmp/print.c \
+	  src/executor/execute.c
+#  src/executor/redirection.c
 
 #  src/exec/exec.c \
 #  src/iostream/pipe.c \

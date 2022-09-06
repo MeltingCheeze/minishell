@@ -30,7 +30,7 @@ typedef struct s_script
 {
 	t_token			*cmd; /* token devided by pipe */
 	int				fd_in;
-	int				fd_out;
+	int				fd_out; //필요X ?
 	struct s_script	*next;
 }				t_script;
 
