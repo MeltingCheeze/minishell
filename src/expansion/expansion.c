@@ -19,8 +19,8 @@ static int	expand_tokens(t_sh *sh, t_script *script)
 			is_in_file = RD_HEREDOC;
 		else if ((token->type == CMD) && cmdpath_expansion(sh, token))
 			return (127);
-		else if ((is_in_file == TRUE) && input_file_checker(sh, cmd, token))
-			return (1);
+		//else if ((is_in_file == TRUE) && input_file_checker(sh, cmd, token))
+		//	return (1);
 		if (token->type == CMD)
 			cmd = token->content;
 		token = token->next;

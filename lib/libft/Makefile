@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+         #
+#    By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/05 19:28:38 by chaejkim          #+#    #+#              #
-#    Updated: 2022/09/02 21:38:22 by chaejkim         ###   ########.fr        #
+#    Updated: 2022/09/06 18:08:23 by hyko             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,17 +17,18 @@ CFLAGS = -Wall -Wextra -Werror -c
 
 INC = -I.
 
-SRC = src/ft_toupper.c src/ft_tolower.c src/ft_isascii.c src/ft_isprint.c src/ft_isdigit.c \
-	  src/ft_isalpha.c src/ft_isalnum.c src/ft_strncmp.c src/ft_strlen.c src/ft_strlcpy.c \
-	  src/ft_memcpy.c src/ft_strchr.c src/ft_strrchr.c src/ft_strlcat.c src/ft_strnstr.c \
-	  src/ft_memset.c src/ft_bzero.c src/ft_memchr.c src/ft_memmove.c src/ft_memcmp.c src/ft_atoi.c \
-	  src/ft_strdup.c src/ft_strndup.c src/ft_substr.c src/ft_strjoin.c src/ft_strtrim.c src/ft_split.c \
-	  src/ft_strcpy.c src/ft_strcmp.c src/ft_strchr.c \
-	  src/ft_calloc.c src/ft_itoa.c src/ft_strmapi.c src/ft_striteri.c src/ft_free_pptr.c \
-	  src/ft_putchar_fd.c src/ft_putstr_fd.c src/ft_putendl_fd.c src/ft_putnbr_fd.c
+SRC = $(addprefix src/, ft_toupper.c ft_tolower.c ft_isascii.c ft_isprint.c ft_isdigit.c \
+	  ft_isalpha.c ft_isalnum.c ft_strncmp.c ft_strlen.c ft_strlcpy.c \
+	  ft_memcpy.c ft_strchr.c ft_strrchr.c ft_strlcat.c ft_strnstr.c \
+	  ft_memset.c ft_bzero.c ft_memchr.c ft_memmove.c ft_memcmp.c ft_atoi.c \
+	  ft_strdup.c ft_strndup.c ft_substr.c ft_strjoin.c ft_strtrim.c ft_split.c \
+	  ft_strcpy.c ft_strcmp.c ft_strchr.c \
+	  ft_calloc.c ft_itoa.c ft_strmapi.c ft_striteri.c ft_free_pptr.c \
+	  ft_putchar_fd.c ft_putstr_fd.c ft_putendl_fd.c ft_putnbr_fd.c)
 
-BSRC = src/ft_lstnew.c src/ft_lstadd_front.c src/ft_lstsize.c src/ft_lstlast.c src/ft_lstadd_back.c src/ft_lstdelone.c \
-	   src/ft_lstclear.c src/ft_lstiter.c src/ft_lstmap.c src/ft_del_ptr.c
+BSRC = $(addprefix src/, ft_lstnew.c ft_lstadd_front.c \
+	   ft_lstsize.c ft_lstlast.c ft_lstadd_back.c ft_lstdelone.c \
+	   ft_lstclear.c ft_lstiter.c ft_lstmap.c ft_del_ptr.c)
 
 OBJ = $(patsubst src%, obj%, $(SRC:.c=.o))
 BOBJ = $(patsubst src%, obj%, $(BSRC:.c=.o))

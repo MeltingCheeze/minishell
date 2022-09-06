@@ -10,7 +10,8 @@ typedef enum e_bool
 typedef enum e_type
 {
 	CMD,
-	WORD,
+	WORD, //execve 의 argv
+	FILENAME,
 	PIPE,
 	RD_IN,
 	RD_OUT,
