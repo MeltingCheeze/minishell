@@ -9,16 +9,17 @@ void execute(t_sh *sh)
 	pid_t		pid;
 	#define READ 0
 	#define WRITE 1
+	
+	int stdin_dup = dup(0);
+	int stdout_dup = dup(1);
 
 	cur_cmd = sh->script;
 	while (cur_cmd)
 	{
 		/* create pipe */
 		if (cur_cmd->next != NULL) //not last cmd
-		{
 			pipe(pipeline);
-			printf("<pipe> %d %d\n", pipeline[0], pipeline[1]);
-		}
+
 		/* fork */
 		pid = fork();
 
@@ -27,41 +28,55 @@ void execute(t_sh *sh)
 		{
 			if (cur_cmd->next != NULL)
 			{
-				//close input pipe -> no use
+				/* close input pipe -> no use */
 				close(pipeline[READ]);	
-				//pass output to pipeline/tty
+
+				/* change output fd */
 				dup2(pipeline[WRITE], STDOUT_FILENO);
 				close(pipeline[WRITE]);
 			}
-			// recv input from prev pipe/file/tty
+
+			/* recv input from prev pipe/file/tty */
 			dup2(cur_cmd->fd_in, STDIN_FILENO);
-			if (cur_cmd->fd_in != STDIN_FILENO)
+			if (cur_cmd->fd_in != STDIN_FILENO) //not first cmd
 				close(cur_cmd->fd_in);
-			
+	
 			char *argv[] = {
 				cur_cmd->cmd->content,
+				cur_cmd->cmd->next->content,
 				NULL
 			};
-			printf("cmd : %s, in_fd : %d\n", cur_cmd->cmd->content, cur_cmd->fd_in);
 			execve(cur_cmd->cmd->content, argv, environ); // should pass envp here
-			exit(1);
+			// exit(1);
 		}
 		/* parent process -> READ only */
 		else if (pid > 0)
 		{
-			//close output pipe -> no use
 			if (cur_cmd->next != NULL)
+			{
+				/* close output pipe -> no use */
 				close(pipeline[WRITE]);
-			//
-			dup2(pipeline[READ], STDIN_FILENO);
-			if (cur_cmd->fd_in != STDIN_FILENO)
-				close(cur_cmd->fd_in);
-			// cur_cmd->fd_in = pipeline[READ];
+
+				/* change input fd */
+				dup2(pipeline[READ], STDIN_FILENO);
+				if (cur_cmd->fd_in != STDIN_FILENO) //not first cmd
+					close(cur_cmd->fd_in);
+			}
+			else //표준입출력 정상복구?
+			{
+				close(pipeline[0]);
+				close(pipeline[1]);
+				dup2(stdin_dup, 0);
+				dup2(stdout_dup, 1);
+				close(stdin_dup);
+				close(stdout_dup);
+			}
 		}
 		cur_cmd = cur_cmd->next;
 		if (cur_cmd)
 			cur_cmd->fd_in = pipeline[WRITE]; //next cmd fd_in = current cmd fd_out
 	}
+
 	cur_cmd = sh->script;
 	while (cur_cmd)
 	{
