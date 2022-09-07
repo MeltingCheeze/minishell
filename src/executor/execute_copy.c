@@ -27,6 +27,23 @@ void execute(t_sh *sh)
 		/* child process -> WRITE only */
 		if (pid == 0)
 		{
+			//////////* RD_IN */////////
+			t_token *cur_token;
+			cur_token = cur_cmd->cmd;
+			while (cur_token)
+			{
+				if (cur_token->type == RD_IN)
+				{
+					// printf("redir\n");
+					int	fd;
+					fd = open(cur_token->next->content, O_RDONLY);
+					printf("fd : %d\n", fd);
+					cur_cmd->fd_in = fd;
+				}
+				cur_token = cur_token->next;
+			}
+			/////////////////////////////
+
 			if (cur_cmd->next != NULL)
 			{
 				/* close input pipe -> no use */
