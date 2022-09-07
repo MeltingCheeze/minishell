@@ -27,24 +27,33 @@ void execute(t_sh *sh)
 		/* child process -> WRITE only */
 		if (pid == 0)
 		{
-			//////////* RD_IN */////////
+			//////////* REDIRECTION */////////
 			t_token *cur_token;
 			cur_token = cur_cmd->cmd;
 			while (cur_token)
 			{
-				if (cur_token->type == RD_IN)
+				if (cur_token->type == RD_IN && cur_token->next->type == WORD) //->FILENAME으로 수정 필요?
 				{
-					// printf("redir\n");
-					int	fd;
-					fd = open(cur_token->next->content, O_RDONLY);
-					printf("fd : %d\n", fd);
-					cur_cmd->fd_in = fd;
+					cur_cmd->fd_in = open(cur_token->next->content, O_RDONLY);
+				}
+				else if (cur_token->type == RD_OUT && cur_token->next->type == WORD)
+				{
+					cur_cmd->fd_out = open(cur_token->next->content, O_WRONLY | O_CREAT | O_TRUNC);
+				}
+				else if (cur_token->type == RD_APPEND)
+				{
+					cur_cmd->fd_out = open(cur_token->next->content, O_WRONLY | O_CREAT | O_APPEND);
 				}
 				cur_token = cur_token->next;
 			}
 			/////////////////////////////
 
-			if (cur_cmd->next != NULL)
+			if (cur_cmd->fd_out) //RD_OUT or RD_APPEND 존재 -> pipe보다 redir이 우선!
+			{
+				dup2(cur_cmd->fd_out, STDOUT_FILENO);
+				close(cur_cmd->fd_out);
+			}
+			else if (cur_cmd->next != NULL)
 			{
 				/* close input pipe -> no use */
 				close(pipeline[READ]);	

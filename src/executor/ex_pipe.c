@@ -1,3 +1,5 @@
+/* 나중에 지울 파일 */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
