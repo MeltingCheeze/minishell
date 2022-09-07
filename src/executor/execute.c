@@ -1,7 +1,5 @@
 #include "minishell.h"
 
-extern char** environ;
-
 void execute(t_sh *sh)
 {
 	t_script	*cur_cmd;
@@ -50,7 +48,7 @@ void execute(t_sh *sh)
 				cur_cmd->cmd->next->content,
 				NULL
 			};
-			execve(cur_cmd->cmd->content, argv, environ); // should pass envp here
+			execve(cur_cmd->cmd->content, argv, NULL); // should pass envp here
 			// exit(1);
 		}
 		/* parent process -> READ only */

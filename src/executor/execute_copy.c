@@ -1,6 +1,6 @@
-#include "minishell.h"
+/* execute.c 파일에 redirection 추가하면서 수정하고있는 파일 */
 
-extern char** environ;
+#include "minishell.h"
 
 void execute(t_sh *sh)
 {
@@ -35,25 +35,34 @@ void execute(t_sh *sh)
 				if (cur_token->type == RD_IN && cur_token->next->type == WORD) //->FILENAME으로 수정 필요?
 				{
 					cur_cmd->fd_in = open(cur_token->next->content, O_RDONLY);
+					if (cur_cmd->fd_in < 0)
+						return (-1); //redir 실패시 에러 or 건너뛰기???
 				}
 				else if (cur_token->type == RD_OUT && cur_token->next->type == WORD)
 				{
 					cur_cmd->fd_out = open(cur_token->next->content, O_WRONLY | O_CREAT | O_TRUNC);
+					if (cur_cmd->fd_out < 0)
+						return (-1);
 				}
-				else if (cur_token->type == RD_APPEND)
+				else if (cur_token->type == RD_APPEND && cur_token->next->type == WORD)
 				{
 					cur_cmd->fd_out = open(cur_token->next->content, O_WRONLY | O_CREAT | O_APPEND);
+					if (cur_cmd->fd_out < 0)
+						return (-1);
+				}
+				else if (cur_token->type == RD_HEREDOC && cur_token->next->type == WORD)
+				{
 				}
 				cur_token = cur_token->next;
 			}
-			/////////////////////////////
+			/////////////////////////////////
 
-			if (cur_cmd->fd_out) //RD_OUT or RD_APPEND 존재 -> pipe보다 redir이 우선!
+			if (cur_cmd->fd_out) // RD_OUT or RD_APPEND 존재 -> pipe보다 redir이 우선!
 			{
 				dup2(cur_cmd->fd_out, STDOUT_FILENO);
 				close(cur_cmd->fd_out);
 			}
-			else if (cur_cmd->next != NULL)
+			else if (cur_cmd->next != NULL) // redir X, pipe O
 			{
 				/* close input pipe -> no use */
 				close(pipeline[READ]);	
@@ -68,15 +77,12 @@ void execute(t_sh *sh)
 			if (cur_cmd->fd_in != STDIN_FILENO) //not first cmd
 				close(cur_cmd->fd_in);
 			//TODO_2 : argv 만들기 (filename word 구분)
-			//TODO_3 : redirection
-			// 근데 리다이렉션 해서 만든 값을 어디다 저장하지.. -> script.fd 여기다가? 파이프로? -> disccution...
-			// 히코야 모르겠닼ㅋㅋㅋㅋㅋㅋㅋㅋ 이것저것 테스트해보고 disccution 에 올릴게
 			char *argv[] = {
 				cur_cmd->cmd->content,
 				cur_cmd->cmd->next->content,
 				NULL
 			};
-			execve(cur_cmd->cmd->content, argv, environ); // should pass envp here
+			execve(cur_cmd->cmd->content, argv, NULL); // should pass envp here
 			// exit(1);
 		}
 		/* parent process -> READ only */
