@@ -96,6 +96,9 @@ int	lexcial_analyze(t_token *line)
 {
 	check_type(line);
 	if (check_cmd(line) || check_gram(line))
+	{
+		printf("error\n"); //에러처리 수정필요!!!
 		return (-1);
+	}
 	return (0);
 }
