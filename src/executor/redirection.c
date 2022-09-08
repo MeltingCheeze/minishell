@@ -1,43 +1,34 @@
-/* 이 파일은 지워도 될듯? */
-
 #include "minishell.h"
 
-// O_WRONLY | O_CREAT | O_TRUNC - 쓰기 전용으로 열 때, 파일이 없는 경우 내용을 모두 지우고 파일의 길이를 0으로 변경
-
-void	redirection(t_sh *sh)
+int	redirection(t_script *cur_cmd)
 {
-	t_script *cur_cmd;
 	t_token *cur_token;
-
-	cur_cmd = sh->script;
 	cur_token = cur_cmd->cmd;
-	int	new_fd;
-	while (cur_cmd)
+	while (cur_token)
 	{
-		while (cur_token)
+		if (cur_token->type == RD_IN && cur_token->next->type == WORD) //->FILENAME으로 수정 필요?
 		{
-			if (cur_token->type == RD_OUT)
-			{
-				cur->token->next->type = FILENAME;
-				new_fd = open(cur_token->next->content, O_RDWR | O_CREAT);
-				dup2(new_fd ,cur_cmd->fd_in);
-			}
-			else if (cur_token->type == RD_APPEND)
-			{
-				cur_cmd->fd_out;
-
-			}
-			else if (cur_token->type == RD_IN) 
-			{
-				cur_cmd->fd_in;
-
-			}
-			else if (cur_token->type == RD_HEREDOC)
-			{
-				cur_cmd->fd_in;
-			}
-			cur_token = cur_token->next;
+			cur_cmd->fd_in = open(cur_token->next->content, O_RDONLY, 0644);
+			if (cur_cmd->fd_in < 0)
+				return (-1); //redir 실패시 에러 or 건너뛰기???
 		}
-		cur_cmd = cur_cmd->next;
+		else if (cur_token->type == RD_OUT && cur_token->next->type == WORD)
+		{
+			cur_cmd->fd_out = open(cur_token->next->content, O_WRONLY | O_CREAT | O_TRUNC, 0744);
+			if (cur_cmd->fd_out < 0)
+				return (-1);
+		}
+		else if (cur_token->type == RD_APPEND && cur_token->next->type == WORD)
+		{
+			cur_cmd->fd_out = open(cur_token->next->content, O_WRONLY | O_CREAT | O_APPEND, 0744);
+			if (cur_cmd->fd_out < 0)
+				return (-1);
+		}
+		else if (cur_token->type == RD_HEREDOC && cur_token->next->type == WORD)
+		{
+
+		}
+		cur_token = cur_token->next;
 	}
+	return (0);
 }

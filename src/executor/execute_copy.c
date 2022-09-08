@@ -2,11 +2,32 @@
 
 #include "minishell.h"
 
-void execute(t_sh *sh)
+int	arguments_vector(t_script *cur_cmd, char **argv)
+{
+	t_token *cur_token;
+	int	i;
+
+	i = 0;
+	cur_token = cur_cmd->cmd;
+	while (cur_token)
+	{
+		if (cur_token->type == CMD || cur_token->type == WORD)
+		{
+			argv[i] = cur_token->content;
+			i++;
+		}
+		cur_token = cur_token->next;
+	}
+	argv[i] = NULL;
+	return (0);
+}
+
+int execute(t_sh *sh)
 {
 	t_script	*cur_cmd;
 	int			pipeline[2];
 	pid_t		pid;
+	char		*argv[10];
 	#define READ 0
 	#define WRITE 1
 	
@@ -27,37 +48,11 @@ void execute(t_sh *sh)
 		/* child process -> WRITE only */
 		if (pid == 0)
 		{
-			//////////* REDIRECTION */////////
-			t_token *cur_token;
-			cur_token = cur_cmd->cmd;
-			while (cur_token)
-			{
-				if (cur_token->type == RD_IN && cur_token->next->type == WORD) //->FILENAME으로 수정 필요?
-				{
-					cur_cmd->fd_in = open(cur_token->next->content, O_RDONLY);
-					if (cur_cmd->fd_in < 0)
-						return (-1); //redir 실패시 에러 or 건너뛰기???
-				}
-				else if (cur_token->type == RD_OUT && cur_token->next->type == WORD)
-				{
-					cur_cmd->fd_out = open(cur_token->next->content, O_WRONLY | O_CREAT | O_TRUNC);
-					if (cur_cmd->fd_out < 0)
-						return (-1);
-				}
-				else if (cur_token->type == RD_APPEND && cur_token->next->type == WORD)
-				{
-					cur_cmd->fd_out = open(cur_token->next->content, O_WRONLY | O_CREAT | O_APPEND);
-					if (cur_cmd->fd_out < 0)
-						return (-1);
-				}
-				else if (cur_token->type == RD_HEREDOC && cur_token->next->type == WORD)
-				{
-				}
-				cur_token = cur_token->next;
-			}
-			/////////////////////////////////
+			/* redirection */
+			redirection(cur_cmd);
+			arguments_vector(cur_cmd, argv);
 
-			if (cur_cmd->fd_out) // RD_OUT or RD_APPEND 존재 -> pipe보다 redir이 우선!
+			if (cur_cmd->fd_out > 1) // RD_OUT or RD_APPEND 존재 -> pipe보다 redir이 우선!
 			{
 				dup2(cur_cmd->fd_out, STDOUT_FILENO);
 				close(cur_cmd->fd_out);
@@ -76,12 +71,14 @@ void execute(t_sh *sh)
 			dup2(cur_cmd->fd_in, STDIN_FILENO);
 			if (cur_cmd->fd_in != STDIN_FILENO) //not first cmd
 				close(cur_cmd->fd_in);
-			//TODO_2 : argv 만들기 (filename word 구분)
-			char *argv[] = {
-				cur_cmd->cmd->content,
-				cur_cmd->cmd->next->content,
-				NULL
-			};
+
+			// //TODO_2 : argv 만들기 (filename word 구분)
+			// char *argv[] = {
+			// 	cur_cmd->cmd->content,
+			// 	cur_cmd->cmd->next->content,
+			// 	NULL
+			// };
+
 			execve(cur_cmd->cmd->content, argv, NULL); // should pass envp here
 			// exit(1);
 		}
@@ -119,4 +116,5 @@ void execute(t_sh *sh)
 		wait(NULL);
 		cur_cmd = cur_cmd->next;
 	}
+	return (0);
 }
