@@ -1,4 +1,6 @@
 #include "minishell.h"
+#include <readline/readline.h>
+#include <readline/history.h>
 
 int	redirection(t_script *cur_cmd)
 {
@@ -26,7 +28,23 @@ int	redirection(t_script *cur_cmd)
 		}
 		else if (cur_token->type == RD_HEREDOC && cur_token->next->type == FILENAME)
 		{
+			char *line;
+			char *doc;
+			char *delimiter;
 
+			delimiter = "eof";
+			while (1)
+			{
+				line = readline("> ");
+				if (ft_strcmp(line, delimiter) != 0)
+				{
+					doc = ft_strjoin(doc, line);
+					doc = ft_strjoin(doc, "\n");
+				}
+				else
+					break ;
+			}
+			ft_putstr_fd(doc, cur_cmd->fd_in);
 		}
 		cur_token = cur_token->next;
 	}

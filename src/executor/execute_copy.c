@@ -27,7 +27,7 @@ int execute(t_sh *sh)
 	t_script	*cur_cmd;
 	int			pipeline[2];
 	pid_t		pid;
-	char		*argv[10];
+	char		*argv[10]; //배열 크기 어떻게 설정하는게 좋을지...
 	#define READ 0
 	#define WRITE 1
 	
@@ -38,6 +38,7 @@ int execute(t_sh *sh)
 	while (cur_cmd)
 	{
 		//TODO_1 : 일단 여기서 cmdpath_expansion
+
 		/* create pipe */
 		if (cur_cmd->next != NULL) //not last cmd
 			pipe(pipeline);
@@ -48,7 +49,6 @@ int execute(t_sh *sh)
 		/* child process -> WRITE only */
 		if (pid == 0)
 		{
-			/* redirection */
 			redirection(cur_cmd);
 			arguments_vector(cur_cmd, argv);
 
@@ -71,13 +71,6 @@ int execute(t_sh *sh)
 			dup2(cur_cmd->fd_in, STDIN_FILENO);
 			if (cur_cmd->fd_in != STDIN_FILENO) //not first cmd
 				close(cur_cmd->fd_in);
-
-			// //TODO_2 : argv 만들기 (filename word 구분)
-			// char *argv[] = {
-			// 	cur_cmd->cmd->content,
-			// 	cur_cmd->cmd->next->content,
-			// 	NULL
-			// };
 
 			execve(cur_cmd->cmd->content, argv, NULL); // should pass envp here
 			// exit(1);

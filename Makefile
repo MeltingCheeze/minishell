@@ -6,7 +6,7 @@
 #    By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/22 02:33:06 by chaejkim          #+#    #+#              #
-#    Updated: 2022/09/08 09:14:33 by hyko             ###   ########.fr        #
+#    Updated: 2022/09/08 11:37:51 by hyko             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,8 +57,9 @@ SRC = src/main/main.c \
 	  src/utile/ft_error.c \
 	  src/utile/is_file_exist.c \
 	  src/tmp/print.c \
-	  src/executor/execute_copy.c\
+	  src/executor/execute_copy.c \
 	  src/executor/redirection.c
+	  
 #  src/executor/redirection.c
 
 #  src/exec/exec.c \
