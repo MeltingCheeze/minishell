@@ -2,102 +2,109 @@
 #include "libft.h"
 #include <stdio.h> // 나중에 지우기
 
-static void	check_type(t_token *line)
+static void	check_type(t_token *token)
 {
-	t_type	t;
+	t_token *curr;
 
-	t = PIPE;
-	//printf("ttt : %d\n", (int)t);
-	while (line)
+	curr = token;
+	while (curr)
 	{
-		if (ft_strcmp(line->content, "|") == 0)
+		if (ft_strcmp(curr->content, "|") == 0)
 		{
-			line->type = PIPE;
+			curr->type = PIPE;
 		}
-		else  if (ft_strcmp(line->content, "<") == 0)
+		else  if (ft_strcmp(curr->content, "<") == 0)
 		{
-			line->type = RD_IN;
+			curr->type = RD_IN;
 		}
-		else  if (ft_strcmp(line->content, ">") == 0)
+		else  if (ft_strcmp(curr->content, ">") == 0)
 		{
-			line->type = RD_OUT;
+			curr->type = RD_OUT;
 		}
-		else  if (ft_strcmp(line->content, "<<") == 0)
+		else  if (ft_strcmp(curr->content, "<<") == 0)
 		{
-			line->type = RD_HEREDOC;
+			curr->type = RD_HEREDOC;
 		}
-		else  if (ft_strcmp(line->content, ">>") == 0)
+		else  if (ft_strcmp(curr->content, ">>") == 0)
 		{
-			line->type = RD_APPEND;
+			curr->type = RD_APPEND;
 		}
 		else
 		{
-			line->type = WORD;
+			curr->type = WORD;
 		}
-		if (line->next)
-			line = line->next;
+		if (curr->next)
+			curr = curr->next;
 		else
 			break;
 	}
 }
 
-static int	 check_cmd(t_token *line)
+static int	 check_cmd_and_filename(t_token *token)
 {
-	if (line->type == WORD)
-		line->type = CMD;
-	while (line->next) // 이거 세그 폴트때매 일단 수정
+	t_token *curr;
+
+	curr = token;
+	if (curr->type == WORD) //first cmd
+		curr->type = CMD;
+	while (curr->next) // 이거 세그 폴트때매 일단 수정
 	{
-		if (line->type == PIPE && line->next->type == WORD)
-			line->next->type = CMD;
-		line = line->next;
+		if (curr->type == PIPE && curr->next->type == WORD)
+			curr->next->type = CMD;
+		if (curr->type > 3 && curr->next->type == WORD)
+			curr->next->type = FILENAME;
+		curr = curr->next;
 	}
-	if (line->type == PIPE)
+	if (curr->type == PIPE) //pipe로 끝나면...
 		return (-1);
 		//syntax error
 	return (0);
 }
 
-static int	check_gram(t_token *line)
+static int	check_grammar(t_token *token)
 {
-	if (line->type == PIPE) //first token
+	t_token *curr;
+
+	curr = token;
+	if (curr->type == PIPE) //first token
 		return (-1);
-	while (line)
+	while (curr)
 	{
-		if (line->type == CMD && line->next != NULL) //cmd
+		if (curr->type == CMD && curr->next != NULL) //cmd
 		{
-			if (line->next->type == CMD)
+			if (curr->next->type == CMD)
 				return (-1);
 		}
-		else if (line->type == WORD && line->next != NULL) //word
+		else if (curr->type == WORD && curr->next != NULL) //word
 		{
-			if (line->next->type == CMD)
+			if (curr->next->type == CMD)
 				return (-1);
 		}
-		else if (line->type == PIPE && line->next != NULL) //pipe
+		else if (curr->type == PIPE && curr->next != NULL) //pipe
 		{
-			if (line->next->type == WORD)
+			if (curr->next->type == WORD)
 				return (-1);
-			else if (line->next->type == PIPE)
+			else if (curr->next->type == PIPE)
 				return (-1);
 		}
-		else if (line->type >= RD_IN && line->next != NULL) //redir
+		else if (curr->type > 3 && curr->next != NULL) //redir
 		{
-			if (line->next->type != WORD)
+			if (curr->next->type != FILENAME)
 				return (-1);
 		}
-		if (!line->next && (line->type >= RD_IN || line->type == PIPE)) //last token
+		if (!curr->next && (curr->type >= RD_IN || curr->type == PIPE)) //last token
 			return (-1);
-		line = line->next;
+		curr = curr->next;
 	}
 	return (0);
 }
 
-int	lexcial_analyze(t_token *line)
+int	lexcial_analyze(t_token *token)
 {
-	check_type(line);
-	if (check_cmd(line) || check_gram(line))
+	check_type(token);
+	if (check_cmd_and_filename(token) || check_grammar(token))
 	{
-		printf("error\n"); //에러처리 수정필요!!!
+		printf("error -> lexer\n"); //에러처리 수정필요!!!
 		return (-1);
 	}
 	return (0);
