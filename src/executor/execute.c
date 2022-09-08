@@ -1,4 +1,5 @@
 #include "minishell.h"
+#include "executor.h"
 
 extern char** environ;
 
@@ -7,19 +8,23 @@ void execute(t_sh *sh)
 	t_script	*cur_cmd;
 	int			pipeline[2];
 	pid_t		pid;
+	int			rheredoc; // return value of heredoc (SIGINT -> 130)
 	#define READ 0
 	#define WRITE 1
-	
+
 	int stdin_dup = dup(0);
 	int stdout_dup = dup(1);
 
 	cur_cmd = sh->script;
 	while (cur_cmd)
 	{
+		//heredoc check
+		pipe(cur_cmd->herepipe); // 이거 부터가 문제인듯.. 근데 어떻게 해결해야 할지 모르겠다..
+		rheredoc = heredoc(cur_cmd);
+
 		/* create pipe */
 		if (cur_cmd->next != NULL) //not last cmd
 			pipe(pipeline);
-
 		/* fork */
 		pid = fork();
 
@@ -29,7 +34,7 @@ void execute(t_sh *sh)
 			if (cur_cmd->next != NULL)
 			{
 				/* close input pipe -> no use */
-				close(pipeline[READ]);	
+				close(pipeline[READ]);
 
 				/* change output fd */
 				dup2(pipeline[WRITE], STDOUT_FILENO);
@@ -40,12 +45,26 @@ void execute(t_sh *sh)
 			dup2(cur_cmd->fd_in, STDIN_FILENO);
 			if (cur_cmd->fd_in != STDIN_FILENO) //not first cmd
 				close(cur_cmd->fd_in);
-	
-			char *argv[] = {
+			if (rheredoc == 130)
+			{
+				sh->last_exit_value = 130;
+				exit(130);
+			}
+			else if (rheredoc == 0) // heredoc 성공적
+			{
+				dup2(cur_cmd->herepipe[0], cur_cmd->fd_in);
+				close(cur_cmd->herepipe[0]);
+				dup2(cur_cmd->herepipe[1], STDOUT_FILENO);
+				close(cur_cmd->herepipe[1]);
+			}
+			char *argv[] =
+			{
 				cur_cmd->cmd->content,
 				cur_cmd->cmd->next->content,
 				NULL
 			};
+			if (!ft_strcmp(cur_cmd->cmd->next->content, "<<"))
+				argv[1] = 0;
 			execve(cur_cmd->cmd->content, argv, environ); // should pass envp here
 			// exit(1);
 		}

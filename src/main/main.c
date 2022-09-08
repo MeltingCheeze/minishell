@@ -1,12 +1,14 @@
 #include "minishell.h"
 
+int g_is_heredoc;
+
 static int	minishell(t_sh *sh)
 {
 	char				*line;
-	struct sigaction	sa;
 
-	set_sigaction(&sa, shell_sigaction); //sigaction 사용 가능?
+	set_signal();
 	line = NULL;
+	g_is_heredoc = 0;
 	while (42)
 	{
 		line = readcmdline();

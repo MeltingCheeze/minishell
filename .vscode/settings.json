@@ -33,7 +33,9 @@
         "exception": "c",
         "functional": "c",
         "tuple": "c",
-        "stat.h": "c"
+        "stat.h": "c",
+        "wait.h": "c",
+        "executor.h": "c"
     },
     "editor.insertSpaces": false
 }

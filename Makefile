@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+         #
+#    By: chaejkim <chaejkim@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/22 02:33:06 by chaejkim          #+#    #+#              #
-#    Updated: 2022/09/07 02:52:16 by hyko             ###   ########.fr        #
+#    Updated: 2022/09/08 15:19:21 by chaejkim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,8 +39,8 @@ LIB = -Llib/libft -lft -L$(CLUSTER_RL_DIR)/lib -lreadline
 
 SRC = src/main/main.c \
 	  src/main/readcmdline.c \
-	  src/main/set_sigaction.c \
-	  src/main/shell_sigaction.c \
+	  src/main/set_signal.c \
+	  src/main/signal_handler.c \
 	  src/env/env.c \
 	  src/env/is_valid_env_name.c \
 	  src/env/keylen.c \
@@ -57,8 +57,9 @@ SRC = src/main/main.c \
 	  src/utile/ft_error.c \
 	  src/utile/is_file_exist.c \
 	  src/tmp/print.c \
-	  src/executor/execute.c
-#  src/executor/redirection.c
+	  src/executor/execute.c \
+	  src/executor/heredoc.c \
+	  src/executor/redirection.c
 
 #  src/exec/exec.c \
 #  src/iostream/pipe.c \

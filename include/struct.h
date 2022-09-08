@@ -31,6 +31,7 @@ typedef struct s_script
 	t_token			*cmd; /* token devided by pipe */
 	int				fd_in;
 	int				fd_out; //필요X ?
+	int				herepipe[2]; // 이거 pipeline 껄로 쓰고 싶은데 모르겠음 (prev 필요?)
 	struct s_script	*next;
 }				t_script;
 

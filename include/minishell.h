@@ -12,9 +12,8 @@
 # include "env.h"
 
 /* signal */
-void	set_sigaction(struct sigaction *sa_ptr,
-			void (*handler)(int, siginfo_t *, void *));
-void	shell_sigaction(int signo, siginfo_t *info, void *context);
+void	set_signal(void);
+void	signal_handler(int signo);
 
 /* iostream */
 char	*readcmdline(void);
