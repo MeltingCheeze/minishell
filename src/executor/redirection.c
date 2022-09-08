@@ -53,12 +53,14 @@ static int heredoc(int herepipe[2], char *eof)
 	return (rvalue);
 }
 
-int redirection(t_script *script)
+int	redirection(t_script *script)
 {
-	t_token *cur_token;
-	int rvalue;
+	t_token	*cur_token;
+	int		rvalue;
+	int		test;
 
 	rvalue = 0;
+	test = 0;
 	cur_token = script->cmd;
 	while (cur_token && !rvalue)
 	{
@@ -68,9 +70,9 @@ int redirection(t_script *script)
 		// cur_cmd->fd_in = open(cur_token->next->content, O_RDONLY, 0644);
 		else if (cur_token->type == RD_OUT)
 			rvalue = rd_out(cur_token->next->content);
-		else if (cur_token->type == RD_APPEND && cur_token->next->type == FILENAME)
+		else if (cur_token->type == RD_APPEND)
 			rvalue = rd_append(cur_token->next->content);
-		else if (cur_token->type == RD_HEREDOC && cur_token->next->type == FILENAME)
+		else if (cur_token->type == RD_HEREDOC)
 		{
 			pipe(script->herepipe);
 			rvalue = heredoc(script->herepipe, cur_token->next->content);

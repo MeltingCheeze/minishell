@@ -6,7 +6,8 @@ void execute(t_sh *sh)
 	t_script	*cur_cmd;
 	int			pipeline[2];
 	pid_t		pid;
-	//int			rredir; // return value of redir (SIGINT -> 130)
+	char		**argv;
+	int			rredir; // return value of redir (SIGINT -> 130)
 	#define READ 0
 	#define WRITE 1
 
@@ -15,14 +16,15 @@ void execute(t_sh *sh)
 
 	cur_cmd = sh->script;
 	sh->last_exit_value = 0;
+	argv = 0;
 	while (cur_cmd)
 	{
 		/* check_cmdpath (is built_in or not) */
 		// exeve - it will find its path from envp
-		//if (cur_cmd->cmd->type == CMD && check_cmdpath(sh, cur_cmd->cmd))
-		//	sh->last_exit_value = 127;
+		if (cur_cmd->cmd->type == CMD && check_cmdpath(sh, cur_cmd->cmd))
+			sh->last_exit_value = 127;
 
-		//rredir = redirection(cur_cmd);
+		rredir = redirection(cur_cmd);
 
 		/* create pipe */
 		if (cur_cmd->next != NULL) //not last cmd
@@ -43,24 +45,29 @@ void execute(t_sh *sh)
 				dup2(pipeline[WRITE], STDOUT_FILENO);
 				close(pipeline[WRITE]);
 			}
-			//if (rredir)
-			//{
-			//	printf("rredir : %d\n", rredir);
-			//	sh->last_exit_value = rredir;
-			//	exit(rredir);
-			//}
+			if (rredir)
+			{
+				printf("rredir : %d\n", rredir);
+				sh->last_exit_value = rredir;
+				exit(rredir);
+			}
 			/* recv input from prev pipe/file/tty */
 			dup2(cur_cmd->fd_in, STDIN_FILENO);
 			if (cur_cmd->fd_in != STDIN_FILENO) //not first cmd
 				close(cur_cmd->fd_in);
+
 			//TODO_2 : argv 만들기 (filename word 구분)
-			char *argv[] =
-			{
-				cur_cmd->cmd->content,
-				cur_cmd->cmd->next->content,
-				NULL
-			};
-			execve(cur_cmd->cmd->content, argv, NULL); // should pass envp here
+			//argv
+			//char *argv[] =
+			//{
+			//	cur_cmd->cmd->content,
+			//	cur_cmd->cmd->next->content,
+			//	NULL
+			//};
+			argv = make_arguments(cur_cmd);
+			execve(cur_cmd->cmd->content, argv, NULL);
+			free(argv);
+				//find_env_value(sh->env, "PATH")); // should pass envp here
 			// exit(1);
 		}
 		/* parent process -> READ only */

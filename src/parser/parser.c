@@ -52,6 +52,6 @@ int	parser(t_sh *sh, char *line)
 	//printf("after expasion\n");
 	//scriptprint(sh->script);
 	remove_quote(sh->script);
-	scriptprint(sh->script);
+	//scriptprint(sh->script);
 	return (0);
 }

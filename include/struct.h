@@ -32,6 +32,7 @@ typedef struct s_script
 	int				fd_in;
 	int				fd_out; //필요X ?
 	int				herepipe[2]; // 이거 pipeline 껄로 쓰고 싶은데 모르겠음 (prev 필요?)
+	int				argc;
 	struct s_script	*next;
 }				t_script;
 

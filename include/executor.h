@@ -22,6 +22,7 @@ t_bool	is_file_exists(char *file_name);
 int		check_cmdpath(t_sh *sh, t_token *token);
 //int		check_input_file(t_sh *sh, char *cmd, t_token *token);
 
+char	**make_arguments(t_script *script);
 
 
 #endif
