@@ -1,4 +1,4 @@
-#include "expansion.h"
+#include "executor.h"
 
 static void	file_not_found_err(char *cmd, char *filename, int *exit_value)
 {
@@ -10,7 +10,7 @@ static void	file_not_found_err(char *cmd, char *filename, int *exit_value)
 	*exit_value = FILE_NOT_FOUND;
 }
 
-int	input_file_checker(t_sh *sh, char *cmd, t_token *token)
+int	check_input_file(t_sh *sh, char *cmd, t_token *token)
 {
 	if (ft_strrchr(cmd, '/'))
 		cmd = ft_strrchr(cmd, '/') + 1;

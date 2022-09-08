@@ -73,6 +73,10 @@ void eval(char *cmdline)
 			/* Child runs user job */
 			bin_file = ft_strjoin("/bin/", argv[0]);
 			if (execve(bin_file, argv, environ) < 0)
+			// cat << a   ->   "cat", ???, NULL
+
+			// cat < a  (a라는 파일 stdin 으로 하겠다) ->  "/bin/cat" , NULL
+			// cat a                              ->  "/bin/cat" , NULL
 			{
 				printf("%s: Command not found.\n", argv[0]);
 				exit(0);

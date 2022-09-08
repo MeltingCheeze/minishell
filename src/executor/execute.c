@@ -1,14 +1,12 @@
 #include "minishell.h"
 #include "executor.h"
 
-extern char** environ;
-
 void execute(t_sh *sh)
 {
 	t_script	*cur_cmd;
 	int			pipeline[2];
 	pid_t		pid;
-	int			rheredoc; // return value of heredoc (SIGINT -> 130)
+	//int			rredir; // return value of redir (SIGINT -> 130)
 	#define READ 0
 	#define WRITE 1
 
@@ -16,15 +14,20 @@ void execute(t_sh *sh)
 	int stdout_dup = dup(1);
 
 	cur_cmd = sh->script;
+	sh->last_exit_value = 0;
 	while (cur_cmd)
 	{
-		//heredoc check
-		pipe(cur_cmd->herepipe); // 이거 부터가 문제인듯.. 근데 어떻게 해결해야 할지 모르겠다..
-		rheredoc = heredoc(cur_cmd);
+		/* check_cmdpath (is built_in or not) */
+		// exeve - it will find its path from envp
+		//if (cur_cmd->cmd->type == CMD && check_cmdpath(sh, cur_cmd->cmd))
+		//	sh->last_exit_value = 127;
+
+		//rredir = redirection(cur_cmd);
 
 		/* create pipe */
 		if (cur_cmd->next != NULL) //not last cmd
 			pipe(pipeline);
+
 		/* fork */
 		pid = fork();
 
@@ -40,32 +43,24 @@ void execute(t_sh *sh)
 				dup2(pipeline[WRITE], STDOUT_FILENO);
 				close(pipeline[WRITE]);
 			}
-
+			//if (rredir)
+			//{
+			//	printf("rredir : %d\n", rredir);
+			//	sh->last_exit_value = rredir;
+			//	exit(rredir);
+			//}
 			/* recv input from prev pipe/file/tty */
 			dup2(cur_cmd->fd_in, STDIN_FILENO);
 			if (cur_cmd->fd_in != STDIN_FILENO) //not first cmd
 				close(cur_cmd->fd_in);
-			if (rheredoc == 130)
-			{
-				sh->last_exit_value = 130;
-				exit(130);
-			}
-			else if (rheredoc == 0) // heredoc 성공적
-			{
-				dup2(cur_cmd->herepipe[0], cur_cmd->fd_in);
-				close(cur_cmd->herepipe[0]);
-				dup2(cur_cmd->herepipe[1], STDOUT_FILENO);
-				close(cur_cmd->herepipe[1]);
-			}
+			//TODO_2 : argv 만들기 (filename word 구분)
 			char *argv[] =
 			{
 				cur_cmd->cmd->content,
 				cur_cmd->cmd->next->content,
 				NULL
 			};
-			if (!ft_strcmp(cur_cmd->cmd->next->content, "<<"))
-				argv[1] = 0;
-			execve(cur_cmd->cmd->content, argv, environ); // should pass envp here
+			execve(cur_cmd->cmd->content, argv, NULL); // should pass envp here
 			// exit(1);
 		}
 		/* parent process -> READ only */

@@ -1,4 +1,6 @@
-#include "expansion.h"
+#include "executor.h"
+#include <unistd.h>
+#include <libft.h>
 
 static char	**find_paths(t_env *env)
 {
@@ -43,7 +45,7 @@ static void	cmd_not_found_err(char *cmd, int *exit_value)
 	*exit_value = CMD_NOT_FOUND;
 }
 
-int	cmdpath_expansion(t_sh *sh, t_token *token)
+int	check_cmdpath(t_sh *sh, t_token *token)
 {
 	char	**paths;
 	char	*cmd_path;

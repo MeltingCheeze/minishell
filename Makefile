@@ -6,7 +6,7 @@
 #    By: chaejkim <chaejkim@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/22 02:33:06 by chaejkim          #+#    #+#              #
-#    Updated: 2022/09/08 15:19:21 by chaejkim         ###   ########.fr        #
+#    Updated: 2022/09/08 20:00:39 by chaejkim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,8 +49,6 @@ SRC = src/main/main.c \
 	  src/lexer/lexer.c \
 	  src/expansion/expansion.c \
 	  src/expansion/parameter_expansion.c \
-	  src/expansion/cmdpath_expansion.c \
-	  src/expansion/input_file_checker.c \
 	  src/parser/parser.c \
 	  src/parser/tokens_to_cmds.c \
 	  src/parser/remove_quote.c \
@@ -58,7 +56,8 @@ SRC = src/main/main.c \
 	  src/utile/is_file_exist.c \
 	  src/tmp/print.c \
 	  src/executor/execute.c \
-	  src/executor/heredoc.c \
+	  src/executor/check_cmdpath.c \
+	  src/executor/heredoc_execute.c \
 	  src/executor/redirection.c
 
 #  src/exec/exec.c \
