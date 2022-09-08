@@ -1,3 +1,0 @@
-echo hello | grep "h"
-
-cat << a << b << c
