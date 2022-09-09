@@ -1,6 +1,12 @@
 #include "minishell.h"
 #include "executor.h"
 
+int execve_builtin(void)
+{
+	printf("need builtin function\n");
+	exit(1);
+}
+
 void execute(t_sh *sh)
 {
 	t_script	*cur_cmd;
@@ -21,8 +27,6 @@ void execute(t_sh *sh)
 	{
 		/* check_cmdpath (is built_in or not) */
 		// exeve - it will find its path from envp
-		if (cur_cmd->cmd->type == CMD && check_cmdpath(sh, cur_cmd->cmd))
-			sh->last_exit_value = 127;
 
 		rredir = redirection(cur_cmd);
 
@@ -55,19 +59,13 @@ void execute(t_sh *sh)
 			dup2(cur_cmd->fd_in, STDIN_FILENO);
 			if (cur_cmd->fd_in != STDIN_FILENO) //not first cmd
 				close(cur_cmd->fd_in);
-
-			//TODO_2 : argv 만들기 (filename word 구분)
-			//argv
-			//char *argv[] =
-			//{
-			//	cur_cmd->cmd->content,
-			//	cur_cmd->cmd->next->content,
-			//	NULL
-			//};
 			argv = make_arguments(cur_cmd);
-			execve(cur_cmd->cmd->content, argv, NULL);
-			free(argv);
-				//find_env_value(sh->env, "PATH")); // should pass envp here
+			if (cur_cmd->cmd->type == CMD && is_builtins(cur_cmd->cmd->content))
+				execve_builtin();
+			if (cur_cmd->cmd->type == CMD && check_cmdpath(sh, cur_cmd->cmd))
+				sh->last_exit_value = 127;
+			execve(cur_cmd->cmd->content, argv, NULL); // should pass envp here (??)
+			free(argv); // 이거 어디서 해야할지 모르겠음
 			// exit(1);
 		}
 		/* parent process -> READ only */
