@@ -1,13 +1,14 @@
-// TODO : ERR (permission denied, file not found)
-#include <unistd.h>
+#include <string.h>
+#include <errno.h>
 #include "libft.h"
+#define SHELL_NAME "minishell: "
 
-static int	file_not_found_print(char *cmd, char *filename)
+int	open_error(char *fname)
 {
-	ft_putstr_fd(cmd, STDERR_FILENO);
-	ft_putstr_fd(": ", STDERR_FILENO);
-	ft_putstr_fd(filename, STDERR_FILENO);
-	ft_putstr_fd(": ", STDERR_FILENO);
-	ft_putendl_fd("No such file or directory", STDERR_FILENO);
+	ft_putstr_fd(SHELL_NAME, 2);
+	ft_putstr_fd(fname, 2);
+	ft_putstr_fd(": ", 2);
+	ft_putstr_fd(strerror(errno), 2);
+	ft_putchar_fd('\n', 2);
 	return (1);
 }

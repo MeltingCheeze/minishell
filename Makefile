@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: chaejkim <chaejkim@student.42seoul.kr>     +#+  +:+       +#+         #
+#    By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/22 02:33:06 by chaejkim          #+#    #+#              #
-#    Updated: 2022/09/08 21:12:38 by chaejkim         ###   ########.fr        #
+#    Updated: 2022/09/09 17:32:42 by chaejkim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,6 +59,7 @@ SRC = src/main/main.c \
 	  src/executor/check_cmdpath.c \
 	  src/executor/make_arguments.c \
 	  src/executor/heredoc_execute.c \
+	  src/executor/redir_err.c \
 	  src/executor/redirection.c
 
 #  src/exec/exec.c \

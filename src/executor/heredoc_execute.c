@@ -2,14 +2,12 @@
 #include "libft.h"
 #include <stdio.h>
 #include <readline/readline.h>
-//#include "../../include/struct.h"
-//#include "../../lib/libft/libft.h"
 
-int g_is_heredoc;
+int	g_is_heredoc;
 
 static void	write_rl_in_pipe(int herepipe[2], char *eof)
 {
-	char 	*line;
+	char	*line;
 
 	while (1)
 	{
