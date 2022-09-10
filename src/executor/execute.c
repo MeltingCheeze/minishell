@@ -28,7 +28,7 @@ void execute(t_sh *sh)
 		/* check_cmdpath (is built_in or not) */
 		// exeve - it will find its path from envp
 
-		rredir = redirection(cur_cmd);
+		rredir = redirection(sh->env, cur_cmd);
 
 		/* create pipe */
 		if (cur_cmd->next != NULL) //not last cmd

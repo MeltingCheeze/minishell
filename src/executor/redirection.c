@@ -38,13 +38,13 @@ static int	rd_append(char *fname)
 	return (0);
 }
 
-static int	heredoc(char *eof, int herecnt)
+static int	heredoc(t_env *env, char *eof, int herecnt)
 {
 	int	herepipe[2];
 	int	rvalue;
 
 	pipe(herepipe);
-	rvalue = heredoc_execute(herepipe, eof);
+	rvalue = heredoc_execute(env, herepipe, eof);
 	if (rvalue || herecnt)
 		close(herepipe[0]);
 	else
@@ -56,7 +56,7 @@ static int	heredoc(char *eof, int herecnt)
 	return (rvalue);
 }
 
-int	redirection(t_script *script)
+int	redirection(t_env *env, t_script *script)
 {
 	t_token	*cur_token;
 	int		rvalue;
@@ -74,7 +74,7 @@ int	redirection(t_script *script)
 		else if (cur_token->type == RD_APPEND)
 			rvalue = rd_append(cur_token->next->content);
 		else if (cur_token->type == RD_HEREDOC)
-			rvalue = heredoc(cur_token->next->content, --herecnt);
+			rvalue = heredoc(env, cur_token->next->content, --herecnt);
 		cur_token = cur_token->next;
 	}
 	return (rvalue);
