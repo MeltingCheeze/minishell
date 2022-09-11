@@ -37,5 +37,5 @@ void	execute_error(char *cmd)
 		//sh->last_exit_value = 127;
 	}
 	else
-		ft_putendl_fd("Undefined Behavior (???)", STDERR_FILENO); // 이거 나중에 없애기
+		ft_putendl_fd("Undefined Behavior", STDERR_FILENO); // 이거 나중에 없애기
 }

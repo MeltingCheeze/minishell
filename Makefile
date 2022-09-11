@@ -6,7 +6,7 @@
 #    By: chaejkim <chaejkim@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/22 02:33:06 by chaejkim          #+#    #+#              #
-#    Updated: 2022/09/11 20:34:06 by chaejkim         ###   ########.fr        #
+#    Updated: 2022/09/12 05:58:43 by chaejkim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -65,8 +65,7 @@ SRC = src/main/main.c \
 	  src/executor/make_arguments.c \
 	  src/executor/heredoc_execute.c \
 	  src/executor/redir_err.c \
-	  src/executor/redirection.c \
-	  src/builtins/msh_exit.c
+	  src/executor/redirection.c 
 
 #  src/exec/exec.c \
 #  src/iostream/pipe.c \

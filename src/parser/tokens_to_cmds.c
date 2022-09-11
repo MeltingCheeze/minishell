@@ -11,8 +11,6 @@ static t_script	*scriptnew(t_token *cmd, int argc, int herecnt)
 	new = (t_script *)malloc(sizeof(t_script));
 	new->cmd = cmd;
 	new->next = 0;
-	new->fd_in = 0;
-	new->fd_out = 1;
 	new->argc = argc;
 	new->herecnt = herecnt;
 	return (new);

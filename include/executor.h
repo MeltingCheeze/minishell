@@ -13,7 +13,7 @@
 # define CMD_NOT_FOUND_MSG "command not found"
 # define FILE_NOT_FOUND_MSG "No such file or directory"
 
-int	redirection(t_env *env, t_script *script);
+int	redirection(t_env *env, t_script *script, int *infile);
 int	open_error(char *fname);
 int	heredoc_execute(t_env *env, int herepipe[2], char *eof);
 

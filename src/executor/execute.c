@@ -11,6 +11,7 @@ void execute(t_sh *sh)
 {
 	t_script	*cur_cmd;
 	int			pipeline[2];
+	int			infile;
 	pid_t		pid;
 	char		**argv;
 	int			rredir; // return value of redir (SIGINT -> 130)
@@ -23,13 +24,9 @@ void execute(t_sh *sh)
 	cur_cmd = sh->script;
 	sh->last_exit_value = 0;
 	argv = 0;
+	infile = STDIN_FILENO;
 	while (cur_cmd)
 	{
-		/* check_cmdpath (is built_in or not) */
-		// exeve - it will find its path from envp
-
-		rredir = redirection(sh->env_info.head, cur_cmd);
-
 		/* create pipe */
 		if (cur_cmd->next != NULL) //not last cmd
 			pipe(pipeline);
@@ -44,26 +41,29 @@ void execute(t_sh *sh)
 			{
 				/* close input pipe -> no use */
 				close(pipeline[READ]);
-
+			}
+			rredir = redirection(sh->env_info.head, cur_cmd, &infile);
+			if (cur_cmd->next != NULL)
+			{
 				/* change output fd */
 				dup2(pipeline[WRITE], STDOUT_FILENO);
 				close(pipeline[WRITE]);
 			}
 			/* recv input from prev pipe/file/tty */
-			dup2(cur_cmd->fd_in, STDIN_FILENO);
-			if (cur_cmd->fd_in != STDIN_FILENO) //not first cmd
-				close(cur_cmd->fd_in);
+			dup2(infile, STDIN_FILENO);
+			if (infile != STDIN_FILENO) //not first cmd
+				close(infile);
 			if (rredir)
 			{
-				printf("rredir : %d\n", rredir);
+				//printf("rredir : %d\n", rredir);
 				sh->last_exit_value = rredir;
 				exit(EXIT_FAILURE);
 			}
 			else if (cur_cmd->cmd->type != CMD)
 				exit(EXIT_SUCCESS);
 			argv = make_arguments(cur_cmd);
-			if (is_builtins(cur_cmd->cmd->content))
-				execve_builtin();
+			//if (is_builtins(cur_cmd->cmd->content))
+			//	execve_builtin();
 			cmd_to_path(sh, cur_cmd->cmd);
 			if (execve(cur_cmd->cmd->content, argv, sh->env_info.envp) < 0)
 			{
@@ -80,9 +80,10 @@ void execute(t_sh *sh)
 				close(pipeline[WRITE]);
 
 				/* change input fd */
-				dup2(pipeline[READ], STDIN_FILENO);
-				if (cur_cmd->fd_in != STDIN_FILENO) //not first cmd
-					close(cur_cmd->fd_in);
+				//dup2(pipeline[READ], STDIN_FILENO); // redirection 도로 되돌림
+				if (infile != STDIN_FILENO) //not first cmd
+					close(infile);
+				infile = pipeline[0];
 			}
 			else //표준입출력 정상복구?
 			{
@@ -95,8 +96,6 @@ void execute(t_sh *sh)
 			}
 		}
 		cur_cmd = cur_cmd->next;
-		if (cur_cmd)
-			cur_cmd->fd_in = pipeline[WRITE]; //next cmd fd_in = current cmd fd_out
 	}
 
 	cur_cmd = sh->script;

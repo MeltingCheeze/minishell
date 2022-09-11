@@ -28,10 +28,12 @@ static char	*expand_line(t_env *env, char *line)
 	return (result);
 }
 
-static void	write_rl_in_pipe(t_env *env, int herepipe[2], char *eof)
+
+int	heredoc_execute(t_env *env, int herepipe[2], char *eof)
 {
 	char	*line;
 
+	g_is_heredoc = 1;
 	while (1)
 	{
 		line = readline(">");
@@ -50,21 +52,5 @@ static void	write_rl_in_pipe(t_env *env, int herepipe[2], char *eof)
 		write(herepipe[1], "\n", 1);
 		free(line);
 	}
-}
-
-int	heredoc_execute(t_env *env, int herepipe[2], char *eof)
-{
-	int	pid;
-	int	rvalue;
-
-	rvalue = 0;
-	pid = fork();
-	if (!pid)
-	{
-		g_is_heredoc = 1;
-		write_rl_in_pipe(env, herepipe, eof);
-		exit(0);
-	}
-	wait(&rvalue);
-	return (rvalue);
+	return (0);
 }
