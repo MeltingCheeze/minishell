@@ -64,7 +64,7 @@ void	parameter_expansion(t_sh *sh, t_token *token)
 		else if (has == *cur)
 			has = 0;
 		else if (has != '\'' && *cur == '$' && is_valid_env_name(*(cur + 1)))
-			result = do_expand(sh->env, result, &start, &cur);
+			result = do_expand(sh->env_info.head, result, &start, &cur);
 		cur++;
 	}
 	if (start)

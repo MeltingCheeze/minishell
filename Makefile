@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+         #
+#    By: chaejkim <chaejkim@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/22 02:33:06 by chaejkim          #+#    #+#              #
-#    Updated: 2022/09/09 18:19:59 by chaejkim         ###   ########.fr        #
+#    Updated: 2022/09/11 17:36:58 by chaejkim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,6 +42,8 @@ SRC = src/main/main.c \
 	  src/main/set_signal.c \
 	  src/main/signal_handler.c \
 	  src/env/env.c \
+	  src/env/make_envp.c \
+	  src/env/find_env_value.c \
 	  src/env/is_valid_env_name.c \
 	  src/env/keylen.c \
 	  src/tokenizer/token.c \
@@ -61,7 +63,8 @@ SRC = src/main/main.c \
 	  src/executor/make_arguments.c \
 	  src/executor/heredoc_execute.c \
 	  src/executor/redir_err.c \
-	  src/executor/redirection.c
+	  src/executor/redirection.c \
+	  src/builtins/msh_exit.c
 
 #  src/exec/exec.c \
 #  src/iostream/pipe.c \

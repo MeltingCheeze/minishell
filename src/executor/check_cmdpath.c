@@ -50,7 +50,7 @@ int	check_cmdpath(t_sh *sh, t_token *token)
 	char	**paths;
 	char	*cmd_path;
 
-	paths = find_paths(sh->env);
+	paths = find_paths(sh->env_info.head);
 	cmd_path = match_path(paths, token->content, ft_strlen(token->content));
 	ft_free_pptr((void ***)&paths);
 	if (!cmd_path)

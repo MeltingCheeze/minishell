@@ -28,7 +28,7 @@ void execute(t_sh *sh)
 		/* check_cmdpath (is built_in or not) */
 		// exeve - it will find its path from envp
 
-		rredir = redirection(sh->env, cur_cmd);
+		rredir = redirection(sh->env_info.head, cur_cmd);
 
 		/* create pipe */
 		if (cur_cmd->next != NULL) //not last cmd
@@ -60,12 +60,11 @@ void execute(t_sh *sh)
 			if (cur_cmd->fd_in != STDIN_FILENO) //not first cmd
 				close(cur_cmd->fd_in);
 			argv = make_arguments(cur_cmd);
-			if (cur_cmd->cmd->type == CMD && is_builtins(cur_cmd->cmd->content))
-				execve_builtin();
+			//if (cur_cmd->cmd->type == CMD && is_builtins(cur_cmd->cmd->content))
+			//	execve_builtin();
 			if (cur_cmd->cmd->type == CMD && check_cmdpath(sh, cur_cmd->cmd))
 				sh->last_exit_value = 127;
-			execve(cur_cmd->cmd->content, argv, NULL); // should pass envp here (??)
-			free(argv); // 이거 어디서 해야할지 모르겠음
+			execve(cur_cmd->cmd->content, argv, sh->env_info.envp);
 			// exit(1);
 		}
 		/* parent process -> READ only */

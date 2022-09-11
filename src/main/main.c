@@ -27,7 +27,7 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
-	env_init(&sh.env, envp);
+	env_init(&sh.env_info, envp);
 	minishell(&sh);
-	env_terminate(&sh.env);
+	env_terminate(&sh.env_info.head);
 }

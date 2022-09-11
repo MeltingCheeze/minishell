@@ -1,6 +1,15 @@
 #include "struct.h"
 #include <stdio.h>
 
+void	wordsprint(char	**words)
+{
+	while (*words)
+	{
+		printf("\033[0;33m%s\033[0m\n", *words);
+		words++;
+	}
+}
+
 void	envprint(t_env *env)
 {
 	t_env	*cur;
