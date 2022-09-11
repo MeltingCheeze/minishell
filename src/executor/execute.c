@@ -49,23 +49,27 @@ void execute(t_sh *sh)
 				dup2(pipeline[WRITE], STDOUT_FILENO);
 				close(pipeline[WRITE]);
 			}
-			if (rredir)
-			{
-				printf("rredir : %d\n", rredir);
-				sh->last_exit_value = rredir;
-				exit(rredir);
-			}
 			/* recv input from prev pipe/file/tty */
 			dup2(cur_cmd->fd_in, STDIN_FILENO);
 			if (cur_cmd->fd_in != STDIN_FILENO) //not first cmd
 				close(cur_cmd->fd_in);
+			if (rredir)
+			{
+				printf("rredir : %d\n", rredir);
+				sh->last_exit_value = rredir;
+				exit(EXIT_FAILURE);
+			}
+			else if (cur_cmd->cmd->type != CMD)
+				exit(EXIT_SUCCESS);
 			argv = make_arguments(cur_cmd);
-			//if (cur_cmd->cmd->type == CMD && is_builtins(cur_cmd->cmd->content))
-			//	execve_builtin();
-			if (cur_cmd->cmd->type == CMD && check_cmdpath(sh, cur_cmd->cmd))
-				sh->last_exit_value = 127;
-			execve(cur_cmd->cmd->content, argv, sh->env_info.envp);
-			// exit(1);
+			if (is_builtins(cur_cmd->cmd->content))
+				execve_builtin();
+			cmd_to_path(sh, cur_cmd->cmd);
+			if (execve(cur_cmd->cmd->content, argv, sh->env_info.envp) < 0)
+			{
+				execute_error(argv[0]);
+				exit(EXIT_FAILURE);
+			}
 		}
 		/* parent process -> READ only */
 		else if (pid > 0)

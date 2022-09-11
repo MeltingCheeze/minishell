@@ -6,7 +6,7 @@
 #    By: chaejkim <chaejkim@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/22 02:33:06 by chaejkim          #+#    #+#              #
-#    Updated: 2022/09/11 17:36:58 by chaejkim         ###   ########.fr        #
+#    Updated: 2022/09/11 20:34:06 by chaejkim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,8 +58,10 @@ SRC = src/main/main.c \
 	  src/utile/is_file_exist.c \
 	  src/tmp/print.c \
 	  src/executor/execute.c \
+	  src/executor/execute_err.c \
 	  src/executor/is_builtins.c \
-	  src/executor/check_cmdpath.c \
+	  src/executor/is_path.c \
+	  src/executor/cmd_to_path.c \
 	  src/executor/make_arguments.c \
 	  src/executor/heredoc_execute.c \
 	  src/executor/redir_err.c \
