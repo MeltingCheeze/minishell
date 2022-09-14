@@ -1,11 +1,13 @@
 #ifndef STRUCT_H
 # define STRUCT_H
 
+# include <sys/types.h>
+
 typedef enum e_bool
 {
 	FALSE,
 	TRUE
-}			  t_bool;
+}			t_bool;
 
 typedef enum e_type
 {
@@ -22,7 +24,7 @@ typedef enum e_type
 typedef struct s_token
 {
 	char			*content;
-	t_type 			type;
+	t_type			type;
 	struct s_token	*next;
 }				t_token;
 
@@ -43,12 +45,18 @@ typedef struct s_env
 	struct s_env	*next;
 }				t_env;
 
+typedef struct s_env_info
+{
+	t_env	*head;
+	size_t	size;
+	char	**envp;
+}				t_env_info;
+
 typedef struct s_sh
 {
 	t_script	*script;
-	t_env		*env;
+	t_env_info	env_info;
 	int			last_exit_value;
 }				t_sh;
 
 #endif
-
