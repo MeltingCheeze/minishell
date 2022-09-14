@@ -85,9 +85,9 @@ int	heredoc_read_line(t_sh *sh)
 		if (doc != 0)
 			free(doc);
 		cur_token = cur_cmd->head;
-
 		while (cur_cmd->herecnt > 0)
 		{
+			printf("herecnt : %d\n", cur_cmd->herecnt);
 			doc = 0;
 			while (cur_token) //find heredoc
 			{
@@ -115,10 +115,13 @@ int	heredoc_read_line(t_sh *sh)
 		}
 		cur_cmd = cur_cmd->next;
 	}
-	doc = expand_line(sh->env_info.head, doc);
-	fd = open("tmp", O_RDWR | O_CREAT | O_TRUNC, 0644);
-	ft_putstr_fd(doc, fd);
-	free(doc);
-	close(fd);
+	if (doc)
+	{
+		doc = expand_line(sh->env_info.head, doc);
+		fd = open("tmp", O_RDWR | O_CREAT | O_TRUNC, 0644);
+		ft_putstr_fd(doc, fd);
+		free(doc);
+		close(fd);
+	}
 	return (0);
 }
