@@ -26,6 +26,15 @@ int	arguments_vector(t_script *cur_cmd, char **argv)
 		cur_token = cur_token->next;
 	}
 	argv[i] = NULL;
+
+
+	i = 0;
+	while (argv[i])
+	{
+		printf("%d: %s\n", i, argv[i]);
+		i++;
+	}
+
 	return (0);
 }
 
@@ -34,8 +43,8 @@ int execute(t_sh *sh)
 	t_script	*cur_cmd;
 	int			pipeline[2];
 	pid_t		pid;
-	char		**argv; // 이거 수정됨
-	// char		*argv[10]; //배열 크기 어떻게 설정하는게 좋을지...
+	// char		**argv; // 이거 수정됨
+	char		*argv[10]; //배열 크기 어떻게 설정하는게 좋을지...
 	#define READ 0
 	#define WRITE 1
 	
@@ -44,7 +53,7 @@ int execute(t_sh *sh)
 
 	cur_cmd = sh->script;
 	sh->last_exit_value = 0;
-	argv = 0;
+	// argv = 0;
 	while (cur_cmd)
 	{
 		//TODO_1 : 일단 여기서 cmdpath_expansion
@@ -60,7 +69,7 @@ int execute(t_sh *sh)
 		if (pid == 0)
 		{
 			redirection(cur_cmd);
-			// arguments_vector(cur_cmd, argv);
+			arguments_vector(cur_cmd, argv);
 
 			if (cur_cmd->fd_out > 1) // RD_OUT or RD_APPEND 존재 -> pipe보다 redir이 우선!
 			{
@@ -76,18 +85,18 @@ int execute(t_sh *sh)
 				dup2(pipeline[WRITE], STDOUT_FILENO);
 				close(pipeline[WRITE]);
 			}
-
+			
 			/* recv input from prev pipe/file/tty */
 			dup2(cur_cmd->fd_in, STDIN_FILENO);
 			if (cur_cmd->fd_in != STDIN_FILENO) //not first cmd
 				close(cur_cmd->fd_in);
-			if (cur_cmd->cmd->type != CMD)
-				exit(EXIT_SUCCESS);
-			argv = make_arguments(cur_cmd);
-			if (is_builtins(cur_cmd->cmd->content))
-				execve_builtin();
-			cmd_to_path(sh, cur_cmd->cmd);
-			if (execve(cur_cmd->cmd->content, argv, sh->env_info.envp) < 0)
+
+			// argv = make_arguments(cur_cmd);
+			// if (is_builtins(cur_cmd->cmd->content))
+			// 	execve_builtin();
+			cmd = cmd_to_path(sh, cur_cmd->cmd); //수정해줘
+			while ()
+			if (execve(cmd, argv, sh->env_info.envp) < 0)
 			{
 				execute_error(argv[0]);
 				exit(EXIT_FAILURE);

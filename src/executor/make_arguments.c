@@ -33,5 +33,6 @@ char	**make_arguments(t_script *script)
 		token = token->next;
 	}
 	result[i] = 0;
+	argvprint(result);
 	return (result);
 }

@@ -40,26 +40,69 @@ static void	check_type(t_token *token)
 	}
 }
 
-static int	 check_cmd_and_filename(t_token *token)
+static int	check_filename(t_token *token)
 {
-	t_token *curr;
+	t_token	*curr;
 
 	curr = token;
-	if (curr->type == WORD) //first cmd
-		curr->type = CMD;
-	while (curr->next) // 이거 세그 폴트때매 일단 수정
+	while (curr)
 	{
-		if (curr->type == PIPE && curr->next->type == WORD)
-			curr->next->type = CMD;
 		if (curr->type > 3 && curr->next->type == WORD)
 			curr->next->type = FILENAME;
 		curr = curr->next;
 	}
-	if (curr->type == PIPE) //pipe로 끝나면...
-		return (-1);
-		//syntax error
 	return (0);
 }
+
+static int	check_cmd(t_token *token)
+{
+	t_token	*curr;
+
+	curr = token;
+
+	while (curr->type != WORD) //first cmd
+	{
+		curr = curr->next;
+	}
+	curr->type = CMD;
+
+	while (curr)
+	{
+		if (curr->type == PIPE)
+		{
+			while (curr->type != WORD)
+			{
+				curr = curr->next;
+			}
+			curr->type = CMD;
+		}
+		curr = curr->next;
+	}
+	return (0);
+}
+
+// static int	 check_cmd_and_filename(t_token *token)
+// {
+// 	t_token *curr;
+
+// 	curr = token;
+// 	if (curr->type == WORD) //first cmd
+// 		curr->type = CMD;
+// 	else if (curr->next && curr->next->next && curr->type > PIPE && curr->next->type == WORD ) //first cmd
+// 		curr->next->next->type = CMD;
+// 	while (curr->next) // 이거 세그 폴트때매 일단 수정
+// 	{
+// 		if (curr->type == PIPE && curr->next->type == WORD)
+// 			curr->next->type = CMD;
+// 		if (curr->type > 3 && curr->next->type == WORD)
+// 			curr->next->type = FILENAME;
+// 		curr = curr->next;
+// 	}
+// 	if (curr->type == PIPE) //pipe로 끝나면...
+// 		return (-1);
+// 		//syntax error
+// 	return (0);
+// }
 
 static int	check_grammar(t_token *token)
 {
@@ -99,13 +142,30 @@ static int	check_grammar(t_token *token)
 	return (0);
 }
 
+static void	print_type(t_token *token)
+{
+	t_token *curr;
+
+	curr = token;
+	while (curr)
+	{
+		printf("%s : %u\n", curr->content, curr->type);
+		curr = curr->next;
+	}
+}
+
 int	lexcial_analyze(t_token *token)
 {
 	check_type(token);
-	if (check_cmd_and_filename(token) || check_grammar(token))
+	if (check_filename(token) || check_cmd(token) || check_grammar(token))
 	{
 		printf("error -> lexer\n"); //에러처리 수정필요!!!
 		return (-1);
 	}
+
+	print_type(token);
+
 	return (0);
 }
+
+// 리다이렉션 + filename 세트로 처리하고, 처음 나오는 word를 cmd로
