@@ -6,7 +6,7 @@
 #    By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/22 02:33:06 by chaejkim          #+#    #+#              #
-#    Updated: 2022/09/15 00:24:05 by chaejkim         ###   ########.fr        #
+#    Updated: 2022/09/15 04:08:38 by chaejkim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,11 +64,11 @@ SRC = src/main/main.c \
 	  src/executor/is_path.c \
 	  src/executor/cmd_to_path.c \
 	  src/executor/make_arguments.c \
-	  src/executor/heredoc_execute.c \
 	  src/executor/redir_err.c \
 	  src/executor/redirection.c \
 	  src/builtins/builtin_env.c \
-	  src/builtins/builtin_export.c
+	  src/builtins/builtin_export.c \
+	  src/executor/heredoc_execute.c
 
 #  src/exec/exec.c \
 #  src/iostream/pipe.c \

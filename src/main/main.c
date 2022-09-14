@@ -1,4 +1,5 @@
 #include "minishell.h"
+#include "executor.h"
 
 int g_is_heredoc;
 
@@ -16,6 +17,8 @@ static int	minishell(t_sh *sh)
 			continue ;
 		if (parser(sh, line))
 			continue ;
+		/* heredoc read line */
+		heredoc_read_line(sh->script);
 		execute(sh);
 		free(line);
 	}

@@ -126,6 +126,10 @@ int execute(t_sh *sh)
 	cur_cmd = sh->script;
 	sh->last_exit_value = 0;
 	argv = 0;
+
+
+
+
 	if (cur_cmd->next == NULL) // 이거 파이프 없이, 명령어 한번 실행할때 builtin 실행 (builtin 은 exit 없이, return만 해요!)
 	{
 		builtin = is_builtins(cur_cmd->head);

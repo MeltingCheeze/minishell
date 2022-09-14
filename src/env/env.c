@@ -49,6 +49,8 @@ t_env	*envnew(char *s)
 	if (delim == 0)
 		return (NULL);
 	key = ft_substr(s, 0, delim - s);
+	while (ft_strchr(" \n\t", *(delim + 1)))
+		delim++;
 	value = ft_strdup(delim + 1);
 	new = (t_env *)malloc(sizeof(t_env));
 	// if (!new)
