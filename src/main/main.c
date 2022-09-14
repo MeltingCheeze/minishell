@@ -18,9 +18,10 @@ static int	minishell(t_sh *sh)
 		if (parser(sh, line))
 			continue ;
 		/* heredoc read line */
-		heredoc_read_line(sh->script);
+		heredoc_read_line(sh);
 		execute(sh);
 		free(line);
+		unlink("tmp");
 	}
 }
 
