@@ -47,6 +47,69 @@ int	arguments_vector(t_script *cur_cmd, char **argv)
 	return (0);
 }
 
+void	child_process(t_sh *sh, t_script *cur_cmd, int *pipeline)
+{
+	char		**argv; // 이거 수정됨
+	char		*cmd;
+
+	redirection(cur_cmd);
+	// arguments_vector(cur_cmd, argv);
+
+	if (cur_cmd->fd_out > 1) // RD_OUT or RD_APPEND 존재 -> pipe보다 redir이 우선!
+	{
+		dup2(cur_cmd->fd_out, STDOUT_FILENO);
+		close(cur_cmd->fd_out);
+	}
+	else if (cur_cmd->next != NULL) // redir X, pipe O
+	{
+		/* close input pipe -> no use */
+		close(pipeline[READ]);	
+
+		/* change output fd */
+		dup2(pipeline[WRITE], STDOUT_FILENO);
+		close(pipeline[WRITE]);
+	}
+	
+	/* recv input from prev pipe/file/tty */
+	dup2(cur_cmd->fd_in, STDIN_FILENO);
+	if (cur_cmd->fd_in != STDIN_FILENO) //not first cmd
+		close(cur_cmd->fd_in);
+
+	argv = make_arguments(cur_cmd);
+	// builtin = is_builtins(cur_cmd->head);
+	// if (builtin)
+	// 	exit(execve_builtin(argv, sh, builtin));
+	cmd = cmd_to_path(sh, cur_cmd->head); //수정해줘
+	if (execve(cmd, argv, sh->env_info.envp) < 0)
+	{
+		// execute_error(argv[0]);
+		exit(EXIT_FAILURE);
+	}
+}
+
+void	parent_process(t_script *cur_cmd, int *pipeline, int *std_dup)
+{
+	if (cur_cmd->next != NULL)
+	{
+		/* close output pipe -> no use */
+		close(pipeline[WRITE]);
+
+		// /* change input fd */
+		dup2(pipeline[READ], STDIN_FILENO);
+		if (cur_cmd->fd_in != STDIN_FILENO) //not first cmd
+			close(cur_cmd->fd_in);
+	}
+	else //표준입출력 원상복구?
+	{
+		close(pipeline[0]);
+		close(pipeline[1]);
+		dup2(std_dup[0], STDIN_FILENO);
+		dup2(std_dup[1], STDOUT_FILENO);
+		close(std_dup[0]);
+		close(std_dup[1]);
+	}
+}
+
 int execute(t_sh *sh)
 {
 	t_script	*cur_cmd;
@@ -55,17 +118,15 @@ int execute(t_sh *sh)
 	t_builtin	builtin;
 	char		**argv; // 이거 수정됨
 	// char		*argv[10]; //배열 크기 어떻게 설정하는게 좋을지...
-	#define READ 0
-	#define WRITE 1
-	char		*cmd;
+	int 		std_dup[2];
 	
-	int stdin_dup = dup(0);
-	int stdout_dup = dup(1);
+	std_dup[0] = dup(0);
+	std_dup[1] = dup(1);
 
 	cur_cmd = sh->script;
 	sh->last_exit_value = 0;
 	argv = 0;
-	if (cur_cmd->next == NULL)
+	if (cur_cmd->next == NULL) // 이거 파이프 없이, 명령어 한번 실행할때 builtin 실행 (builtin 은 exit 없이, return만 해요!)
 	{
 		builtin = is_builtins(cur_cmd->head);
 		if (builtin)
@@ -88,62 +149,12 @@ int execute(t_sh *sh)
 		/* child process -> WRITE only */
 		if (pid == 0)
 		{
-			redirection(cur_cmd);
-			// arguments_vector(cur_cmd, argv);
-
-			if (cur_cmd->fd_out > 1) // RD_OUT or RD_APPEND 존재 -> pipe보다 redir이 우선!
-			{
-				dup2(cur_cmd->fd_out, STDOUT_FILENO);
-				close(cur_cmd->fd_out);
-			}
-			else if (cur_cmd->next != NULL) // redir X, pipe O
-			{
-				/* close input pipe -> no use */
-				close(pipeline[READ]);	
-
-				/* change output fd */
-				dup2(pipeline[WRITE], STDOUT_FILENO);
-				close(pipeline[WRITE]);
-			}
-			
-			/* recv input from prev pipe/file/tty */
-			dup2(cur_cmd->fd_in, STDIN_FILENO);
-			if (cur_cmd->fd_in != STDIN_FILENO) //not first cmd
-				close(cur_cmd->fd_in);
-
-			argv = make_arguments(cur_cmd);
-			// builtin = is_builtins(cur_cmd->head);
-			// if (builtin)
-			// 	exit(execve_builtin(argv, sh, builtin));
-			cmd = cmd_to_path(sh, cur_cmd->head); //수정해줘
-			if (execve(cmd, argv, sh->env_info.envp) < 0)
-			{
-				// execute_error(argv[0]);
-				exit(EXIT_FAILURE);
-			}
+			child_process(sh, cur_cmd, pipeline);
 		}
 		/* parent process -> READ only */
 		else if (pid > 0)
 		{
-			if (cur_cmd->next != NULL)
-			{
-				/* close output pipe -> no use */
-				close(pipeline[WRITE]);
-
-				// /* change input fd */
-				dup2(pipeline[READ], STDIN_FILENO);
-				if (cur_cmd->fd_in != STDIN_FILENO) //not first cmd
-					close(cur_cmd->fd_in);
-			}
-			else //표준입출력 원상복구?
-			{
-				close(pipeline[0]);
-				close(pipeline[1]);
-				dup2(stdin_dup, STDIN_FILENO);
-				dup2(stdout_dup, STDOUT_FILENO);
-				close(stdin_dup);
-				close(stdout_dup);
-			}
+			parent_process(cur_cmd, pipeline, std_dup);
 		}
 		cur_cmd = cur_cmd->next;
 		if (cur_cmd)

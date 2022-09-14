@@ -38,7 +38,8 @@
         "executor.h": "c",
         "string.h": "c",
         "stdio.h": "c",
-        "errno.h": "c"
+        "errno.h": "c",
+        "builtins.h": "c"
     },
     "editor.insertSpaces": false
 }

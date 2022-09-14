@@ -37,8 +37,9 @@ int	builtin_export(char **argv, t_env_info *env_info)
 {
 	t_env	*new;
 
-	while (++argv)
+	while (*(++argv))
 	{
+		ft_putendl_fd(*argv, 2);
 		if (ft_strchr(*argv, '='))
 		{
 			if (check_env_name(*argv))
@@ -49,7 +50,7 @@ int	builtin_export(char **argv, t_env_info *env_info)
 		}
 	}
 	ft_free_pptr((void ***)env_info->envp);
-	// ft_free_pptr((void ***)argv);
+	ft_free_pptr((void ***)argv);
 	env_info->envp = make_envp(env_info->head, env_info->size);
 	return (0);
 }

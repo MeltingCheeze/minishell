@@ -12,6 +12,8 @@
 # define CMD_NOT_FOUND 127
 # define CMD_NOT_FOUND_MSG "command not found"
 # define FILE_NOT_FOUND_MSG "No such file or directory"
+# define READ 0
+# define WRITE 1
 
 int	redirection(t_script *cur_cmd);
 // int	redirection(t_env *env, t_script *script);

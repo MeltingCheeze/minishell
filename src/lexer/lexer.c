@@ -47,7 +47,7 @@ static int	check_filename(t_token *token)
 	curr = token;
 	while (curr)
 	{
-		if (curr->type > 3 && curr->next->type == WORD)
+		if (curr->type > 3 && curr->next && curr->next->type == WORD)
 			curr->next->type = FILENAME;
 		curr = curr->next;
 	}
@@ -85,29 +85,6 @@ static int	check_cmd(t_token *token)
 	}
 	return (0);
 }
-
-// static int	 check_cmd_and_filename(t_token *token)
-// {
-// 	t_token *curr;
-
-// 	curr = token;
-// 	if (curr->type == WORD) //first cmd
-// 		curr->type = CMD;
-// 	else if (curr->next && curr->next->next && curr->type > PIPE && curr->next->type == WORD ) //first cmd
-// 		curr->next->next->type = CMD;
-// 	while (curr->next) // 이거 세그 폴트때매 일단 수정
-// 	{
-// 		if (curr->type == PIPE && curr->next->type == WORD)
-// 			curr->next->type = CMD;
-// 		if (curr->type > 3 && curr->next->type == WORD)
-// 			curr->next->type = FILENAME;
-// 		curr = curr->next;
-// 	}
-// 	if (curr->type == PIPE) //pipe로 끝나면...
-// 		return (-1);
-// 		//syntax error
-// 	return (0);
-// }
 
 static int	check_grammar(t_token *token)
 {
