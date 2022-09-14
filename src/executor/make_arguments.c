@@ -24,7 +24,7 @@ char	**make_arguments(t_script *script)
 	result = (char **)malloc(sizeof(char *) * (script->argc + 1));
 	//if (!result) error
 	i = 0;
-	token = script->cmd;
+	token = script->head;
 	while ((i < script->argc) && (token))
 	{
 		while (token && (token->type > WORD))
@@ -33,6 +33,6 @@ char	**make_arguments(t_script *script)
 		token = token->next;
 	}
 	result[i] = 0;
-	argvprint(result);
+	// argvprint(result);
 	return (result);
 }

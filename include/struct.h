@@ -9,6 +9,18 @@ typedef enum e_bool
 	TRUE
 }			t_bool;
 
+typedef enum e_builtin
+{
+	NONE,
+	ECHO,
+	CD,
+	PWD,
+	EXPORT,
+	UNSET,
+	ENV,
+	EXIT
+}				t_builtin;
+
 typedef enum e_type
 {
 	CMD,
@@ -30,7 +42,7 @@ typedef struct s_token
 
 typedef struct s_script
 {
-	t_token			*cmd; /* token devided by pipe */
+	t_token			*head; /* token devided by pipe */
 	int				fd_in;
 	int				fd_out; //필요X ?
 	int				herecnt; // 마지막 heredoc 아니면 herepipe[0] 닫아버리기

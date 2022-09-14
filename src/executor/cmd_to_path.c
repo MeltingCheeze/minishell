@@ -36,19 +36,24 @@ static char	*match_path(char **paths, char *cmd, size_t cmd_len)
 	return (NULL);
 }
 
-void	cmd_to_path(t_sh *sh, t_token *token)
+char	*cmd_to_path(t_sh *sh, t_token *token)
 {
 	char	**paths;
 	char	*cmd_path;
 
+	while (token && (token->type != CMD))
+		token = token->next;
+	if (!token)
+		return (NULL);
 	cmd_path = token->content;
 	if (is_path(cmd_path) || !ft_strcmp(cmd_path, "."))
-		return ;
+		return (token->content);
 	paths = find_paths(sh->env_info.head);
 	cmd_path = match_path(paths, token->content, ft_strlen(token->content));
 	ft_free_pptr((void ***)&paths);
 	if (!cmd_path)
-		return ;
-	free(token->content);
-	token->content = cmd_path;
+		return (token->content);
+	free(token->content); // 이거 
+	token->content = cmd_path; // 랑 이거 변경해야하나 말아도 되나 고민중
+	return (cmd_path);
 }

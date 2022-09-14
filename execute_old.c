@@ -59,13 +59,13 @@ void execute(t_sh *sh)
 				sh->last_exit_value = rredir;
 				exit(EXIT_FAILURE);
 			}
-			else if (cur_cmd->cmd->type != CMD)
+			else if (cur_cmd->head->type != CMD)
 				exit(EXIT_SUCCESS);
 			argv = make_arguments(cur_cmd);
-			if (is_builtins(cur_cmd->cmd->content))
+			if (is_builtins(cur_cmd->head->content))
 				execve_builtin();
-			cmd_to_path(sh, cur_cmd->cmd);
-			if (execve(cur_cmd->cmd->content, argv, sh->env_info.envp) < 0)
+			cmd_to_path(sh, cur_cmd->head);
+			if (execve(cur_cmd->head->content, argv, sh->env_info.envp) < 0)
 			{
 				execute_error(argv[0]);
 				exit(EXIT_FAILURE);

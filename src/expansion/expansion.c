@@ -5,7 +5,7 @@ static int	expand_tokens(t_sh *sh, t_script *script)
 	t_token	*token;
 	char	*cmd;
 
-	token = script->cmd;
+	token = script->head;
 	cmd = 0;
 	while (token)
 	{

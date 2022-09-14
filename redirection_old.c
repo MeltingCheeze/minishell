@@ -63,7 +63,7 @@ int	redirection(t_env *env, t_script *script)
 	int		herecnt;
 
 	rvalue = 0;
-	cur_token = script->cmd;
+	cur_token = script->head;
 	herecnt = script->herecnt;
 	while (cur_token && !rvalue)
 	{

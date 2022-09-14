@@ -29,8 +29,8 @@ int	check_env_name(char *s)
 	while (*cur != '=' && is_valid_env_name(*cur))
 		cur++;
 	if (*cur != '=')
-		retrun(export_err(s));
-	retrun (0);
+		return(export_err(s));
+	return (0);
 }
 
 int	builtin_export(char **argv, t_env_info *env_info)
@@ -48,7 +48,8 @@ int	builtin_export(char **argv, t_env_info *env_info)
 			env_info->size++;
 		}
 	}
-	ft_free_pptr(env_info->envp);
+	ft_free_pptr((void ***)env_info->envp);
+	// ft_free_pptr((void ***)argv);
 	env_info->envp = make_envp(env_info->head, env_info->size);
 	return (0);
 }

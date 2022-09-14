@@ -42,7 +42,7 @@ void	remove_quote(t_script *script)
 {
 	while (script)
 	{
-		rm_cmd_quote(script->cmd);
+		rm_cmd_quote(script->head);
 		script = script->next;
 	}
 }

@@ -6,7 +6,7 @@
 #    By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/22 02:33:06 by chaejkim          #+#    #+#              #
-#    Updated: 2022/09/14 17:24:59 by chaejkim         ###   ########.fr        #
+#    Updated: 2022/09/15 00:24:05 by chaejkim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,6 +42,7 @@ SRC = src/main/main.c \
 	  src/main/set_signal.c \
 	  src/main/signal_handler.c \
 	  src/env/env.c \
+	  src/env/envprint.c \
 	  src/env/make_envp.c \
 	  src/env/find_env_value.c \
 	  src/env/is_valid_env_name.c \
@@ -65,7 +66,9 @@ SRC = src/main/main.c \
 	  src/executor/make_arguments.c \
 	  src/executor/heredoc_execute.c \
 	  src/executor/redir_err.c \
-	  src/executor/redirection.c 
+	  src/executor/redirection.c \
+	  src/builtins/builtin_env.c \
+	  src/builtins/builtin_export.c
 
 #  src/exec/exec.c \
 #  src/iostream/pipe.c \

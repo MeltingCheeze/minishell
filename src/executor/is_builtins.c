@@ -1,23 +1,28 @@
+#include "builtins.h"
 #include "libft.h"
 
-int	is_builtins(char *cmd)
+t_builtin	is_builtins(t_token *token)
 {
-	int	result;
+	t_builtin	result;
 
-	result = 0;
-	if (!ft_strcmp(cmd, "echo"))
-		result = 1;
-	else if (!ft_strcmp(cmd, "cd"))
-		result = 1;
-	else if (!ft_strcmp(cmd, "pwd"))
-		result = 1;
-	else if (!ft_strcmp(cmd, "export"))
-		result = 1;
-	else if (!ft_strcmp(cmd, "unset"))
-		result = 1;
-	else if (!ft_strcmp(cmd, "env"))
-		result = 1;
-	else if (!ft_strcmp(cmd, "exit"))
-		result = 1;
+	result = NONE;
+	while (token && (token->type != CMD))
+		token = token->next;
+	if (!token)
+		return (result);
+	if (!ft_strcmp(token->content, "echo"))
+		result = ECHO;
+	else if (!ft_strcmp(token->content, "cd"))
+		result = CD;
+	else if (!ft_strcmp(token->content, "pwd"))
+		result = PWD;
+	else if (!ft_strcmp(token->content, "export"))
+		result = EXPORT;
+	else if (!ft_strcmp(token->content, "unset"))
+		result = UNSET;
+	else if (!ft_strcmp(token->content, "env"))
+		result = ENV;
+	else if (!ft_strcmp(token->content, "exit"))
+		result = EXIT;
 	return (result);
 }

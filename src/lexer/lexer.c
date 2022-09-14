@@ -60,10 +60,13 @@ static int	check_cmd(t_token *token)
 
 	curr = token;
 
-	while (curr->type != WORD) //first cmd
+	while (curr && curr->type != WORD) //first cmd
 	{
 		curr = curr->next;
 	}
+	if (curr == NULL)
+		return (0);
+
 	curr->type = CMD;
 
 	while (curr)
@@ -76,6 +79,8 @@ static int	check_cmd(t_token *token)
 			}
 			curr->type = CMD;
 		}
+		// if (curr->next)
+		// 	return (0);
 		curr = curr->next;
 	}
 	return (0);
@@ -163,7 +168,7 @@ int	lexcial_analyze(t_token *token)
 		return (-1);
 	}
 
-	print_type(token);
+	// print_type(token);
 
 	return (0);
 }

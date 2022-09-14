@@ -9,7 +9,7 @@ static t_script	*scriptnew(t_token *cmd, int argc, int herecnt)
 	t_script	*new;
 
 	new = (t_script *)malloc(sizeof(t_script));
-	new->cmd = cmd;
+	new->head = cmd;
 	new->next = 0;
 	new->fd_in = 0;
 	new->fd_out = 1;

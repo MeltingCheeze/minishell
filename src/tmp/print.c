@@ -42,7 +42,7 @@ void	scriptprint(t_script *script)
 	cur = script;
 	while (cur)
 	{
-		tokenprint(cur->cmd);
+		tokenprint(cur->head);
 		printf("=============\n");
 		cur = cur->next;
 	}

@@ -2,11 +2,20 @@
 
 #include "minishell.h"
 #include "executor.h"
+#include "builtins.h"
 
-int execve_builtin(void)
+int execve_builtin(char **argv, t_sh *sh, t_builtin builtin)
 {
-	printf("need builtin function\n");
-	exit(1);
+	int	rvalue;
+
+	rvalue = 0;
+	if (builtin == EXPORT)
+		rvalue = builtin_export(argv, &sh->env_info);
+	else if (builtin == ENV)
+		rvalue = builtin_env(argv, &sh->env_info);
+	else
+		printf("need builtin function\n");
+	return (rvalue);
 }
 
 int	arguments_vector(t_script *cur_cmd, char **argv)
@@ -15,7 +24,7 @@ int	arguments_vector(t_script *cur_cmd, char **argv)
 	int	i;
 
 	i = 0;
-	cur_token = cur_cmd->cmd;
+	cur_token = cur_cmd->head;
 	while (cur_token)
 	{
 		if (cur_token->type == CMD || cur_token->type == WORD)
@@ -43,17 +52,28 @@ int execute(t_sh *sh)
 	t_script	*cur_cmd;
 	int			pipeline[2];
 	pid_t		pid;
-	// char		**argv; // 이거 수정됨
-	char		*argv[10]; //배열 크기 어떻게 설정하는게 좋을지...
+	t_builtin	builtin;
+	char		**argv; // 이거 수정됨
+	// char		*argv[10]; //배열 크기 어떻게 설정하는게 좋을지...
 	#define READ 0
 	#define WRITE 1
+	char		*cmd;
 	
 	int stdin_dup = dup(0);
 	int stdout_dup = dup(1);
 
 	cur_cmd = sh->script;
 	sh->last_exit_value = 0;
-	// argv = 0;
+	argv = 0;
+	if (cur_cmd->next == NULL)
+	{
+		builtin = is_builtins(cur_cmd->head);
+		if (builtin)
+		{
+			argv = make_arguments(cur_cmd);
+			return (execve_builtin(argv, sh, builtin));
+		}
+	}
 	while (cur_cmd)
 	{
 		//TODO_1 : 일단 여기서 cmdpath_expansion
@@ -69,7 +89,7 @@ int execute(t_sh *sh)
 		if (pid == 0)
 		{
 			redirection(cur_cmd);
-			arguments_vector(cur_cmd, argv);
+			// arguments_vector(cur_cmd, argv);
 
 			if (cur_cmd->fd_out > 1) // RD_OUT or RD_APPEND 존재 -> pipe보다 redir이 우선!
 			{
@@ -91,18 +111,16 @@ int execute(t_sh *sh)
 			if (cur_cmd->fd_in != STDIN_FILENO) //not first cmd
 				close(cur_cmd->fd_in);
 
-			// argv = make_arguments(cur_cmd);
-			// if (is_builtins(cur_cmd->cmd->content))
-			// 	execve_builtin();
-			cmd = cmd_to_path(sh, cur_cmd->cmd); //수정해줘
-			while ()
+			argv = make_arguments(cur_cmd);
+			// builtin = is_builtins(cur_cmd->head);
+			// if (builtin)
+			// 	exit(execve_builtin(argv, sh, builtin));
+			cmd = cmd_to_path(sh, cur_cmd->head); //수정해줘
 			if (execve(cmd, argv, sh->env_info.envp) < 0)
 			{
-				execute_error(argv[0]);
+				// execute_error(argv[0]);
 				exit(EXIT_FAILURE);
 			}
-			execve(cur_cmd->cmd->content, argv, NULL); // should pass envp here
-			// exit(1);
 		}
 		/* parent process -> READ only */
 		else if (pid > 0)
@@ -112,7 +130,7 @@ int execute(t_sh *sh)
 				/* close output pipe -> no use */
 				close(pipeline[WRITE]);
 
-				/* change input fd */
+				// /* change input fd */
 				dup2(pipeline[READ], STDIN_FILENO);
 				if (cur_cmd->fd_in != STDIN_FILENO) //not first cmd
 					close(cur_cmd->fd_in);
