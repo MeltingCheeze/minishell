@@ -12,7 +12,7 @@ static char	*find_expand(t_env *env, int len, char *content)
 	return (value);
 }
 
-static char	*attach_str(char *joined, char *expand)
+char	*attach_str(char *joined, char *expand)
 {
 	char	*result;
 
@@ -21,7 +21,7 @@ static char	*attach_str(char *joined, char *expand)
 	return (result);
 }
 
-static char	*do_expand(t_env *env, char *joined, char **start, char **cur)
+char	*do_expand(t_env *env, char *joined, char **start, char **cur)
 {
 	int		len;
 	char	*value;
@@ -64,7 +64,7 @@ void	parameter_expansion(t_sh *sh, t_token *token)
 		else if (has == *cur)
 			has = 0;
 		else if (has != '\'' && *cur == '$' && is_valid_env_name(*(cur + 1)))
-			result = do_expand(sh->env, result, &start, &cur);
+			result = do_expand(sh->env_info.head, result, &start, &cur);
 		cur++;
 	}
 	if (start)

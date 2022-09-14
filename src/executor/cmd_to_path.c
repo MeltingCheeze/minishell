@@ -1,4 +1,6 @@
-#include "expansion.h"
+#include "executor.h"
+#include <unistd.h>
+#include <libft.h>
 
 static char	**find_paths(t_env *env)
 {
@@ -34,29 +36,19 @@ static char	*match_path(char **paths, char *cmd, size_t cmd_len)
 	return (NULL);
 }
 
-static void	cmd_not_found_err(char *cmd, int *exit_value)
-{
-	ft_putstr_fd(SHELL_NAME, STDERR_FILENO);
-	ft_putstr_fd(cmd, STDERR_FILENO);
-	ft_putstr_fd(": ", STDERR_FILENO);
-	ft_putendl_fd(CMD_NOT_FOUND_MSG, STDERR_FILENO);
-	*exit_value = CMD_NOT_FOUND;
-}
-
-int	cmdpath_expansion(t_sh *sh, t_token *token)
+void	cmd_to_path(t_sh *sh, t_token *token)
 {
 	char	**paths;
 	char	*cmd_path;
 
-	paths = find_paths(sh->env);
+	cmd_path = token->content;
+	if (is_path(cmd_path) || !ft_strcmp(cmd_path, "."))
+		return ;
+	paths = find_paths(sh->env_info.head);
 	cmd_path = match_path(paths, token->content, ft_strlen(token->content));
 	ft_free_pptr((void ***)&paths);
 	if (!cmd_path)
-	{
-		cmd_not_found_err(token->content, &sh->last_exit_value);
-		return (1);
-	}
+		return ;
 	free(token->content);
 	token->content = cmd_path;
-	return (0);
 }

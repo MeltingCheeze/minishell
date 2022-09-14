@@ -1,20 +1,35 @@
 #include "minishell.h"
+#include "executor.h"
+
+int execve_builtin(void)
+{
+	printf("need builtin function\n");
+	exit(1);
+}
 
 void execute(t_sh *sh)
 {
 	t_script	*cur_cmd;
 	int			pipeline[2];
 	pid_t		pid;
+	char		**argv;
+	int			rredir; // return value of redir (SIGINT -> 130)
 	#define READ 0
 	#define WRITE 1
-	
+
 	int stdin_dup = dup(0);
 	int stdout_dup = dup(1);
 
 	cur_cmd = sh->script;
+	sh->last_exit_value = 0;
+	argv = 0;
 	while (cur_cmd)
 	{
-		//TODO_1 : 일단 여기서 cmdpath_expansion
+		/* check_cmdpath (is built_in or not) */
+		// exeve - it will find its path from envp
+
+		rredir = redirection(sh->env_info.head, cur_cmd);
+
 		/* create pipe */
 		if (cur_cmd->next != NULL) //not last cmd
 			pipe(pipeline);
@@ -28,28 +43,33 @@ void execute(t_sh *sh)
 			if (cur_cmd->next != NULL)
 			{
 				/* close input pipe -> no use */
-				close(pipeline[READ]);	
+				close(pipeline[READ]);
 
 				/* change output fd */
 				dup2(pipeline[WRITE], STDOUT_FILENO);
 				close(pipeline[WRITE]);
 			}
-
 			/* recv input from prev pipe/file/tty */
 			dup2(cur_cmd->fd_in, STDIN_FILENO);
 			if (cur_cmd->fd_in != STDIN_FILENO) //not first cmd
 				close(cur_cmd->fd_in);
-			//TODO_2 : argv 만들기 (filename word 구분)
-			//TODO_3 : redirection
-			// 근데 리다이렉션 해서 만든 값을 어디다 저장하지.. -> script.fd 여기다가? 파이프로? -> disccution...
-			// 히코야 모르겠닼ㅋㅋㅋㅋㅋㅋㅋㅋ 이것저것 테스트해보고 disccution 에 올릴게
-			char *argv[] = {
-				cur_cmd->cmd->content,
-				cur_cmd->cmd->next->content,
-				NULL
-			};
-			execve(cur_cmd->cmd->content, argv, NULL); // should pass envp here
-			// exit(1);
+			if (rredir)
+			{
+				printf("rredir : %d\n", rredir);
+				sh->last_exit_value = rredir;
+				exit(EXIT_FAILURE);
+			}
+			else if (cur_cmd->cmd->type != CMD)
+				exit(EXIT_SUCCESS);
+			argv = make_arguments(cur_cmd);
+			if (is_builtins(cur_cmd->cmd->content))
+				execve_builtin();
+			cmd_to_path(sh, cur_cmd->cmd);
+			if (execve(cur_cmd->cmd->content, argv, sh->env_info.envp) < 0)
+			{
+				execute_error(argv[0]);
+				exit(EXIT_FAILURE);
+			}
 		}
 		/* parent process -> READ only */
 		else if (pid > 0)

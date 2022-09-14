@@ -12,9 +12,8 @@
 # include "env.h"
 
 /* signal */
-void	set_sigaction(struct sigaction *sa_ptr,
-			void (*handler)(int, siginfo_t *, void *));
-void	shell_sigaction(int signo, siginfo_t *info, void *context);
+void	set_signal(void);
+void	signal_handler(int signo);
 
 /* iostream */
 char	*readcmdline(void);
@@ -25,6 +24,7 @@ void	ft_error(char *msg);
 //void	ft_free_pptr(char *msg);
 
 /* print */
+void	wordsprint(char	**words);
 void	envprint(t_env *env);
 void	tokenprint(t_token *token);
 void	print_type(t_token *token);

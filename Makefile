@@ -3,10 +3,14 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+         #
+#    By: chaejkim <chaejkim@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/22 02:33:06 by chaejkim          #+#    #+#              #
+<<<<<<< HEAD
 #    Updated: 2022/09/08 11:37:51 by hyko             ###   ########.fr        #
+=======
+#    Updated: 2022/09/12 01:52:57 by chaejkim         ###   ########.fr        #
+>>>>>>> origin/redirection
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,9 +43,11 @@ LIB = -Llib/libft -lft -L$(CLUSTER_RL_DIR)/lib -lreadline
 
 SRC = src/main/main.c \
 	  src/main/readcmdline.c \
-	  src/main/set_sigaction.c \
-	  src/main/shell_sigaction.c \
+	  src/main/set_signal.c \
+	  src/main/signal_handler.c \
 	  src/env/env.c \
+	  src/env/make_envp.c \
+	  src/env/find_env_value.c \
 	  src/env/is_valid_env_name.c \
 	  src/env/keylen.c \
 	  src/tokenizer/token.c \
@@ -49,18 +55,21 @@ SRC = src/main/main.c \
 	  src/lexer/lexer.c \
 	  src/expansion/expansion.c \
 	  src/expansion/parameter_expansion.c \
-	  src/expansion/cmdpath_expansion.c \
-	  src/expansion/input_file_checker.c \
 	  src/parser/parser.c \
 	  src/parser/tokens_to_cmds.c \
 	  src/parser/remove_quote.c \
 	  src/utile/ft_error.c \
 	  src/utile/is_file_exist.c \
 	  src/tmp/print.c \
-	  src/executor/execute_copy.c \
-	  src/executor/redirection.c
-	  
-#  src/executor/redirection.c
+	  src/executor/execute.c \
+	  src/executor/execute_err.c \
+	  src/executor/is_builtins.c \
+	  src/executor/is_path.c \
+	  src/executor/cmd_to_path.c \
+	  src/executor/make_arguments.c \
+	  src/executor/heredoc_execute.c \
+	  src/executor/redir_err.c \
+	  src/executor/redirection.c 
 
 #  src/exec/exec.c \
 #  src/iostream/pipe.c \
