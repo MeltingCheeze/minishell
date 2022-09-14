@@ -8,6 +8,8 @@ int		env_terminate(t_env **env);
 t_env	*envnew(char *s);
 void	envadd_back(t_env **env, t_env *new);
 
+void	envprint(t_env *env);
+
 char	**make_envp(t_env *env, int env_size);
 
 char	*find_env_value(t_env *env, char *key);

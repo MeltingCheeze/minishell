@@ -1,3 +1,5 @@
+/* execute.c 파일에 redirection 추가하면서 수정하고있는 파일 */
+
 #include "minishell.h"
 #include "executor.h"
 
@@ -7,16 +9,36 @@ int execve_builtin(void)
 	exit(1);
 }
 
-void execute(t_sh *sh)
+int	arguments_vector(t_script *cur_cmd, char **argv)
+{
+	t_token *cur_token;
+	int	i;
+
+	i = 0;
+	cur_token = cur_cmd->cmd;
+	while (cur_token)
+	{
+		if (cur_token->type == CMD || cur_token->type == WORD)
+		{
+			argv[i] = cur_token->content;
+			i++;
+		}
+		cur_token = cur_token->next;
+	}
+	argv[i] = NULL;
+	return (0);
+}
+
+int execute(t_sh *sh)
 {
 	t_script	*cur_cmd;
 	int			pipeline[2];
 	pid_t		pid;
-	char		**argv;
-	int			rredir; // return value of redir (SIGINT -> 130)
+	char		**argv; // 이거 수정됨
+	// char		*argv[10]; //배열 크기 어떻게 설정하는게 좋을지...
 	#define READ 0
 	#define WRITE 1
-
+	
 	int stdin_dup = dup(0);
 	int stdout_dup = dup(1);
 
@@ -25,10 +47,7 @@ void execute(t_sh *sh)
 	argv = 0;
 	while (cur_cmd)
 	{
-		/* check_cmdpath (is built_in or not) */
-		// exeve - it will find its path from envp
-
-		rredir = redirection(sh->env_info.head, cur_cmd);
+		//TODO_1 : 일단 여기서 cmdpath_expansion
 
 		/* create pipe */
 		if (cur_cmd->next != NULL) //not last cmd
@@ -40,26 +59,29 @@ void execute(t_sh *sh)
 		/* child process -> WRITE only */
 		if (pid == 0)
 		{
-			if (cur_cmd->next != NULL)
+			redirection(cur_cmd);
+			// arguments_vector(cur_cmd, argv);
+
+			if (cur_cmd->fd_out > 1) // RD_OUT or RD_APPEND 존재 -> pipe보다 redir이 우선!
+			{
+				dup2(cur_cmd->fd_out, STDOUT_FILENO);
+				close(cur_cmd->fd_out);
+			}
+			else if (cur_cmd->next != NULL) // redir X, pipe O
 			{
 				/* close input pipe -> no use */
-				close(pipeline[READ]);
+				close(pipeline[READ]);	
 
 				/* change output fd */
 				dup2(pipeline[WRITE], STDOUT_FILENO);
 				close(pipeline[WRITE]);
 			}
+
 			/* recv input from prev pipe/file/tty */
 			dup2(cur_cmd->fd_in, STDIN_FILENO);
 			if (cur_cmd->fd_in != STDIN_FILENO) //not first cmd
 				close(cur_cmd->fd_in);
-			if (rredir)
-			{
-				printf("rredir : %d\n", rredir);
-				sh->last_exit_value = rredir;
-				exit(EXIT_FAILURE);
-			}
-			else if (cur_cmd->cmd->type != CMD)
+			if (cur_cmd->cmd->type != CMD)
 				exit(EXIT_SUCCESS);
 			argv = make_arguments(cur_cmd);
 			if (is_builtins(cur_cmd->cmd->content))
@@ -70,6 +92,8 @@ void execute(t_sh *sh)
 				execute_error(argv[0]);
 				exit(EXIT_FAILURE);
 			}
+			execve(cur_cmd->cmd->content, argv, NULL); // should pass envp here
+			// exit(1);
 		}
 		/* parent process -> READ only */
 		else if (pid > 0)
@@ -105,4 +129,5 @@ void execute(t_sh *sh)
 		wait(NULL);
 		cur_cmd = cur_cmd->next;
 	}
+	return (0);
 }

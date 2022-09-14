@@ -3,14 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: chaejkim <chaejkim@student.42seoul.kr>     +#+  +:+       +#+         #
+#    By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/22 02:33:06 by chaejkim          #+#    #+#              #
-<<<<<<< HEAD
-#    Updated: 2022/09/08 11:37:51 by hyko             ###   ########.fr        #
-=======
-#    Updated: 2022/09/12 01:52:57 by chaejkim         ###   ########.fr        #
->>>>>>> origin/redirection
+#    Updated: 2022/09/14 17:24:59 by chaejkim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 

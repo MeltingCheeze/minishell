@@ -28,41 +28,41 @@ static char	*expand_line(t_env *env, char *line)
 	return (result);
 }
 
-static void	write_rl_in_pipe(t_env *env, int herepipe[2], char *eof)
+int	heredoc_execute(t_env *env, int fd[2], int herecnt, char *eof)
 {
+	int		pid;
+	int		rvalue;
 	char	*line;
-
-	while (1)
-	{
-		line = readline(">");
-		if (line == 0)
-			break ;
-		if (!ft_strcmp(line, eof))
-		{
-			free(line);
-			break ;
-		}
-		if (*line)
-		{
-			line = expand_line(env, line);
-			write(herepipe[1], line, ft_strlen(line));
-		}
-		write(herepipe[1], "\n", 1);
-		free(line);
-	}
-}
-
-int	heredoc_execute(t_env *env, int herepipe[2], char *eof)
-{
-	int	pid;
-	int	rvalue;
+	char	*result;
 
 	rvalue = 0;
 	pid = fork();
 	if (!pid)
 	{
 		g_is_heredoc = 1;
-		write_rl_in_pipe(env, herepipe, eof);
+		result = 0;
+		while (1)
+		{
+			line = readline(">");
+			if (line == 0)
+				break ;
+			if (!ft_strcmp(line, eof))
+			{
+				free(line);
+				break ;
+			}
+			if (*line)
+			{
+				line = expand_line(env, line);
+				result = attach_str(result, line);
+			}
+			result = attach_str(result, "\n");
+			free(line);
+		}
+		if (!herecnt)
+			write(fd[1], result, ft_strlen(result));
+		free(result);
+		g_is_heredoc = 0;
 		exit(0);
 	}
 	wait(&rvalue);

@@ -10,18 +10,6 @@ void	wordsprint(char	**words)
 	}
 }
 
-void	envprint(t_env *env)
-{
-	t_env	*cur;
-
-	cur = env;
-	while (cur)
-	{
-		printf("\033[0;33m%s\033[0m=%s\n", cur->key, cur->value);
-		cur = cur->next;
-	}
-}
-
 void	tokenprint(t_token *token)
 {
 	t_token	*cur;

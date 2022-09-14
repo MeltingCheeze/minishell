@@ -1,81 +1,53 @@
-#include "executor.h"
-#include <fcntl.h>
-#include <stdio.h> //test
+#include "minishell.h"
+#include <readline/readline.h>
+#include <readline/history.h>
 
-static int	rd_in(char *fname)
+int	redirection(t_script *cur_cmd)
 {
-	int	fd;
-
-	fd = open(fname, O_RDONLY, 0644);
-	if (fd == -1)
-		return (open_error(fname));
-	dup2(fd, STDIN_FILENO);
-	close(fd);
-	return (0);
-}
-
-static int	rd_out(char *fname)
-{
-	int	fd;
-
-	fd = open(fname, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (fd == -1)
-		return (open_error(fname));
-	dup2(fd, STDOUT_FILENO);
-	close(fd);
-	return (0);
-}
-
-static int	rd_append(char *fname)
-{
-	int	fd;
-
-	fd = open(fname, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	if (fd == -1)
-		return (open_error(fname));
-	dup2(fd, STDOUT_FILENO);
-	close(fd);
-	return (0);
-}
-
-static int	heredoc(t_env *env, char *eof, int herecnt)
-{
-	int	herepipe[2];
-	int	rvalue;
-
-	pipe(herepipe);
-	rvalue = heredoc_execute(env, herepipe, eof);
-	if (rvalue || herecnt)
-		close(herepipe[0]);
-	else
+	t_token *cur_token;
+	cur_token = cur_cmd->cmd;
+	while (cur_token)
 	{
-		dup2(herepipe[0], STDIN_FILENO);
-		close(herepipe[0]);
-	}
-	close(herepipe[1]);
-	return (rvalue);
-}
+		if (cur_token->type == RD_IN && cur_token->next->type == FILENAME)
+		{
+			cur_cmd->fd_in = open(cur_token->next->content, O_RDONLY, 0644);
+			if (cur_cmd->fd_in < 0)
+				// return (open_error(cur_token->next->content));
+				return (-1); //redir 실패시 에러 or 건너뛰기???
+		}
+		else if (cur_token->type == RD_OUT && cur_token->next->type == FILENAME)
+		{
+			cur_cmd->fd_out = open(cur_token->next->content, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			if (cur_cmd->fd_out < 0)
+				return (-1);
+		}
+		else if (cur_token->type == RD_APPEND && cur_token->next->type == FILENAME)
+		{
+			cur_cmd->fd_out = open(cur_token->next->content, O_WRONLY | O_CREAT | O_APPEND, 0644);
+			if (cur_cmd->fd_out < 0)
+				return (-1);
+		}
+		else if (cur_token->type == RD_HEREDOC && cur_token->next->type == FILENAME)
+		{
+			char *line;
+			char *doc;
+			char *delimiter;
 
-int	redirection(t_env *env, t_script *script)
-{
-	t_token	*cur_token;
-	int		rvalue;
-	int		herecnt;
-
-	rvalue = 0;
-	cur_token = script->cmd;
-	herecnt = script->herecnt;
-	while (cur_token && !rvalue)
-	{
-		if (cur_token->type == RD_IN)
-			rvalue = rd_in(cur_token->next->content);
-		else if (cur_token->type == RD_OUT)
-			rvalue = rd_out(cur_token->next->content);
-		else if (cur_token->type == RD_APPEND)
-			rvalue = rd_append(cur_token->next->content);
-		else if (cur_token->type == RD_HEREDOC)
-			rvalue = heredoc(env, cur_token->next->content, --herecnt);
+			delimiter = cur_token->next->content;
+			while (1)
+			{
+				line = readline("> ");
+				if (ft_strcmp(line, delimiter) != 0)
+				{
+					doc = ft_strjoin(doc, line);
+					doc = ft_strjoin(doc, "\n");
+				}
+				else
+					break ;
+			}
+			ft_putstr_fd(doc, cur_cmd->fd_in);
+		}
 		cur_token = cur_token->next;
 	}
-	return (rvalue);
+	return (0);
 }

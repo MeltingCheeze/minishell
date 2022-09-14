@@ -35,7 +35,10 @@
         "tuple": "c",
         "stat.h": "c",
         "wait.h": "c",
-        "executor.h": "c"
+        "executor.h": "c",
+        "string.h": "c",
+        "stdio.h": "c",
+        "errno.h": "c"
     },
     "editor.insertSpaces": false
 }

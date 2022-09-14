@@ -75,3 +75,4 @@ void	envadd_back(t_env **env, t_env *new)
 		cur = cur->next;
 	cur->next = new;
 }
+
