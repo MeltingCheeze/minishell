@@ -82,7 +82,9 @@ void	child_process(t_sh *sh, t_script *cur_cmd, int *pipeline)
 	cmd = cmd_to_path(sh, cur_cmd->head); //수정해줘
 	if (execve(cmd, argv, sh->env_info.envp) < 0)
 	{
-		// execute_error(argv[0]);
+		if (argv && !argv[0])
+			exit(EXIT_SUCCESS); // `< a` 같은 경우
+		execute_error(argv[0]);
 		exit(EXIT_FAILURE);
 	}
 }
