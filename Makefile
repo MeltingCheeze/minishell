@@ -6,7 +6,7 @@
 #    By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/22 02:33:06 by chaejkim          #+#    #+#              #
-#    Updated: 2022/09/15 04:08:38 by chaejkim         ###   ########.fr        #
+#    Updated: 2022/09/15 10:58:16 by chaejkim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,8 @@ SRC = src/main/main.c \
 	  src/tokenizer/tokenizer.c \
 	  src/lexer/lexer.c \
 	  src/expansion/expansion.c \
-	  src/expansion/parameter_expansion.c \
+	  src/expansion/do_expand.c \
+	  src/expansion/attach_str.c \
 	  src/parser/parser.c \
 	  src/parser/tokens_to_cmds.c \
 	  src/parser/remove_quote.c \
@@ -68,7 +69,7 @@ SRC = src/main/main.c \
 	  src/executor/redirection.c \
 	  src/builtins/builtin_env.c \
 	  src/builtins/builtin_export.c \
-	  src/executor/heredoc_execute.c
+	  src/heredoc/heredoc.c
 
 #  src/exec/exec.c \
 #  src/iostream/pipe.c \
@@ -86,7 +87,7 @@ $(NAME) : $(OBJ)
 	@$(CC) $(CFLAGS) $(SAN_FLAG) -o $@ $^ $(LIB)
 
 $(LFT):
-	@$(MAKE) -s -C lib/libft
+	@$(MAKE) -s -C lib/libft bonus
 
 clean:
 	@$(MAKE) -s -C lib/libft $@
@@ -100,6 +101,7 @@ obj:
 	@mkdir -p obj
 	@mkdir -p obj/main
 	@mkdir -p obj/builtins
+	@mkdir -p obj/heredoc
 	@mkdir -p obj/executor
 	@mkdir -p obj/env
 	@mkdir -p obj/expansion

@@ -1,6 +1,4 @@
 #include "parser.h"
-#include "libft.h" // 나중에 고치기
-#include <stdio.h> // 나중에 지우기
 
 // 이거 draft 임
 

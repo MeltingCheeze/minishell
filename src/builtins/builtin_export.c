@@ -23,7 +23,7 @@ int	check_env_name(char *s)
 	while (*cur != '=' && is_valid_env_name(*cur))
 		cur++;
 	if (*cur != '=')
-		return(export_err(s));
+		return (export_err(s));
 	return (0);
 }
 
@@ -37,14 +37,12 @@ int	builtin_export(char **argv, t_env_info *env_info)
 	envp = argv;
 	while (*(++envp))
 	{
-		ft_putendl_fd(*envp, 2);
+		// ft_putendl_fd(*envp, 2);
 		if (ft_strchr(*envp, '=') && !check_env_name(*envp))
 		{
 			new = envnew(*envp);
 			envadd_back(&env_info->head, new);
 			env_info->size++;
-			ft_putnbr_fd(env_info->size, 2);
-			ft_putchar_fd('\n', 2);
 		}
 		else if (rvalue == 0)
 			rvalue = 1;
