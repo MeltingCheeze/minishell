@@ -1,12 +1,14 @@
 #include "parser.h"
 #include "libft.h"
 
-static void	destroy_token(t_token **token, char *line, int cnt)
+static int	destroy_token(t_token **token, char *line, int cnt)
 {
 	tokenclear(token);
 	*(line + cnt - 1) = 0;
 	ft_putstr_fd("minishell: syntax error near unexpected token ", 2);
 	ft_putendl_fd(line, 2);
+	// g_last_exit_value = 258;
+	return (258);
 }
 
 static int	add_token(t_token **token, char **start, char **cur, size_t len)

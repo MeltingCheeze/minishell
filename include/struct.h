@@ -68,7 +68,6 @@ typedef struct s_sh
 {
 	t_script	*script;
 	t_env_info	env_info;
-	int			last_exit_value;
 }				t_sh;
 
 #endif

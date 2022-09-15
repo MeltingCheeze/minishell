@@ -28,6 +28,6 @@ char	*cmd_to_path(t_sh *sh, t_token *token);
 
 char	**make_arguments(t_script *script);
 
-void	execute_error(char *cmd);
+int		execute_error(char *cmd);
 
 #endif

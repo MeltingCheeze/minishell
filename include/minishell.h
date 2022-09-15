@@ -13,7 +13,7 @@
 
 /* signal */
 void	set_signal(void);
-void	signal_handler(int signo);
+void	set_heredoc_signal(void);
 
 /* iostream */
 char	*readcmdline(void);

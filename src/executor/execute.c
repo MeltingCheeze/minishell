@@ -4,6 +4,8 @@
 #include "executor.h"
 #include "builtins.h"
 
+int	g_last_exit_value;
+
 int execve_builtin(char **argv, t_sh *sh, t_builtin builtin)
 {
 	int	rvalue;
@@ -13,6 +15,8 @@ int execve_builtin(char **argv, t_sh *sh, t_builtin builtin)
 		rvalue = builtin_export(argv, &sh->env_info);
 	else if (builtin == ENV)
 		rvalue = builtin_env(argv, &sh->env_info);
+	else if (builtin == UNSET)
+		rvalue = builtin_unset(argv, &sh->env_info);
 	else
 		printf("need builtin function\n");
 	return (rvalue);
@@ -84,8 +88,8 @@ void	child_process(t_sh *sh, t_script *cur_cmd, int *pipeline)
 	{
 		if (argv && !argv[0])
 			exit(EXIT_SUCCESS); // `< a` 같은 경우
-		execute_error(argv[0]);
-		exit(EXIT_FAILURE);
+		exit(execute_error(argv[0])); // g_last_exit_value = execute_error(argv[0]);
+		// exit(EXIT_FAILURE);
 	}
 }
 
@@ -126,12 +130,8 @@ int execute(t_sh *sh)
 	std_dup[1] = dup(1);
 
 	cur_cmd = sh->script;
-	sh->last_exit_value = 0;
+	g_last_exit_value = 0;
 	argv = 0;
-
-
-
-
 	if (cur_cmd->next == NULL) // 이거 파이프 없이, 명령어 한번 실행할때 builtin 실행 (builtin 은 exit 없이, return만 해요!)
 	{
 		builtin = is_builtins(cur_cmd->head);

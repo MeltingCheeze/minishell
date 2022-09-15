@@ -7,14 +7,14 @@
 //print_type(token);
 //scriptprint(sh->script);
 
-static int	quote_err(int *exit_value)
+static int	quote_err(void)
 {
 	ft_putstr_fd("minishell: syntax error quote opened\n", STDERR_FILENO);
-	*exit_value = 258;
+	// g_last_exit_value = 258;
 	return (258);
 }
 
-static int	is_valid_quote(char *line)
+static int	is_unvalid_quote(char *line)
 {
 	char	quote;
 
@@ -42,8 +42,8 @@ int	parser(t_sh *sh, char *line)
 	t_list	*expand_lst;
 
 	(void)sh;
-	if (is_valid_quote(line) && quote_err(&sh->last_exit_value))
-		return (1);
+	if (is_unvalid_quote(line) && quote_err())
+		return (258);
 	token = tokenizer(line);
 	if (token == NULL || lexcial_analyze(token))
 		return (1);

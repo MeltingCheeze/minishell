@@ -4,8 +4,6 @@
 #include <readline/readline.h>
 #include "minishell.h"
 
-int	g_is_heredoc;
-
 static char	*expand_line(t_env *env, char *line)
 {
 	char	*start;
@@ -40,6 +38,7 @@ static void	heredoc_write(t_sh *sh, char *doc)
 	close(fd);
 }
 
+// TODO : fork 뜨고, set_heredoc_signal() 로 핸들러 재설정 필요 SIGINT(ctrl + C) 동작 변경
 int	heredoc_readline(t_sh *sh)
 {
 	char 		*line;
@@ -69,6 +68,10 @@ int	heredoc_readline(t_sh *sh)
 			while (1) //read_line
 			{
 				line = readline("> ");
+				if (line == NULL)
+				{
+					break ;
+				}
 				if (!ft_strcmp(line, delimiter))
 				{
 					free(line);

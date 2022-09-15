@@ -5,11 +5,11 @@
 
 #define SHELL_NAME "minishell: "
 
-static int	export_err(char *content)
+static int	unset_err(char *content)
 {
 	// g_last_return_status = 1;
 	ft_putstr_fd(SHELL_NAME, 2);
-	ft_putstr_fd("export: `", 2);
+	ft_putstr_fd("unset: `", 2);
 	ft_putstr_fd(content, 2);
 	ft_putstr_fd("': ", 2);
 	ft_putendl_fd("not a valid identifier", 2);
@@ -21,25 +21,29 @@ static int	check_env_name(char *s)
 	char	*cur;
 
 	cur = s;
-	while (*cur != '=' && is_valid_env_name(*cur))
+	while (is_valid_env_name(*cur))
 		cur++;
-	if (*cur != '=')
+	if (*cur)
 		return (1);
 	return (0);
 }
 
-static void	export_env(t_env_info *env_info, char **envp)
+static void	unset_env(t_env_info *env_info, char **envp)
 {
-	t_env	*new;
+	int		len;
+	char	*key;
+	t_env	*env;
+	t_env	*next;
 
 	if (**envp == '_' && *(*envp + 1) == '\0')
 		return ; // 이거 어떻게 할지 모르겠음
-	new = envnew(*envp);
-	envadd_back(&env_info->head, new);
-	env_info->size++;
+	len = keylen(*envp);
+	key = ft_substr(*envp, 0, len);
+	envdel(env_info->head, key);
+	free(key);
 }
 
-int	builtin_export(char **argv, t_env_info *env_info)
+int	builtin_unset(char **argv, t_env_info *env_info)
 {
 	char	**envp;
 	int		rvalue;
@@ -47,17 +51,14 @@ int	builtin_export(char **argv, t_env_info *env_info)
 	rvalue = 0;
 	envp = argv;
 	if (!*(envp + 1))
-	{
-		no_argv_print(env_info);
 		return (rvalue);
-	}
 	while (*(++envp))
 	{
-		if (is_valid_env_first_name(**envp)
-			&& ft_strchr(*envp, '=') && !check_env_name(*envp))
-			export_env(env_info, envp);
+		if (!**envp
+			|| (is_valid_env_first_name(**envp) && !check_env_name(*envp)))
+			unset_env(env_info, envp);
 		else
-			rvalue = export_err(*envp);
+			rvalue = unset_err(*envp);
 	}
 	ft_free_pptr((void ***)&env_info->envp);
 	free(argv);

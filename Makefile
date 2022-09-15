@@ -6,7 +6,7 @@
 #    By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/22 02:33:06 by chaejkim          #+#    #+#              #
-#    Updated: 2022/09/15 10:58:16 by chaejkim         ###   ########.fr        #
+#    Updated: 2022/09/15 16:00:43 by chaejkim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ LIB = -Llib/libft -lft -L$(CLUSTER_RL_DIR)/lib -lreadline
 SRC = src/main/main.c \
 	  src/main/readcmdline.c \
 	  src/main/set_signal.c \
-	  src/main/signal_handler.c \
+	  src/main/set_heredoc_signal.c \
 	  src/env/env.c \
 	  src/env/envprint.c \
 	  src/env/make_envp.c \
@@ -69,6 +69,8 @@ SRC = src/main/main.c \
 	  src/executor/redirection.c \
 	  src/builtins/builtin_env.c \
 	  src/builtins/builtin_export.c \
+	  src/builtins/builtin_export_utile.c \
+	  src/builtins/builtin_unset.c \
 	  src/heredoc/heredoc.c
 
 #  src/exec/exec.c \

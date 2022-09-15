@@ -49,8 +49,6 @@ t_env	*envnew(char *s)
 	if (delim == 0)
 		return (NULL);
 	key = ft_substr(s, 0, delim - s);
-	// while (ft_strchr(" \n\t", *(delim + 1)))
-	// 	delim++;
 	value = ft_strdup(delim + 1);
 	new = (t_env *)malloc(sizeof(t_env));
 	// if (!new)
@@ -64,6 +62,7 @@ t_env	*envnew(char *s)
 void	envadd_back(t_env **env, t_env *new)
 {
 	t_env	*cur;
+	t_env	*prev;
 
 	if (env == NULL)
 		return ;
@@ -77,13 +76,59 @@ void	envadd_back(t_env **env, t_env *new)
 	{
 		if (!ft_strcmp(cur->key, new->key))
 		{
+			free(cur->value);
+			cur->value = new->value;
 			free(new->key);
-			free(new->value);
 			free(new);
 			return ;
 		}
 		cur = cur->next;
 	}
+	if (!ft_strcmp(cur->key, new->key))
+	{
+		free(cur->value);
+		cur->value = new->value;
+		free(new->key);
+		free(new);
+		return ;
+	}
 	cur->next = new;
 }
 
+void	envdel(t_env *env, char *key)
+{
+	t_env	*prev;
+	t_env	*next;
+	int		need_del;
+
+	need_del = 0;
+	if (env == NULL)
+		return ;
+	while (env->next)
+	{
+		prev = env;
+		env = env->next;
+		if (!ft_strcmp(env->key, key))
+		{
+			need_del = 1;
+			break ;
+		}
+	}
+	if (need_del)
+	{
+		if (prev->next->next)
+			prev->next = prev->next->next;
+		else
+			prev->next = 0;
+		free(env->key);
+		free(env->value);
+		free(env);
+	}
+	else if (env->next && !ft_strcmp(env->next->key, key))
+	{
+		prev->next = 0;
+		free(env->next->key);
+		free(env->next->value);
+		free(env->next);
+	}
+}

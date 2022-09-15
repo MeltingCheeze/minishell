@@ -2,15 +2,13 @@
 #include "libft.h"
 #include <readline/readline.h>
 
-int g_last_exit_value; // sigint() 에서 꼭 필요!
+int	g_last_exit_value;
 
-static void	sigint(void)
+static void	heredoc_sigint(void)
 {
-	g_last_exit_value = 1;
-	ft_putchar_fd('\n', STDOUT_FILENO);
-	rl_on_new_line();
-	//rl_replace_line("", 0);
-	rl_redisplay();
+	g_last_exit_value = 130;
+	ft_putchar_fd('\0', STDOUT_FILENO);
+	exit(130);
 }
 
 static void	sigquit(void)
@@ -23,16 +21,16 @@ static void	sigquit(void)
 	rl_redisplay();
 }
 
-static void	signal_handler(int signo)
+static void	heredoc_signal_handler(int signo)
 {
 	if (signo == SIGINT)
-		sigint();
+		heredoc_sigint();
 	else if (signo == SIGQUIT)
 		sigquit();
 }
 
-void	set_signal(void)
+void	set_heredoc_signal(void)
 {
-	signal(SIGINT, signal_handler);
-	signal(SIGQUIT, signal_handler);
+	signal(SIGINT, heredoc_signal_handler);
+	signal(SIGQUIT, heredoc_signal_handler);
 }
