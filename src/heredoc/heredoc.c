@@ -2,6 +2,7 @@
 #include "expansion.h"
 #include <stdio.h>
 #include <readline/readline.h>
+#include "minishell.h"
 
 int	g_is_heredoc;
 
@@ -28,55 +29,24 @@ static char	*expand_line(t_env *env, char *line)
 	return (result);
 }
 
-int	heredoc_execute(t_env *env, int fd[2], int herecnt, char *eof)
+static void	heredoc_write(t_sh *sh, char *doc)
 {
-	int		pid;
-	int		rvalue;
-	char	*line;
-	char	*result;
+	int	fd;
 
-	rvalue = 0;
-	pid = fork();
-	if (!pid)
-	{
-		g_is_heredoc = 1;
-		result = 0;
-		while (1)
-		{
-			line = readline(">");
-			if (line == 0)
-				break ;
-			if (!ft_strcmp(line, eof))
-			{
-				free(line);
-				break ;
-			}
-			if (*line)
-			{
-				line = expand_line(env, line);
-				result = attach_str(result, line);
-			}
-			result = attach_str(result, "\n");
-			free(line);
-		}
-		if (!herecnt)
-			write(fd[1], result, ft_strlen(result));
-		free(result);
-		g_is_heredoc = 0;
-		exit(0);
-	}
-	wait(&rvalue);
-	return (rvalue);
+	doc = expand_line(sh->env_info.head, doc);
+	fd = open("tmp", O_RDWR | O_CREAT | O_TRUNC, 0644);
+	ft_putstr_fd(doc, fd);
+	free(doc);
+	close(fd);
 }
 
-int	heredoc_read_line(t_sh *sh)
+int	heredoc_readline(t_sh *sh)
 {
-	char *line;
-	char *doc;
-	char *delimiter;
-	int	fd;
+	char 		*line;
+	char		*doc;
+	char		*delimiter;
 	t_script	*cur_cmd;
-	t_token	*cur_token;
+	t_token		*cur_token;
 
 	cur_cmd = sh->script;
 	doc = 0;
@@ -87,7 +57,6 @@ int	heredoc_read_line(t_sh *sh)
 		cur_token = cur_cmd->head;
 		while (cur_cmd->herecnt > 0)
 		{
-			printf("herecnt : %d\n", cur_cmd->herecnt);
 			doc = 0;
 			while (cur_token) //find heredoc
 			{
@@ -116,12 +85,6 @@ int	heredoc_read_line(t_sh *sh)
 		cur_cmd = cur_cmd->next;
 	}
 	if (doc)
-	{
-		doc = expand_line(sh->env_info.head, doc);
-		fd = open("tmp", O_RDWR | O_CREAT | O_TRUNC, 0644);
-		ft_putstr_fd(doc, fd);
-		free(doc);
-		close(fd);
-	}
+		heredoc_write(sh, doc);
 	return (0);
 }

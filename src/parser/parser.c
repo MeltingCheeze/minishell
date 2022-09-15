@@ -1,7 +1,11 @@
 #include "parser.h"
-#include "libft.h" // 나중에 고치기
-#include "minishell.h" // 나중에 지우기
-int	expansion(t_sh *sh); // 나중에 고치기
+#include "expansion.h"
+#include "libft.h"
+#include "minishell.h" //test print
+
+//tokenprint(token);
+//print_type(token);
+//scriptprint(sh->script);
 
 static int	quote_err(int *exit_value)
 {
@@ -35,6 +39,7 @@ static int	is_valid_quote(char *line)
 int	parser(t_sh *sh, char *line)
 {
 	t_token	*token;
+	t_list	*expand_lst;
 
 	(void)sh;
 	if (is_valid_quote(line) && quote_err(&sh->last_exit_value))
@@ -42,16 +47,8 @@ int	parser(t_sh *sh, char *line)
 	token = tokenizer(line);
 	if (token == NULL || lexcial_analyze(token))
 		return (1);
-	//tokenprint(token);
-	//print_type(token);
 	tokens_to_cmds(sh, token);
-	//printf("before expasion\n");
-	//tokenprint(token);
-	//scriptprint(sh->script);
 	expansion(sh);
-	//printf("after expasion\n");
-	//scriptprint(sh->script);
 	remove_quote(sh->script);
-	//scriptprint(sh->script);
 	return (0);
 }

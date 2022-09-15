@@ -33,5 +33,8 @@ void	scriptprint(t_script *script);
 int	execute(t_sh *sh);
 int		redirection(t_script *cur_cmd);
 
+/* heredoc */
+int		heredoc_readline(t_sh *sh);
+
 
 #endif
