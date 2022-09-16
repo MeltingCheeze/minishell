@@ -68,6 +68,7 @@ typedef struct s_sh
 {
 	t_script	*script;
 	t_env_info	env_info;
+	int			multi_cmd_flag;
 }				t_sh;
 
 #endif

@@ -23,6 +23,8 @@ int execve_builtin(char **argv, t_sh *sh, t_builtin builtin)
 		rvalue = builtin_pwd(sh->script);
 	else if (builtin == CD)
 		rvalue = builtin_cd(argv);
+	else if (builtin == EXIT)
+		rvalue = builtin_exit(argv, sh);
 	else
 		printf("need builtin function\n");
 	return (rvalue);
@@ -153,7 +155,10 @@ int execute(t_sh *sh)
 
 		/* create pipe */
 		if (cur_cmd->next != NULL) //not last cmd
+		{
+			sh->multi_cmd_flag = 1;
 			pipe(pipeline);
+		}
 
 		/* fork */
 		pid = fork();

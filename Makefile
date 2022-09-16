@@ -6,7 +6,7 @@
 #    By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/22 02:33:06 by chaejkim          #+#    #+#              #
-#    Updated: 2022/09/16 18:52:28 by hyko             ###   ########.fr        #
+#    Updated: 2022/09/16 23:57:20 by hyko             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -74,6 +74,7 @@ SRC = src/main/main.c \
 	  src/builtins/builtin_echo.c \
 	  src/builtins/builtin_cd.c \
 	  src/builtins/builtin_pwd.c \
+	  src/builtins/builtin_exit.c \
 	  src/heredoc/heredoc.c \
 
 #  src/exec/exec.c \
