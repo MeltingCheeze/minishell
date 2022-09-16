@@ -4,13 +4,14 @@
 
 #define	BUFFER_SIZE 1024
 
-int	builtin_pwd(t_script *cmd)
+int	builtin_pwd()
 {
 	char	*buf;
 
 	buf = getcwd(NULL, BUFFER_SIZE);
-	ft_putstr_fd(buf, cmd->fd_out);
-	ft_putstr_fd("\n", cmd->fd_out);
+	if (!buf)
+		return (-1);
+	printf("%s\n", buf);
 	free(buf);
 	return (0);
 }

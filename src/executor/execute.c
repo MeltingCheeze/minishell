@@ -18,9 +18,9 @@ int execve_builtin(char **argv, t_sh *sh, t_script *cur_cmd, t_builtin builtin)
 	else if (builtin == UNSET)
 		rvalue = builtin_unset(argv, &sh->env_info);
 	else if (builtin == ECHO)
-		rvalue = builtin_echo(argv, sh->script);
+		rvalue = builtin_echo(argv);
 	else if (builtin == PWD)
-		rvalue = builtin_pwd(sh->script);
+		rvalue = builtin_pwd();
 	else if (builtin == CD)
 		rvalue = builtin_cd(argv);
 	else if (builtin == EXIT)

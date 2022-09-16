@@ -1,26 +1,27 @@
 #include "libft.h"
 #include "builtins.h"
+#include <stdio.h>
 
-int	builtin_echo(char **argv, t_script *cmd)
+int	builtin_echo(char **argv)
 {
 	int	i;
-	int	flag;
+	int	nl_flag;
 
 	i = 1;
-	flag = 0;
+	nl_flag = 0;
 	if (argv[i] && ft_strcmp(argv[i], "-n") == 0)
 	{
-		flag = 1;
+		nl_flag = 1;
 		i++;
 	}
 	while (argv[i])
 	{
-		ft_putstr_fd(argv[i], cmd->fd_out);
+		printf("%s", argv[i]);
 		if (argv[i + 1])
-			ft_putstr_fd(" ", cmd->fd_out);
+			printf(" ");
 		i++;
 	}
-	if (flag == 0)
-		ft_putstr_fd("\n", cmd->fd_out);
+	if (nl_flag == 0)
+		printf("\n");
 	return (0);
 }

@@ -10,8 +10,8 @@ int		builtin_env(char **argv, t_env_info *env_info);
 
 int		builtin_unset(char **argv, t_env_info *env_info);
 
-int		builtin_echo(char **argv, t_script *cmd);
-int		builtin_pwd(t_script *cmd);
+int		builtin_echo(char **argv);
+int		builtin_pwd();
 int		builtin_cd(char **argv);
 int		builtin_exit(char **argv, t_script *cur_cmd);
 
