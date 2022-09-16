@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+         #
+#    By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/22 02:33:06 by chaejkim          #+#    #+#              #
-#    Updated: 2022/09/15 16:00:43 by chaejkim         ###   ########.fr        #
+#    Updated: 2022/09/16 18:05:22 by hyko             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -71,7 +71,8 @@ SRC = src/main/main.c \
 	  src/builtins/builtin_export.c \
 	  src/builtins/builtin_export_utile.c \
 	  src/builtins/builtin_unset.c \
-	  src/heredoc/heredoc.c
+	  src/builtins/builtin_echo.c \
+	  src/heredoc/heredoc.c \
 
 #  src/exec/exec.c \
 #  src/iostream/pipe.c \

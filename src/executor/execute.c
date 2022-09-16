@@ -17,6 +17,8 @@ int execve_builtin(char **argv, t_sh *sh, t_builtin builtin)
 		rvalue = builtin_env(argv, &sh->env_info);
 	else if (builtin == UNSET)
 		rvalue = builtin_unset(argv, &sh->env_info);
+	else if (builtin == ECHO)
+		rvalue = builtin_echo(argv, sh->script);
 	else
 		printf("need builtin function\n");
 	return (rvalue);
