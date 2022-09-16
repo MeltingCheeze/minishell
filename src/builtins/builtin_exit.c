@@ -32,41 +32,31 @@ static int	ft_atoll(const char *str)
 		result = result * 10 + (str[i] - 48);
 		i++;
 		length++;
-		if (length > 19)
+		if (length > 19) //exit 인자가 long long 범위 벗어나면 error처리 해야하는데 정확한 값 비교하기 힘들어서 그냥 자릿수로 비교함
 			return (-1);
 	}
 	return (result * sign);
 }
 
-int	builtin_exit(char **argv, t_sh *sh)
+int	builtin_exit(char **argv, t_script *cur_cmd)
 {
 	long long	exit_status;
 
-	if (!argv[1])
-	{
-		if (sh->multi_cmd_flag == 0)
-			printf("exit\n");
+	if (cur_cmd->multi_cmd_flag != 1)
+		printf("exit\n");
+	if (!argv[1]) //exit 뒤에 인자 없을 때 -> exit(0)으로 처리
 		exit(0);
-	}
 	exit_status = ft_atoll(argv[1]);
 	if (exit_status < 0)
 	{
-		if (sh->multi_cmd_flag == 0)
-			printf("exit\nminishell: exit: %s: numeric argument required\n", argv[1]);
-		else
-			printf("minishell: exit: %s: numeric argument required\n", argv[1]);
+		printf("minishell: exit: %s: numeric argument required\n", argv[1]);
 		exit(255);
 	}
 	if (argv[2] != NULL)
 	{
-		if (sh->multi_cmd_flag == 0)
-			printf("minishell: exit: too many arguments\n");
-		else
-			printf("exit\nminishell: exit: too many arguments\n");
+		printf("minishell: exit: too many arguments\n");
 		return (-1);
 	}
-	if (sh->multi_cmd_flag == 0)
-		printf("exit\n");
 	exit_status %= 256;
 	exit(exit_status);
 }

@@ -6,7 +6,7 @@
 
 int	g_last_exit_value;
 
-int execve_builtin(char **argv, t_sh *sh, t_builtin builtin)
+int execve_builtin(char **argv, t_sh *sh, t_script *cur_cmd, t_builtin builtin)
 {
 	int	rvalue;
 
@@ -24,7 +24,7 @@ int execve_builtin(char **argv, t_sh *sh, t_builtin builtin)
 	else if (builtin == CD)
 		rvalue = builtin_cd(argv);
 	else if (builtin == EXIT)
-		rvalue = builtin_exit(argv, sh);
+		rvalue = builtin_exit(argv, cur_cmd);
 	else
 		printf("need builtin function\n");
 	return (rvalue);
@@ -65,6 +65,7 @@ void	child_process(t_sh *sh, t_script *cur_cmd, int *pipeline)
 	char		*cmd;
 	t_builtin	builtin;
 
+	cur_cmd->multi_cmd_flag = 1;
 	redirection(cur_cmd);
 	// arguments_vector(cur_cmd, argv);
 
@@ -91,7 +92,7 @@ void	child_process(t_sh *sh, t_script *cur_cmd, int *pipeline)
 	argv = make_arguments(cur_cmd);
 	builtin = is_builtins(cur_cmd->head);
 	if (builtin)
-		exit(execve_builtin(argv, sh, builtin));
+		exit(execve_builtin(argv, sh, cur_cmd, builtin));
 	cmd = cmd_to_path(sh, cur_cmd->head); //수정해줘
 	if (execve(cmd, argv, sh->env_info.envp) < 0)
 	{
@@ -147,7 +148,7 @@ int execute(t_sh *sh)
 		if (builtin)
 		{
 			argv = make_arguments(cur_cmd);
-			return (execve_builtin(argv, sh, builtin));
+			return (execve_builtin(argv, sh, cur_cmd, builtin));
 		}
 	}
 	while (cur_cmd)
@@ -157,7 +158,7 @@ int execute(t_sh *sh)
 		/* create pipe */
 		if (cur_cmd->next != NULL) //not last cmd
 		{
-			sh->multi_cmd_flag = 1;
+			cur_cmd->multi_cmd_flag = 1;
 			pipe(pipeline);
 		}
 
