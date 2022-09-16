@@ -44,7 +44,7 @@ typedef struct s_script
 {
 	t_token			*head; /* token devided by pipe */
 	int				fd_in;
-	int				fd_out; //필요X ?
+	int				fd_out;
 	int				herecnt; // 마지막 heredoc 아니면 herepipe[0] 닫아버리기
 	int				argc;
 	struct s_script	*next;

@@ -30,34 +30,34 @@ int execve_builtin(char **argv, t_sh *sh, t_script *cur_cmd, t_builtin builtin)
 	return (rvalue);
 }
 
-int	arguments_vector(t_script *cur_cmd, char **argv)
-{
-	t_token *cur_token;
-	int	i;
+// int	arguments_vector(t_script *cur_cmd, char **argv)
+// {
+// 	t_token *cur_token;
+// 	int	i;
 
-	i = 0;
-	cur_token = cur_cmd->head;
-	while (cur_token)
-	{
-		if (cur_token->type == CMD || cur_token->type == WORD)
-		{
-			argv[i] = cur_token->content;
-			i++;
-		}
-		cur_token = cur_token->next;
-	}
-	argv[i] = NULL;
+// 	i = 0;
+// 	cur_token = cur_cmd->head;
+// 	while (cur_token)
+// 	{
+// 		if (cur_token->type == CMD || cur_token->type == WORD)
+// 		{
+// 			argv[i] = cur_token->content;
+// 			i++;
+// 		}
+// 		cur_token = cur_token->next;
+// 	}
+// 	argv[i] = NULL;
 
 
-	i = 0;
-	while (argv[i])
-	{
-		printf("%d: %s\n", i, argv[i]);
-		i++;
-	}
+// 	i = 0;
+// 	while (argv[i])
+// 	{
+// 		printf("%d: %s\n", i, argv[i]);
+// 		i++;
+// 	}
 
-	return (0);
-}
+// 	return (0);
+// }
 
 void	child_process(t_sh *sh, t_script *cur_cmd, int *pipeline)
 {
@@ -144,6 +144,7 @@ int execute(t_sh *sh)
 	argv = 0;
 	if (cur_cmd->next == NULL) // 이거 파이프 없이, 명령어 한번 실행할때 builtin 실행 (builtin 은 exit 없이, return만 해요!)
 	{
+		redirection(cur_cmd);
 		builtin = is_builtins(cur_cmd->head);
 		if (builtin)
 		{
@@ -157,10 +158,7 @@ int execute(t_sh *sh)
 
 		/* create pipe */
 		if (cur_cmd->next != NULL) //not last cmd
-		{
-			cur_cmd->multi_cmd_flag = 1;
 			pipe(pipeline);
-		}
 
 		/* fork */
 		pid = fork();
