@@ -44,7 +44,8 @@ int	builtin_exit(char **argv, t_sh *sh)
 
 	if (!argv[1])
 	{
-		printf("exit\n");
+		if (sh->multi_cmd_flag == 0)
+			printf("exit\n");
 		exit(0);
 	}
 	exit_status = ft_atoll(argv[1]);
@@ -64,7 +65,8 @@ int	builtin_exit(char **argv, t_sh *sh)
 			printf("exit\nminishell: exit: too many arguments\n");
 		return (-1);
 	}
-	printf("exit\n");
+	if (sh->multi_cmd_flag == 0)
+		printf("exit\n");
 	exit_status %= 256;
 	exit(exit_status);
 }

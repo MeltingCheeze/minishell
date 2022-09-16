@@ -63,6 +63,7 @@ void	child_process(t_sh *sh, t_script *cur_cmd, int *pipeline)
 {
 	char		**argv; // 이거 수정됨
 	char		*cmd;
+	t_builtin	builtin;
 
 	redirection(cur_cmd);
 	// arguments_vector(cur_cmd, argv);
@@ -88,9 +89,9 @@ void	child_process(t_sh *sh, t_script *cur_cmd, int *pipeline)
 		close(cur_cmd->fd_in);
 
 	argv = make_arguments(cur_cmd);
-	// builtin = is_builtins(cur_cmd->head);
-	// if (builtin)
-	// 	exit(execve_builtin(argv, sh, builtin));
+	builtin = is_builtins(cur_cmd->head);
+	if (builtin)
+		exit(execve_builtin(argv, sh, builtin));
 	cmd = cmd_to_path(sh, cur_cmd->head); //수정해줘
 	if (execve(cmd, argv, sh->env_info.envp) < 0)
 	{

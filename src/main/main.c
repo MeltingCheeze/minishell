@@ -29,6 +29,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_sh	sh;
 
+	sh.multi_cmd_flag = 0;
 	(void)argc;
 	(void)argv;
 	env_init(&sh.env_info, envp);
