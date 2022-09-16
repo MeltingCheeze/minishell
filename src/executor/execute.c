@@ -18,9 +18,9 @@ int execve_builtin(char **argv, t_sh *sh, t_script *cur_cmd, t_builtin builtin)
 	else if (builtin == UNSET)
 		rvalue = builtin_unset(argv, &sh->env_info);
 	else if (builtin == ECHO)
-		rvalue = builtin_echo(argv);
+		rvalue = builtin_echo(argv, cur_cmd);
 	else if (builtin == PWD)
-		rvalue = builtin_pwd();
+		rvalue = builtin_pwd(cur_cmd);
 	else if (builtin == CD)
 		rvalue = builtin_cd(argv, &sh->env_info);
 	else if (builtin == EXIT)
@@ -30,35 +30,6 @@ int execve_builtin(char **argv, t_sh *sh, t_script *cur_cmd, t_builtin builtin)
 	return (rvalue);
 }
 
-// int	arguments_vector(t_script *cur_cmd, char **argv)
-// {
-// 	t_token *cur_token;
-// 	int	i;
-
-// 	i = 0;
-// 	cur_token = cur_cmd->head;
-// 	while (cur_token)
-// 	{
-// 		if (cur_token->type == CMD || cur_token->type == WORD)
-// 		{
-// 			argv[i] = cur_token->content;
-// 			i++;
-// 		}
-// 		cur_token = cur_token->next;
-// 	}
-// 	argv[i] = NULL;
-
-
-// 	i = 0;
-// 	while (argv[i])
-// 	{
-// 		printf("%d: %s\n", i, argv[i]);
-// 		i++;
-// 	}
-
-// 	return (0);
-// }
-
 void	child_process(t_sh *sh, t_script *cur_cmd, int *pipeline)
 {
 	char		**argv; // 이거 수정됨
@@ -67,7 +38,11 @@ void	child_process(t_sh *sh, t_script *cur_cmd, int *pipeline)
 
 	cur_cmd->multi_cmd_flag = 1;
 	redirection(cur_cmd);
-	// arguments_vector(cur_cmd, argv);
+	
+	argv = make_arguments(cur_cmd);
+	builtin = is_builtins(cur_cmd->head);
+	if (builtin)
+		exit(execve_builtin(argv, sh, cur_cmd, builtin));
 
 	if (cur_cmd->fd_out > 1) // RD_OUT or RD_APPEND 존재 -> pipe보다 redir이 우선!
 	{
@@ -89,11 +64,7 @@ void	child_process(t_sh *sh, t_script *cur_cmd, int *pipeline)
 	if (cur_cmd->fd_in != STDIN_FILENO) //not first cmd
 		close(cur_cmd->fd_in);
 
-	argv = make_arguments(cur_cmd);
-	builtin = is_builtins(cur_cmd->head);
-	if (builtin)
-		exit(execve_builtin(argv, sh, cur_cmd, builtin));
-	cmd = cmd_to_path(sh, cur_cmd->head); //수정해줘
+	cmd = cmd_to_path(sh, cur_cmd->head); // 이거 뭐하는 함수야??????????
 	if (execve(cmd, argv, sh->env_info.envp) < 0)
 	{
 		if (argv && !argv[0])

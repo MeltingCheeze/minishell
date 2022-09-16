@@ -16,14 +16,11 @@ int	redirection(t_script *cur_cmd)
 	{
 		if (cur_token->type == RD_OUT)
 		{
-			printf("redir out\n");
-			printf("old fd_out : %d\n", cur_cmd->fd_out);
 			if (cur_cmd->fd_out != 1)
 				close(cur_cmd->fd_out);
 			cur_cmd->fd_out = open(cur_token->next->content, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 			if (cur_cmd->fd_out < 0)
 				return (-1);
-			printf("new fd_out : %d\n", cur_cmd->fd_out);
 		}
 		else if (cur_token->type == RD_APPEND)
 		{
