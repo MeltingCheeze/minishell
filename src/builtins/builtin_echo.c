@@ -16,12 +16,15 @@ int	builtin_echo(char **argv, t_script *cur_cmd)
 	}
 	while (argv[i])
 	{
-		ft_putstr_fd(argv[i], cur_cmd->fd_out);
+		// ft_putstr_fd(argv[i], cur_cmd->fd_out);
+		printf("%s", argv[i]);
 		if (argv[i + 1])
-			ft_putstr_fd(" ", cur_cmd->fd_out);
+			printf(" ");
+			// ft_putstr_fd(" ", cur_cmd->fd_out);
 		i++;
 	}
 	if (nl_flag == 0)
-		ft_putstr_fd("\n", cur_cmd->fd_out);
+		printf("\n");
+		// ft_putstr_fd("\n", cur_cmd->fd_out);
 	return (0);
 }

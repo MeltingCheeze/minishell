@@ -38,11 +38,13 @@ static int	ft_atoll(const char *str)
 	return (result * sign);
 }
 
-int	builtin_exit(char **argv, t_script *cur_cmd)
+int	builtin_exit(char **argv,t_sh *sh)
 {
 	long long	exit_status;
 
-	if (cur_cmd->multi_cmd_flag != 1)
+	// ft_putnbr_fd(sh->multi_cmd_flag, 2);
+
+	if (sh->multi_cmd_flag != 1)
 		ft_putstr_fd("exit\n", 1);
 	if (!argv[1]) //exit 뒤에 인자 없을 때 -> exit(0)으로 처리
 		exit(0);

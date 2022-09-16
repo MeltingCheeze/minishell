@@ -1,5 +1,3 @@
-/* execute.c 파일에 redirection 추가하면서 수정하고있는 파일 */
-
 #include "minishell.h"
 #include "executor.h"
 #include "builtins.h"
@@ -24,7 +22,7 @@ int execve_builtin(char **argv, t_sh *sh, t_script *cur_cmd, t_builtin builtin)
 	else if (builtin == CD)
 		rvalue = builtin_cd(argv, &sh->env_info);
 	else if (builtin == EXIT)
-		rvalue = builtin_exit(argv, cur_cmd);
+		rvalue = builtin_exit(argv, sh);
 	else
 		printf("need builtin function\n");
 	return (rvalue);
@@ -36,13 +34,9 @@ void	child_process(t_sh *sh, t_script *cur_cmd, int *pipeline)
 	char		*cmd;
 	t_builtin	builtin;
 
-	cur_cmd->multi_cmd_flag = 1;
+	// cur_cmd->multi_cmd_flag = 1;
 	redirection(cur_cmd);
-	
 	argv = make_arguments(cur_cmd);
-	builtin = is_builtins(cur_cmd->head);
-	if (builtin)
-		exit(execve_builtin(argv, sh, cur_cmd, builtin));
 
 	if (cur_cmd->fd_out > 1) // RD_OUT or RD_APPEND 존재 -> pipe보다 redir이 우선!
 	{
@@ -55,6 +49,8 @@ void	child_process(t_sh *sh, t_script *cur_cmd, int *pipeline)
 		close(pipeline[READ]);	
 
 		/* change output fd */
+		// cur_cmd->fd_out = pipeline[WRITE];
+		// dup2(cur_cmd->fd_out, STDOUT_FILENO);
 		dup2(pipeline[WRITE], STDOUT_FILENO);
 		close(pipeline[WRITE]);
 	}
@@ -63,8 +59,13 @@ void	child_process(t_sh *sh, t_script *cur_cmd, int *pipeline)
 	dup2(cur_cmd->fd_in, STDIN_FILENO);
 	if (cur_cmd->fd_in != STDIN_FILENO) //not first cmd
 		close(cur_cmd->fd_in);
-
+	
 	cmd = cmd_to_path(sh, cur_cmd->head); // 이거 뭐하는 함수야??????????
+
+	builtin = is_builtins(cur_cmd->head);
+	if (builtin)
+		exit(execve_builtin(argv, sh, cur_cmd, builtin));
+
 	if (execve(cmd, argv, sh->env_info.envp) < 0)
 	{
 		if (argv && !argv[0])
@@ -113,16 +114,20 @@ int execute(t_sh *sh)
 	cur_cmd = sh->script;
 	g_last_exit_value = 0;
 	argv = 0;
-	if (cur_cmd->next == NULL) // 이거 파이프 없이, 명령어 한번 실행할때 builtin 실행 (builtin 은 exit 없이, return만 해요!)
-	{
-		redirection(cur_cmd);
-		builtin = is_builtins(cur_cmd->head);
-		if (builtin)
-		{
-			argv = make_arguments(cur_cmd);
-			return (execve_builtin(argv, sh, cur_cmd, builtin));
-		}
-	}
+
+
+	/*	왜????????	*/
+	// if (cur_cmd->next == NULL) // 이거 파이프 없이, 명령어 한번 실행할때 builtin 실행 (builtin 은 exit 없이, return만 해요!)
+	// {
+	// 	redirection(cur_cmd);
+	// 	builtin = is_builtins(cur_cmd->head);
+	// 	if (builtin)
+	// 	{
+	// 		argv = make_arguments(cur_cmd);
+	// 		return (execve_builtin(argv, sh, cur_cmd, builtin));
+	// 	}
+	// }
+
 	while (cur_cmd)
 	{
 		//TODO_1 : 일단 여기서 cmdpath_expansion

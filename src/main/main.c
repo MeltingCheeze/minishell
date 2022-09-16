@@ -17,6 +17,12 @@ static int	minishell(t_sh *sh)
 			continue ;
 		if (parser(sh, line))
 			continue ;
+
+		/* builtin exit 함수 구현에 필요 */
+		sh->multi_cmd_flag = 0;
+		if (sh->script->next)
+			sh->multi_cmd_flag = 1;
+
 		/* heredoc read line */
 		heredoc_readline(sh);
 		execute(sh);
