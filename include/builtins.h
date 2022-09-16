@@ -12,4 +12,7 @@ int		builtin_unset(char **argv, t_env_info *env_info);
 
 int		builtin_echo(char **argv, t_script *cmd);
 
+int		builtin_pwd(t_script *cmd);
+
+
 #endif
