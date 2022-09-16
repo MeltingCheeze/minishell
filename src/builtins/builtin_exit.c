@@ -43,18 +43,20 @@ int	builtin_exit(char **argv, t_script *cur_cmd)
 	long long	exit_status;
 
 	if (cur_cmd->multi_cmd_flag != 1)
-		printf("exit\n");
+		ft_putstr_fd("exit\n", 1);
 	if (!argv[1]) //exit 뒤에 인자 없을 때 -> exit(0)으로 처리
 		exit(0);
 	exit_status = ft_atoll(argv[1]);
 	if (exit_status < 0)
 	{
-		printf("minishell: exit: %s: numeric argument required\n", argv[1]);
+		ft_putstr_fd("minishell: exit: ", 2);
+		ft_putstr_fd(argv[1], 2);
+		ft_putstr_fd(": numeric argument required\n", 2);
 		exit(255);
 	}
 	if (argv[2] != NULL)
 	{
-		printf("minishell: exit: too many arguments\n");
+		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 		return (-1);
 	}
 	exit_status %= 256;
