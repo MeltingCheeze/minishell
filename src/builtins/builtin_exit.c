@@ -42,8 +42,6 @@ int	builtin_exit(char **argv,t_sh *sh)
 {
 	long long	exit_status;
 
-	// ft_putnbr_fd(sh->multi_cmd_flag, 2);
-
 	if (sh->multi_cmd_flag != 1)
 		ft_putstr_fd("exit\n", 1);
 	if (!argv[1]) //exit 뒤에 인자 없을 때 -> exit(0)으로 처리

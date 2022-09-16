@@ -34,7 +34,6 @@ void	child_process(t_sh *sh, t_script *cur_cmd, int *pipeline)
 	char		*cmd;
 	t_builtin	builtin;
 
-	// cur_cmd->multi_cmd_flag = 1;
 	redirection(cur_cmd);
 	argv = make_arguments(cur_cmd);
 

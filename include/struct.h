@@ -48,7 +48,6 @@ typedef struct s_script
 	int				herecnt; // 마지막 heredoc 아니면 herepipe[0] 닫아버리기
 	int				argc;
 	struct s_script	*next;
-	// int				multi_cmd_flag;
 }				t_script;
 
 typedef struct s_env
