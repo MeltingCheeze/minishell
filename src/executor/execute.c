@@ -22,7 +22,7 @@ int execve_builtin(char **argv, t_sh *sh, t_script *cur_cmd, t_builtin builtin)
 	else if (builtin == PWD)
 		rvalue = builtin_pwd();
 	else if (builtin == CD)
-		rvalue = builtin_cd(argv);
+		rvalue = builtin_cd(argv, &sh->env_info);
 	else if (builtin == EXIT)
 		rvalue = builtin_exit(argv, cur_cmd);
 	else

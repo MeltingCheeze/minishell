@@ -12,7 +12,7 @@ int		builtin_unset(char **argv, t_env_info *env_info);
 
 int		builtin_echo(char **argv);
 int		builtin_pwd();
-int		builtin_cd(char **argv);
+int		builtin_cd(char **argv, t_env_info *env_info);
 int		builtin_exit(char **argv, t_script *cur_cmd);
 
 

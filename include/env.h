@@ -14,7 +14,7 @@ void	envprint(t_env *env);
 char	**make_envp(t_env *env, int env_size);
 
 char	*find_env_value(t_env *env, char *key);
-t_env	*find_env(t_env *env, char *key);
+t_env	*find_env(t_env *env, char *key); //없는 함수??
 
 int		is_valid_env_first_name(char c);
 int		is_valid_env_name(char c);
