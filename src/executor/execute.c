@@ -116,16 +116,16 @@ int execute(t_sh *sh)
 
 
 	/*	왜????????	*/
-	// if (cur_cmd->next == NULL) // 이거 파이프 없이, 명령어 한번 실행할때 builtin 실행 (builtin 은 exit 없이, return만 해요!)
-	// {
-	// 	redirection(cur_cmd);
-	// 	builtin = is_builtins(cur_cmd->head);
-	// 	if (builtin)
-	// 	{
-	// 		argv = make_arguments(cur_cmd);
-	// 		return (execve_builtin(argv, sh, cur_cmd, builtin));
-	// 	}
-	// }
+	if (cur_cmd->next == NULL) // 이거 파이프 없이, 명령어 한번 실행할때 builtin 실행 (builtin 은 exit 없이, return만 해요!)
+	{
+		redirection(cur_cmd);
+		builtin = is_builtins(cur_cmd->head);
+		if (builtin)
+		{
+			argv = make_arguments(cur_cmd);
+			return (execve_builtin(argv, sh, cur_cmd, builtin));
+		}
+	}
 
 	while (cur_cmd)
 	{
