@@ -6,28 +6,23 @@ static void	bubble_sort(char **envp, int size)
 {
 	int		i;
 	int		j;
-	t_bool	swap_flag;
 	char	*tmp;
 
-	swap_flag = TRUE;
-	while (swap_flag == TRUE)
+	i = 0;
+	while (i < size - 1)
 	{
-		swap_flag = FALSE;
-		i = -1;
-		while (++i < size - 1)
+		j = 0;
+		while (j < size - i - 1)
 		{
-			j = i - 1;
-			while (++j < size - i - 1)
+			if (ft_strcmp(envp[j], envp[j + 1]) > 0)
 			{
-				if (ft_strcmp(envp[j], envp[j + 1]) > 0)
-				{
-					swap_flag = TRUE;
-					tmp = envp[j];
-					envp[j] = envp[j + 1];
-					envp[j + 1] = tmp;
-				}
+				tmp = envp[j];
+				envp[j] = envp[j + 1];
+				envp[j + 1] = tmp;
 			}
+			j++;
 		}
+		i++;
 	}
 }
 
