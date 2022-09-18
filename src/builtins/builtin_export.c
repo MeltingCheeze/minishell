@@ -54,7 +54,9 @@ int	builtin_export(char **argv, t_env_info *env_info)
 	while (*(++envp))
 	{
 		if (is_valid_env_first_name(**envp)
-			&& ft_strchr(*envp, '=') && !check_env_name(*envp))
+			&& !ft_strchr(*envp, '='))
+			continue ;
+		else if (!check_env_name(*envp))
 			export_env(env_info, envp);
 		else
 			rvalue = export_err(*envp);
