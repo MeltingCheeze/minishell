@@ -28,7 +28,7 @@ int execve_builtin(char **argv, t_sh *sh, t_script *cur_cmd, t_builtin builtin)
 	return (rvalue);
 }
 
-void	child_process(t_sh *sh, t_script *cur_cmd, int *pipeline)
+void	 child_process(t_sh *sh, t_script *cur_cmd, int *pipeline)
 {
 	char		**argv; // 이거 수정됨
 	char		*cmd;
@@ -48,8 +48,6 @@ void	child_process(t_sh *sh, t_script *cur_cmd, int *pipeline)
 		close(pipeline[READ]);	
 
 		/* change output fd */
-		// cur_cmd->fd_out = pipeline[WRITE];
-		// dup2(cur_cmd->fd_out, STDOUT_FILENO);
 		dup2(pipeline[WRITE], STDOUT_FILENO);
 		close(pipeline[WRITE]);
 	}
@@ -104,7 +102,6 @@ int execute(t_sh *sh)
 	pid_t		pid;
 	t_builtin	builtin;
 	char		**argv; // 이거 수정됨
-	// char		*argv[10]; //배열 크기 어떻게 설정하는게 좋을지...
 	int 		std_dup[2];
 	
 	std_dup[0] = dup(0);
@@ -114,16 +111,33 @@ int execute(t_sh *sh)
 	g_last_exit_value = 0;
 	argv = 0;
 
-
-	/*	왜????????	*/
 	if (cur_cmd->next == NULL) // 이거 파이프 없이, 명령어 한번 실행할때 builtin 실행 (builtin 은 exit 없이, return만 해요!)
 	{
-		redirection(cur_cmd);
+		int	rvalue;
+		// if (cur_cmd->head->content)
+		// 	printf("!!!\n");
+		if (redirection(cur_cmd) < 0)
+			return (-1);
+		if (cur_cmd->fd_in != STDIN_FILENO)
+		{
+			dup2(cur_cmd->fd_in, STDIN_FILENO);
+			close(cur_cmd->fd_in);
+		}
+		if (cur_cmd->fd_out != STDOUT_FILENO)
+		{
+			dup2(cur_cmd->fd_out, STDOUT_FILENO);
+			close(cur_cmd->fd_out);
+		}
 		builtin = is_builtins(cur_cmd->head);
 		if (builtin)
 		{
 			argv = make_arguments(cur_cmd);
-			return (execve_builtin(argv, sh, cur_cmd, builtin));
+			rvalue = execve_builtin(argv, sh, cur_cmd, builtin);
+			dup2(std_dup[0], STDIN_FILENO);
+			dup2(std_dup[1], STDOUT_FILENO);
+			close(std_dup[0]);
+			close(std_dup[1]);
+			return (rvalue);	
 		}
 	}
 

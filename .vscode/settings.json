@@ -39,7 +39,8 @@
         "string.h": "c",
         "stdio.h": "c",
         "errno.h": "c",
-        "builtins.h": "c"
+        "builtins.h": "c",
+        "locale": "c"
     },
     "editor.insertSpaces": false
 }
