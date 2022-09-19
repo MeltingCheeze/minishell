@@ -31,8 +31,13 @@ void	 child_process(t_sh *sh, t_script *cur_cmd, int *pipeline)
 	char		**argv;
 	char		*cmd_path;
 	t_builtin	builtin;
+	int			redir;
 
-	redirection(cur_cmd);
+	redir = 0;
+	redir = redirection(cur_cmd);
+	if (redir)
+		exit(redir);
+
 	
 	if (cur_cmd->fd_out > 1) // RD_OUT or RD_APPEND 존재 -> pipe보다 redir이 우선!
 	{
@@ -125,8 +130,12 @@ int execute(t_sh *sh)
 	if (cur_cmd->next == NULL) 
 	{
 		int	rvalue;
-		if (redirection(cur_cmd) < 0)
-			return (-1);
+		rvalue = 0;
+
+		rvalue = redirection(cur_cmd);
+		if (rvalue)
+			return (rvalue);
+
 		if (cur_cmd->fd_in != STDIN_FILENO)
 		{
 			dup2(cur_cmd->fd_in, STDIN_FILENO);
@@ -147,7 +156,6 @@ int execute(t_sh *sh)
 			close(std_dup[0]);
 			close(std_dup[1]);
 			g_last_exit_value = rvalue;
-			// printf("single builtin : all condtion : g_last_exit_value : %d\n", g_last_exit_value);
 			return (rvalue);	
 		}
 	}

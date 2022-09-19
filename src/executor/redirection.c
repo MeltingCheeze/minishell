@@ -20,7 +20,7 @@ int	redirection(t_script *cur_cmd)
 				close(cur_cmd->fd_out);
 			cur_cmd->fd_out = open(cur_token->next->content, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 			if (cur_cmd->fd_out < 0)
-				return (-1);
+				return (open_error(cur_token->next->content));
 		}
 		else if (cur_token->type == RD_APPEND)
 		{
@@ -28,7 +28,7 @@ int	redirection(t_script *cur_cmd)
 				close(cur_cmd->fd_out);
 			cur_cmd->fd_out = open(cur_token->next->content, O_WRONLY | O_CREAT | O_APPEND, 0644);
 			if (cur_cmd->fd_out < 0)
-				return (-1);
+				return (open_error(cur_token->next->content));
 		}
 		else if (cur_token->type == RD_IN)
 		{
@@ -36,8 +36,7 @@ int	redirection(t_script *cur_cmd)
 				close(cur_cmd->fd_in);
 			cur_cmd->fd_in = open(cur_token->next->content, O_RDONLY, 0644);
 			if (cur_cmd->fd_in < 0)
-				// return (open_error(cur_token->next->content));
-				return (-1); //redir 실패시 에러 or 건너뛰기???
+				return (open_error(cur_token->next->content));
 		}
 		else if (cur_token->type == RD_HEREDOC)
 		{
@@ -45,7 +44,7 @@ int	redirection(t_script *cur_cmd)
 				close(cur_cmd->fd_in);
 			cur_cmd->fd_in = open("tmp", O_RDONLY, 0644);
 			if (cur_cmd->fd_in < 0)
-				return (-1);
+				return (open_error("tmp"));
 		}
 		cur_token = cur_token->next;
 	}
