@@ -43,19 +43,12 @@ t_env	*envnew(char *s)
 	t_env	*new;
 	char	*key;
 	char	*value;
-	char	*delim;
 
-	delim = ft_strchr(s, '=');
-	if (delim == 0)
-	{
-		key = ft_strdup(s);
-		value = NULL;
-	}
+	key = getkey(s);
+	if (ft_strchr(s, '='))
+		value = ft_strdup(s + ft_strlen(key) + 1);
 	else
-	{
-		key = ft_substr(s, 0, delim - s);
-		value = ft_strdup(delim + 1);
-	}
+		value = NULL;
 	new = (t_env *)malloc(sizeof(t_env));
 	// if (!new)
 	// 	ft_error("malloc error(envnew) : ");
@@ -79,25 +72,7 @@ void	envadd_back(t_env **env, t_env *new)
 	}
 	cur = *env;
 	while (cur->next)
-	{
-		if (!ft_strcmp(cur->key, new->key))
-		{
-			free(cur->value);
-			cur->value = new->value;
-			free(new->key);
-			free(new);
-			return ;
-		}
 		cur = cur->next;
-	}
-	if (!ft_strcmp(cur->key, new->key))
-	{
-		free(cur->value);
-		cur->value = new->value;
-		free(new->key);
-		free(new);
-		return ;
-	}
 	cur->next = new;
 }
 

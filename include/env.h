@@ -13,12 +13,15 @@ void	envprint(t_env *env);
 
 char	**make_envp(t_env *env, int env_size);
 
-char	*find_env_value(t_env *env, char *key);
-t_env	*find_env(t_env *env, char *key); //없는 함수??
+char	*find_env_value(t_env *env, char *key); //없앨꺼임
+t_env	*find_env(t_env *env, char *key); 
 
 int		is_valid_env_first_name(char c);
 int		is_valid_env_name(char c);
 
 char	*getkey(char *s);
+char	*getvalue(char *s);
+
+void	export_new(t_env_info *env_info, char *envp);
 
 #endif

@@ -32,6 +32,7 @@ static char	**make_envarr(t_env *env, int env_size)
 	size_t	len;
 	int		i;
 
+	write(1, "=======make_envarr======\n", 24); // test
 	result = (char **)malloc(sizeof(char *) * (env_size + 1));
 	i = 0;
 	while (env)

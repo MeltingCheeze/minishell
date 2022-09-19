@@ -6,7 +6,7 @@
 #    By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/22 02:33:06 by chaejkim          #+#    #+#              #
-#    Updated: 2022/09/19 13:48:18 by hyko             ###   ########.fr        #
+#    Updated: 2022/09/19 13:59:45 by hyko             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,6 +43,7 @@ SRC = src/main/main.c \
 	  src/main/set_heredoc_signal.c \
 	  src/env/env.c \
 	  src/env/env_utils.c \
+	  src/env/export.c \
 	  src/tokenizer/token.c \
 	  src/tokenizer/tokenizer.c \
 	  src/lexer/lexer.c \
