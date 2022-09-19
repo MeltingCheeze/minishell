@@ -2,13 +2,11 @@
 #include "libft.h"
 #include <readline/readline.h>
 
-int	g_last_exit_value;
-
 static void	heredoc_sigint(void)
 {
-	g_last_exit_value = 130;
+	g_last_exit_value = 1;
 	ft_putchar_fd('\0', STDOUT_FILENO);
-	exit(130);
+	exit(g_last_exit_value);
 }
 
 static void	sigquit(void)

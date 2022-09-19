@@ -2,8 +2,6 @@
 #include "libft.h"
 #include <readline/readline.h>
 
-int g_last_exit_value; // sigint() 에서 꼭 필요!
-
 static void	sigint(void)
 {
 	g_last_exit_value = 1;

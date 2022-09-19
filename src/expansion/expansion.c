@@ -8,25 +8,19 @@ static void	parameter_expansion(t_env *env, t_token **token)
 	char	*start;
 	char	*cur;
 	char	*result;
-	char	has;
+	char	quote;
 
-	has = 0;
+	quote = 0;
 	result = 0;
 	cur = (*token)->content;
 	start = cur;
 	while (*cur)
 	{
-		if (!has && (*cur == '"' || *cur == '\''))
-			has = *cur;
-		else if (has == *cur)
-			has = 0;
-		else if (has == 0 && *cur == '$' && is_valid_env_name(*(cur + 1)))
-		{
-			// result = attach_str(result, "\"");
-			result = do_expand(env, result, &start, &cur); // word_splitting 할꺼면 여기서 해야함 (하지 말자 헿...)
-			// result = attach_str(result, "\"");
-		}
-		else if (has == '"' && *cur == '$' && is_valid_env_name(*(cur + 1)))
+		if (!quote && (*cur == '"' || *cur == '\''))
+			quote = *cur;
+		else if (quote == *cur)
+			quote = 0;
+		else if (quote != '\'' && *cur == '$' && is_valid_env_name(*(cur + 1)))
 			result = do_expand(env, result, &start, &cur);
 		cur++;
 	}

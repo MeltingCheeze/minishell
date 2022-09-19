@@ -2,8 +2,6 @@
 #include "executor.h"
 #include "builtins.h"
 
-int	g_last_exit_value;
-
 int execve_builtin(char **argv, t_sh *sh, t_script *cur_cmd, t_builtin builtin)
 {
 	int	rvalue;
@@ -23,15 +21,13 @@ int execve_builtin(char **argv, t_sh *sh, t_script *cur_cmd, t_builtin builtin)
 		rvalue = builtin_cd(argv, &sh->env_info);
 	else if (builtin == EXIT)
 		rvalue = builtin_exit(argv, sh);
-	else
-		printf("need builtin function\n");
 	return (rvalue);
 }
 
 void	 child_process(t_sh *sh, t_script *cur_cmd, int *pipeline)
 {
-	char		**argv; // 이거 수정됨
-	char		*cmd;
+	char		**argv;
+	char		*cmd_path;
 	t_builtin	builtin;
 
 	redirection(cur_cmd);
@@ -56,17 +52,16 @@ void	 child_process(t_sh *sh, t_script *cur_cmd, int *pipeline)
 		close(cur_cmd->fd_in);
 	
 	argv = make_arguments(cur_cmd);
-	cmd = cmd_to_path(sh, cur_cmd->head);
+	cmd_path = cmd_to_path(sh, cur_cmd->head);
 	builtin = is_builtins(cur_cmd->head);
 	if (builtin)
 		exit(execve_builtin(argv, sh, cur_cmd, builtin));
 
-	if (execve(cmd, argv, sh->env_info.envp) < 0) // 인자로 "" 들어왔을때 ERROR 발생해서 일단 주석처리함 
+	if (execve(cmd_path, argv, sh->env_info.envp) < 0)
 	{
-		if (*cmd || (argv && !argv[0]))
-			exit(EXIT_SUCCESS); // `< a` 같은 경우
-		exit(execute_error(argv[0])); // g_last_exit_value = execute_error(argv[0]);
-		// exit(EXIT_FAILURE);
+		if (argv && !argv[0])
+			exit(EXIT_SUCCESS);
+		exit(execute_error(argv[0])); // g_last_exit_value = execute_error(argv[0]);;
 	}
 }
 
@@ -146,14 +141,13 @@ int execute(t_sh *sh)
 			dup2(std_dup[1], STDOUT_FILENO);
 			close(std_dup[0]);
 			close(std_dup[1]);
+			g_last_exit_value = rvalue;
 			return (rvalue);	
 		}
 	}
 
 	while (cur_cmd)
 	{
-		//TODO_1 : 일단 여기서 cmdpath_expansion
-
 		if (cur_cmd->next != NULL) //not last cmd
 			pipe(pipeline);
 		pid = fork();

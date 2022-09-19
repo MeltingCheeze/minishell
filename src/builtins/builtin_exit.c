@@ -32,6 +32,7 @@ static int	ft_atoll(const char *str)
 		result = result * 10 + (str[i] - 48);
 		i++;
 		length++;
+		// ft_atoi 참고 (이전값, 현재값 비교시 부호 다르면 오버플로우)
 		if (length > 19) //exit 인자가 long long 범위 벗어나면 error처리 해야하는데 정확한 값 비교하기 힘들어서 그냥 자릿수로 비교함
 			return (-1);
 	}
@@ -44,8 +45,8 @@ int	builtin_exit(char **argv,t_sh *sh)
 
 	if (sh->multi_cmd_flag != 1)
 		ft_putstr_fd("exit\n", 1);
-	if (!argv[1]) //exit 뒤에 인자 없을 때 -> exit(0)으로 처리
-		exit(0);
+	if (!argv[1])
+		exit(g_last_exit_value);
 	exit_status = ft_atoll(argv[1]);
 	if (exit_status < 0)
 	{

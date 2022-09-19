@@ -1,7 +1,7 @@
 #include "minishell.h"
 #include "executor.h"
 
-int g_is_heredoc;
+int g_last_exit_value;
 
 static int	minishell(t_sh *sh)
 {
@@ -9,7 +9,7 @@ static int	minishell(t_sh *sh)
 
 	set_signal();
 	line = NULL;
-	g_is_heredoc = 0;
+	g_last_exit_value = 0;
 	while (42)
 	{
 		line = readcmdline();

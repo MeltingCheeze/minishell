@@ -40,20 +40,20 @@ static int	add_token(t_token **token, char **start, char **cur, size_t len)
 
 static void	make_token(t_token **token, char *cur)
 {
-	char	has;
+	char	quote;
 	char	*start;
 
-	has = 0;
+	quote = 0;
 	while (*cur && ft_strchr(SEPS, *cur))
 		cur++;
 	start = cur;
 	while (*cur)
 	{
-		if (!has && (*cur == '"' || *cur == '\''))
-			has = *cur;
-		else if (has && (has == *cur))
-			has = 0;
-		else if (!has && ft_strchr(DELIMS, *cur))
+		if (!quote && (*cur == '"' || *cur == '\''))
+			quote = *cur;
+		else if (quote && (quote == *cur))
+			quote = 0;
+		else if (!quote && ft_strchr(DELIMS, *cur))
 		{
 			if (add_token(token, &start, &cur, cur - start) != 0)
 				return ;

@@ -43,7 +43,7 @@ char	*cmd_to_path(t_sh *sh, t_token *token)
 
 	while (token && (token->type != CMD))
 		token = token->next;
-	if (!token)
+	if (*token->content == '\0')
 		return (NULL);
 	cmd_path = token->content;
 	if (is_path(cmd_path) || !ft_strcmp(cmd_path, "."))

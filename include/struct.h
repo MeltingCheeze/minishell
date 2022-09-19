@@ -3,6 +3,8 @@
 
 # include <sys/types.h>
 
+int	g_last_exit_value;
+
 typedef enum e_bool
 {
 	FALSE,

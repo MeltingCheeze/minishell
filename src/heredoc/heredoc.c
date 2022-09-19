@@ -38,7 +38,7 @@ static void	heredoc_write(t_sh *sh, char *doc)
 	close(fd);
 }
 
-// TODO : fork 뜨고, set_heredoc_signal() 로 핸들러 재설정 필요 SIGINT(ctrl + C) 동작 변경
+// TODO : set_heredoc_signal() 로 핸들러 재설정 필요 SIGINT(ctrl + C) 동작 변경
 int	heredoc_readline(t_sh *sh)
 {
 	char 		*line;
