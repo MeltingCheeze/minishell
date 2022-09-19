@@ -7,7 +7,6 @@
 
 static int	unset_err(char *content)
 {
-	// g_last_return_status = 1;
 	ft_putstr_fd(SHELL_NAME, 2);
 	ft_putstr_fd("unset: `", 2);
 	ft_putstr_fd(content, 2);

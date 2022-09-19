@@ -7,7 +7,6 @@
 
 static int	export_err(char *content)
 {
-	// g_last_return_status = 1;
 	ft_putstr_fd(SHELL_NAME, 2);
 	ft_putstr_fd("export: `", 2);
 	ft_putstr_fd(content, 2);
@@ -23,7 +22,7 @@ static int	check_env_name(char *s)
 	cur = s;
 	while (*cur != '=' && is_valid_env_name(*cur))
 		cur++;
-	if (*cur != '=')
+	if (*cur && *cur != '=')
 		return (1);
 	return (0);
 }
@@ -53,11 +52,11 @@ int	builtin_export(char **argv, t_env_info *env_info)
 	}
 	while (*(++envp))
 	{
-		if (is_valid_env_first_name(**envp)
-			&& !ft_strchr(*envp, '='))
-			continue ;
-		else if (!check_env_name(*envp))
-			export_env(env_info, envp);
+		if (is_valid_env_first_name(**envp) && !check_env_name(*envp))
+		{
+			if (ft_strchr(*envp, '='))
+				export_env(env_info, envp);
+		}
 		else
 			rvalue = export_err(*envp);
 	}

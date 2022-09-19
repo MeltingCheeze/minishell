@@ -53,13 +53,15 @@ int	builtin_exit(char **argv,t_sh *sh)
 		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(argv[1], 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
+		g_last_exit_value = 255;
 		exit(255);
 	}
 	if (argv[2] != NULL)
 	{
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-		return (-1);
+		return (1);
 	}
 	exit_status %= 256;
+	g_last_exit_value = exit_status;
 	exit(exit_status);
 }

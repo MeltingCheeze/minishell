@@ -16,15 +16,12 @@ int	builtin_echo(char **argv, t_script *cur_cmd)
 	}
 	while (argv[i])
 	{
-		// ft_putstr_fd(argv[i], cur_cmd->fd_out);
 		printf("%s", argv[i]);
 		if (argv[i + 1])
 			printf(" ");
-			// ft_putstr_fd(" ", cur_cmd->fd_out);
 		i++;
 	}
 	if (nl_flag == 0)
 		printf("\n");
-		// ft_putstr_fd("\n", cur_cmd->fd_out);
 	return (0);
 }

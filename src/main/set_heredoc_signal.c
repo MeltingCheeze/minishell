@@ -4,9 +4,8 @@
 
 static void	heredoc_sigint(void)
 {
-	g_last_exit_value = 1;
 	ft_putchar_fd('\0', STDOUT_FILENO);
-	exit(g_last_exit_value);
+	exit(EXIT_FAILURE);
 }
 
 static void	sigquit(void)

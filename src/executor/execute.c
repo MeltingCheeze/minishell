@@ -74,7 +74,7 @@ void	parent_process(t_script *cur_cmd, int *pipeline, int *std_dup)
 		/* close output pipe -> no use */
 		close(pipeline[WRITE]);
 
-		// /* change input fd */
+		/* change input fd */
 		dup2(pipeline[READ], STDIN_FILENO);
 		if (cur_cmd->fd_in != STDIN_FILENO) //not first cmd
 			close(cur_cmd->fd_in);

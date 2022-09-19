@@ -8,7 +8,6 @@
 
 int	env_err(void)
 {
-	// g_last_return_status = 1;
 	ft_putstr_fd(SHELL_NAME, 2);
 	ft_putstr_fd("env: wrong number of arguments\n", 2);
 	ft_putstr_fd("usage: env\n", 2);
