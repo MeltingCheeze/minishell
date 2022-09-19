@@ -16,13 +16,11 @@ int	execute_error(char *cmd)
 	if (!ft_strcmp(cmd, "."))
 	{
 		err_msg(cmd, "filename argument required\n.: usage: . filename [arguments]");
-		g_last_exit_value = 2;
 		return (2);
 	}
 	else if (!is_path(cmd))
 	{
 		err_msg(cmd, CMD_NOT_FOUND_MSG);
-		g_last_exit_value = 127;
 		return (127);
 	}
 	else if (is_file_exists(cmd))

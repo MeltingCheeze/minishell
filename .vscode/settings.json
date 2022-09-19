@@ -41,7 +41,8 @@
         "errno.h": "c",
         "builtins.h": "c",
         "locale": "c",
-        "memory": "c"
+        "memory": "c",
+        "types.h": "c"
     },
     "editor.insertSpaces": false
 }

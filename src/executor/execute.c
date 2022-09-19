@@ -1,6 +1,8 @@
 #include "minishell.h"
 #include "executor.h"
 #include "builtins.h"
+#include <sys/types.h> 
+#include <sys/wait.h>
 
 int execve_builtin(char **argv, t_sh *sh, t_script *cur_cmd, t_builtin builtin)
 {
@@ -88,14 +90,18 @@ void	parent_process(t_script *cur_cmd, int *pipeline, int *std_dup)
 	}
 }
 
+
 static void	wait_child(t_sh *sh)
 {
 	t_script *curr;
+	int		statloc;
 
 	curr = sh->script;
 	while (curr)
 	{
-		wait(NULL);
+		wait(&statloc);
+		g_last_exit_value = WEXITSTATUS(statloc);
+		// printf("=======g_last_exit_value : %d\n=======", g_last_exit_value);
 		curr = curr->next;
 	}
 }
@@ -106,7 +112,7 @@ int execute(t_sh *sh)
 	int			pipeline[2];
 	pid_t		pid;
 	t_builtin	builtin;
-	char		**argv; // 이거 수정됨
+	char		**argv;
 	int 		std_dup[2];
 	
 	std_dup[0] = dup(0);
@@ -116,7 +122,6 @@ int execute(t_sh *sh)
 	g_last_exit_value = 0;
 	argv = 0;
 
-	// 이거 파이프 없이, 명령어 한번 실행할때 builtin 실행 (builtin 은 exit 없이, return만 해요!)
 	if (cur_cmd->next == NULL) 
 	{
 		int	rvalue;
@@ -142,6 +147,7 @@ int execute(t_sh *sh)
 			close(std_dup[0]);
 			close(std_dup[1]);
 			g_last_exit_value = rvalue;
+			printf("single builtin : all condtion : g_last_exit_value : %d\n", g_last_exit_value);
 			return (rvalue);	
 		}
 	}
