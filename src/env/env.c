@@ -47,9 +47,15 @@ t_env	*envnew(char *s)
 
 	delim = ft_strchr(s, '=');
 	if (delim == 0)
-		return (NULL);
-	key = ft_substr(s, 0, delim - s);
-	value = ft_strdup(delim + 1);
+	{
+		key = ft_strdup(s);
+		value = NULL;
+	}
+	else
+	{
+		key = ft_substr(s, 0, delim - s);
+		value = ft_strdup(delim + 1);
+	}
 	new = (t_env *)malloc(sizeof(t_env));
 	// if (!new)
 	// 	ft_error("malloc error(envnew) : ");

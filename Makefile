@@ -6,7 +6,7 @@
 #    By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/22 02:33:06 by chaejkim          #+#    #+#              #
-#    Updated: 2022/09/16 23:57:20 by hyko             ###   ########.fr        #
+#    Updated: 2022/09/19 13:48:18 by hyko             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,21 +32,17 @@ LIB = -Llib/libft -lft -L$(CLUSTER_RL_DIR)/lib -lreadline
 #			 parameter_expansion.c cmdpath_expansion.c input_file_checker.c)
 #PARSER_SRC = $(addprefix src/parser/, parser.c tokens_to_cmds.c remove_quote.c)
 #EXCUTOT_SRC = $(addprefix src/executor/, redirection.c)
-#UTILE_SRC = $(addprefix src/utile/, main.c ft_error.c is_file_exist.c)
+#utils_SRC = $(addprefix src/utils/, main.c ft_error.c is_file_exist.c)
 #TMP_SRC = $(addprefix src/tmp/, print.c)
 
-#SRC = MAIN_SRC ENV_SRC TOKEN_SRC LEXER_SRC EXPANS_SRC PARSER_SRC EXCUTOT_SRC UTILE_SRC TMP_SRC
+#SRC = MAIN_SRC ENV_SRC TOKEN_SRC LEXER_SRC EXPANS_SRC PARSER_SRC EXCUTOT_SRC utils_SRC TMP_SRC
 
 SRC = src/main/main.c \
 	  src/main/readcmdline.c \
 	  src/main/set_signal.c \
 	  src/main/set_heredoc_signal.c \
 	  src/env/env.c \
-	  src/env/envprint.c \
-	  src/env/make_envp.c \
-	  src/env/find_env_value.c \
-	  src/env/is_valid_env_name.c \
-	  src/env/keylen.c \
+	  src/env/env_utils.c \
 	  src/tokenizer/token.c \
 	  src/tokenizer/tokenizer.c \
 	  src/lexer/lexer.c \
@@ -56,8 +52,8 @@ SRC = src/main/main.c \
 	  src/parser/parser.c \
 	  src/parser/tokens_to_cmds.c \
 	  src/parser/remove_quote.c \
-	  src/utile/ft_error.c \
-	  src/utile/is_file_exist.c \
+	  src/utils/ft_error.c \
+	  src/utils/is_file_exist.c \
 	  src/tmp/print.c \
 	  src/executor/execute.c \
 	  src/executor/execute_err.c \
@@ -69,7 +65,7 @@ SRC = src/main/main.c \
 	  src/executor/redirection.c \
 	  src/builtins/builtin_env.c \
 	  src/builtins/builtin_export.c \
-	  src/builtins/builtin_export_utile.c \
+	  src/builtins/builtin_export_utils.c \
 	  src/builtins/builtin_unset.c \
 	  src/builtins/builtin_echo.c \
 	  src/builtins/builtin_cd.c \
@@ -116,7 +112,7 @@ obj:
 	@mkdir -p obj/parser
 	@mkdir -p obj/iostream
 	@mkdir -p obj/exec
-	@mkdir -p obj/utile
+	@mkdir -p obj/utils
 	@mkdir -p obj/tmp
 
 re: fclean all

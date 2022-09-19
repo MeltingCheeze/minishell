@@ -36,8 +36,7 @@ static void	unset_env(t_env_info *env_info, char **envp)
 
 	if (**envp == '_' && *(*envp + 1) == '\0')
 		return ; // 이거 어떻게 할지 모르겠음
-	len = keylen(*envp);
-	key = ft_substr(*envp, 0, len);
+	key = getkey(*envp);
 	envdel(env_info->head, key);
 	free(key);
 }

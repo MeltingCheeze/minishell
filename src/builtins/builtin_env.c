@@ -1,17 +1,24 @@
 #include "env.h"
 #include "libft.h"
-#include <errno.h> // test
-#include <string.h> // test
+#include <stdio.h>
 
 #define SHELL_NAME "minishell: "
 
-
-int	env_err(void)
+static int	env_err(void)
 {
 	ft_putstr_fd(SHELL_NAME, 2);
 	ft_putstr_fd("env: wrong number of arguments\n", 2);
 	ft_putstr_fd("usage: env\n", 2);
 	return (1);
+}
+
+static void	envp_print(char	**envp)
+{
+	while (*envp)
+	{
+		printf("%s\n", *envp);
+		envp++;
+	}
 }
 
 int	builtin_env(char **argv, t_env_info *env_info)
@@ -21,6 +28,6 @@ int	builtin_env(char **argv, t_env_info *env_info)
 	++argv;
 	if (*argv)
 		return (env_err());
-	envprint(env_info->head);
+	envp_print(env_info->envp);
 	return (0);
 }

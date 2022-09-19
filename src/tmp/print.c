@@ -5,7 +5,7 @@ void	wordsprint(char	**words)
 {
 	while (*words)
 	{
-		printf("\033[0;33m%s\033[0m\n", *words);
+		printf("%s\n", *words);
 		words++;
 	}
 }

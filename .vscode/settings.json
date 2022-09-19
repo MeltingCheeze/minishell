@@ -42,7 +42,8 @@
         "builtins.h": "c",
         "locale": "c",
         "memory": "c",
-        "types.h": "c"
+        "types.h": "c",
+        "__node_handle": "c"
     },
     "editor.insertSpaces": false
 }

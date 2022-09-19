@@ -61,9 +61,9 @@ typedef struct s_env
 
 typedef struct s_env_info
 {
-	t_env	*head;
+	t_env	*head; // export 모든 정보  char **
 	size_t	size;
-	char	**envp;
+	char	**envp; // 유효한 정보
 }				t_env_info;
 
 typedef struct s_sh

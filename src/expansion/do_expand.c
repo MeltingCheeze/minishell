@@ -1,20 +1,9 @@
 #include "expansion.h"
 
-static char	*find_expand(t_env *env, int len, char *content)
-{
-	char	*key;
-	char	*value;
-
-	key = ft_substr(content, 0, len);
-	value = find_env_value(env, key);
-	free(key);
-	return (value);
-}
-
 char	*do_expand(t_env *env, char *joined, char **start, char **cur)
 {
-	int		len;
 	char	*not_expand;
+	char	*key;
 	char	*value;
 
 	// 예시 : "abc$USER.sdf$AAA+fjew" (do_expand()이 2번 호출됨)
@@ -28,10 +17,11 @@ char	*do_expand(t_env *env, char *joined, char **start, char **cur)
 		joined = attach_str(joined, not_expand);
 		free(not_expand);
 	}
-	len = keylen(*cur + 1);
-	if (len)
+	key = (*cur + 1);
+	if (*key)
 	{
-		value = find_expand(env, len, *cur + 1);
+		value = find_env_value(env, key);
+		free(key);
 		if (value)
 			// (1 호출) $USER = "chaejkim"
 			joined = attach_str(joined, value);
@@ -40,7 +30,7 @@ char	*do_expand(t_env *env, char *joined, char **start, char **cur)
 	}
 	// (1 호출) start = ".sdf$AAA+fjew"
 	// (2 호출) start = "+fjew" -> param_expansion()에서 do_expand 후, if(start) 에서 걸림
-	*start = *cur + len + 1;
+	*start = *cur + ft_strlen(key) + 1;
 	*cur = *start - 1;
 	return (joined);
 }
