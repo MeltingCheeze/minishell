@@ -35,8 +35,7 @@ void	 child_process(t_sh *sh, t_script *cur_cmd, int *pipeline)
 	t_builtin	builtin;
 
 	redirection(cur_cmd);
-	argv = make_arguments(cur_cmd);
-
+	
 	if (cur_cmd->fd_out > 1) // RD_OUT or RD_APPEND 존재 -> pipe보다 redir이 우선!
 	{
 		dup2(cur_cmd->fd_out, STDOUT_FILENO);
@@ -51,21 +50,20 @@ void	 child_process(t_sh *sh, t_script *cur_cmd, int *pipeline)
 		dup2(pipeline[WRITE], STDOUT_FILENO);
 		close(pipeline[WRITE]);
 	}
-	
 	/* recv input from prev pipe/file/tty */
 	dup2(cur_cmd->fd_in, STDIN_FILENO);
 	if (cur_cmd->fd_in != STDIN_FILENO) //not first cmd
 		close(cur_cmd->fd_in);
 	
-	cmd = cmd_to_path(sh, cur_cmd->head); // 이거 뭐하는 함수야??????????
-
+	argv = make_arguments(cur_cmd);
+	cmd = cmd_to_path(sh, cur_cmd->head);
 	builtin = is_builtins(cur_cmd->head);
 	if (builtin)
 		exit(execve_builtin(argv, sh, cur_cmd, builtin));
 
-	if (execve(cmd, argv, sh->env_info.envp) < 0)
+	if (execve(cmd, argv, sh->env_info.envp) < 0) // 인자로 "" 들어왔을때 ERROR 발생해서 일단 주석처리함 
 	{
-		if (argv && !argv[0])
+		if (*cmd || (argv && !argv[0]))
 			exit(EXIT_SUCCESS); // `< a` 같은 경우
 		exit(execute_error(argv[0])); // g_last_exit_value = execute_error(argv[0]);
 		// exit(EXIT_FAILURE);
@@ -95,6 +93,18 @@ void	parent_process(t_script *cur_cmd, int *pipeline, int *std_dup)
 	}
 }
 
+static void	wait_child(t_sh *sh)
+{
+	t_script *curr;
+
+	curr = sh->script;
+	while (curr)
+	{
+		wait(NULL);
+		curr = curr->next;
+	}
+}
+
 int execute(t_sh *sh)
 {
 	t_script	*cur_cmd;
@@ -111,11 +121,10 @@ int execute(t_sh *sh)
 	g_last_exit_value = 0;
 	argv = 0;
 
-	if (cur_cmd->next == NULL) // 이거 파이프 없이, 명령어 한번 실행할때 builtin 실행 (builtin 은 exit 없이, return만 해요!)
+	// 이거 파이프 없이, 명령어 한번 실행할때 builtin 실행 (builtin 은 exit 없이, return만 해요!)
+	if (cur_cmd->next == NULL) 
 	{
 		int	rvalue;
-		// if (cur_cmd->head->content)
-		// 	printf("!!!\n");
 		if (redirection(cur_cmd) < 0)
 			return (-1);
 		if (cur_cmd->fd_in != STDIN_FILENO)
@@ -145,33 +154,19 @@ int execute(t_sh *sh)
 	{
 		//TODO_1 : 일단 여기서 cmdpath_expansion
 
-		/* create pipe */
 		if (cur_cmd->next != NULL) //not last cmd
 			pipe(pipeline);
-
-		/* fork */
 		pid = fork();
 
-		/* child process -> WRITE only */
 		if (pid == 0)
-		{
 			child_process(sh, cur_cmd, pipeline);
-		}
-		/* parent process -> READ only */
 		else if (pid > 0)
-		{
 			parent_process(cur_cmd, pipeline, std_dup);
-		}
 		cur_cmd = cur_cmd->next;
 		if (cur_cmd)
 			cur_cmd->fd_in = pipeline[WRITE]; //next cmd fd_in = current cmd fd_out
 	}
 
-	cur_cmd = sh->script;
-	while (cur_cmd)
-	{
-		wait(NULL);
-		cur_cmd = cur_cmd->next;
-	}
+	wait_child(sh);
 	return (0);
 }
