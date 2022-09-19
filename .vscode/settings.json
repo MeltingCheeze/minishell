@@ -43,7 +43,8 @@
         "locale": "c",
         "memory": "c",
         "types.h": "c",
-        "__node_handle": "c"
+        "__node_handle": "c",
+        "history.h": "c"
     },
     "editor.insertSpaces": false
 }

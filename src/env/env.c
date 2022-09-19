@@ -11,9 +11,9 @@ int	env_init(t_env_info *env_info, char **envp)
 	env_info->head = 0;
 	while (envp[i])
 	{
-		new = envnew(envp[i]);
+		new = env_new(envp[i]);
 		if (new)
-			envadd_back(&env_info->head, new);
+			env_add_back(&env_info->head, new);
 		i++;
 	}
 	env_info->size = i;
@@ -38,27 +38,24 @@ int	env_terminate(t_env **env)
 	return (0);
 }
 
-t_env	*envnew(char *s)
+t_env	*env_new(char *s)
 {
 	t_env	*new;
 	char	*key;
 	char	*value;
 
-	key = getkey(s);
-	if (ft_strchr(s, '='))
-		value = ft_strdup(s + ft_strlen(key) + 1);
-	else
-		value = NULL;
+	key = set_env_key(s);
+	value = set_env_value(s);
 	new = (t_env *)malloc(sizeof(t_env));
 	// if (!new)
-	// 	ft_error("malloc error(envnew) : ");
+	// 	ft_error("malloc error(env_new) : ");
 	new->key = key;
 	new->value = value;
 	new->next = 0;
 	return (new);
 }
 
-void	envadd_back(t_env **env, t_env *new)
+void	env_add_back(t_env **env, t_env *new)
 {
 	t_env	*cur;
 	t_env	*prev;
@@ -76,7 +73,7 @@ void	envadd_back(t_env **env, t_env *new)
 	cur->next = new;
 }
 
-void	envdel(t_env *env, char *key)
+void	env_del(t_env *env, char *key)
 {
 	t_env	*prev;
 	t_env	*next;

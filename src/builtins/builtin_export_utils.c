@@ -32,7 +32,6 @@ static char	**make_envarr(t_env *env, int env_size)
 	size_t	len;
 	int		i;
 
-	write(1, "=======make_envarr======\n", 24); // test
 	result = (char **)malloc(sizeof(char *) * (env_size + 1));
 	i = 0;
 	while (env)
@@ -40,7 +39,7 @@ static char	**make_envarr(t_env *env, int env_size)
 		if (env->value)
 			len = ft_strlen(env->key) + ft_strlen(env->value) + 2;
 		else
-			len = ft_strlen(env->key) + 2; 
+			len = ft_strlen(env->key) + 2;
 		result[i] = (char *)malloc(sizeof(char) * len);
 		ft_strcpy(result[i], env->key);
 		if (env->value)
@@ -69,9 +68,10 @@ void	no_argv_print(t_env_info *env_info)
 	while (*(tmp))
 	{
 		ft_putstr_fd("declare -x ", STDOUT_FILENO);
-		key = getkey(*tmp);
+		key = set_env_key(*tmp);
 		ft_putstr_fd(key, STDOUT_FILENO);
-		value = getenv(key);
+		// value = getenv(key);
+		value = find_env_value(env_info->head, key);
 		if (value)
 		{
 			ft_putstr_fd("=\"", STDOUT_FILENO);

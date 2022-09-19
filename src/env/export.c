@@ -11,22 +11,22 @@ void	export_new(t_env_info *env_info, char *envp)
 
 	if (*envp == '_' && *(envp + 1) == '\0')
 		return ; // 이거 어떻게 할지 모르겠음
-	key = getkey(envp);
+	key = set_env_key(envp);
 	new_env = find_env(env_info->head, key);
 	if (new_env)
 	{
-		value = getvalue(envp);
-		printf("key : %s, new_env->value : %s\n", key, new_env->value);
+		value = set_env_value(envp);
+		printf("key : %s, value : %s, new_env->value : %s\n", key, value, new_env->value);
 		if (new_env->value)
 			free(new_env->value);
 		new_env->value = value;
 	}
 	else
 	{
-		new_env = envnew(envp);
-		envadd_back(&env_info->head, new_env);
+		new_env = env_new(envp);
+		env_add_back(&env_info->head, new_env);
+		env_info->size++;
 	}
-		
 	free(key);
 	env_info->size++;
 }

@@ -8,7 +8,6 @@ char	**make_envp(t_env *env, int env_size)
 	size_t	len;
 	int		i;
 
-	write(1, "=======make_envp======\n", 24); // test
 	result = (char **)malloc(sizeof(char *) * (env_size + 1));
 	i = 0;
 	while (env)
@@ -42,7 +41,7 @@ t_env	*find_env(t_env *env, char *key)
 	return (NULL);
 }
 
-char	*find_env_value(t_env *env, char *key) // 나중에 지우기
+char	*find_env_value(t_env *env, char *key)
 {
 	if (env == NULL)
 		return (NULL);
@@ -55,7 +54,7 @@ char	*find_env_value(t_env *env, char *key) // 나중에 지우기
 	return (NULL);
 }
 
-char	*getkey(char *s)
+char	*set_env_key(char *s)
 {
 	char	*result;
 	int		len;
@@ -67,7 +66,7 @@ char	*getkey(char *s)
 	return (result);
 }
 
-char	*getvalue(char *s)
+char	*set_env_value(char *s)
 {
 	char	*result;
 	char	*delim;
@@ -78,14 +77,4 @@ char	*getvalue(char *s)
 	else
 		result = NULL;
 	return (result);
-}
-
-int	is_valid_env_first_name(char c)
-{
-	return (ft_isalpha(c) || (c == '_'));
-}
-
-int	is_valid_env_name(char c)
-{
-	return (ft_isdigit(c) || ft_isalpha(c) || (c == '_'));
 }

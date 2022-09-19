@@ -10,6 +10,7 @@ int	builtin_cd(char **argv, t_env_info *env_info)
 	path = argv[1];
 	if (!path || !ft_strcmp(path, "~") || !ft_strcmp(path, "~/")) // $HOME
 		path = find_env_value(env_info->head, "HOME");
+		// path = getenv("HOME");
 	if (chdir(path) < 0)
 	{
 		ft_putstr_fd("cd: ", 2);

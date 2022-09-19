@@ -27,17 +27,6 @@ static int	check_env_name(char *s)
 	return (0);
 }
 
-static void	export_env(t_env_info *env_info, char **envp)
-{
-	t_env	*new;
-
-	if (**envp == '_' && *(*envp + 1) == '\0')
-		return ; // 이거 어떻게 할지 모르겠음
-	new = envnew(*envp);
-	envadd_back(&env_info->head, new);
-	env_info->size++;
-}
-
 int	builtin_export(char **argv, t_env_info *env_info)
 {
 	char	**envp;
@@ -45,7 +34,7 @@ int	builtin_export(char **argv, t_env_info *env_info)
 
 	rvalue = 0;
 	envp = argv;
-	if (!*(envp + 1))
+	if (!*(envp + 1) || !**(envp + 1))
 	{
 		no_argv_print(env_info);
 		return (rvalue);

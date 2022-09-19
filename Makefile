@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+         #
+#    By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/22 02:33:06 by chaejkim          #+#    #+#              #
-#    Updated: 2022/09/19 13:59:45 by hyko             ###   ########.fr        #
+#    Updated: 2022/09/19 18:51:04 by chaejkim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ SAN_FLAG = -g3 -fsanitize=address
 
 LFT = lib/libft/libft.a
 LOCAL_RL_DIR = /opt/homebrew/Cellar/readline/8.1.2
-CLUSTER_RL_DIR = $(HOME)/.brew/opt/readline
+# CLUSTER_RL_DIR = $(HOME)/.brew/opt/readline
 #CLUSTER_RL_DIR =  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/readline
 
 INC = -Iinclude -Ilib/libft -I$(CLUSTER_RL_DIR)/include
@@ -43,6 +43,7 @@ SRC = src/main/main.c \
 	  src/main/set_heredoc_signal.c \
 	  src/env/env.c \
 	  src/env/env_utils.c \
+	  src/env/env_name_utils.c \
 	  src/env/export.c \
 	  src/tokenizer/token.c \
 	  src/tokenizer/tokenizer.c \

@@ -26,7 +26,7 @@ int	builtin_env(char **argv, t_env_info *env_info)
 	t_env	*new;
 
 	++argv;
-	if (*argv)
+	if (*argv && **argv)
 		return (env_err());
 	envp_print(env_info->envp);
 	return (0);

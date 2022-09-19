@@ -7,6 +7,7 @@ static char	**find_paths(t_env *env)
 	char	*value;
 	char	**paths;
 
+	// value = getenv("PATH");
 	value = find_env_value(env, "PATH");
 	paths = ft_split(value, ':');
 	return (paths);

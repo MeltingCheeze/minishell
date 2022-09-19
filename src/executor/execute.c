@@ -147,7 +147,7 @@ int execute(t_sh *sh)
 			close(std_dup[0]);
 			close(std_dup[1]);
 			g_last_exit_value = rvalue;
-			printf("single builtin : all condtion : g_last_exit_value : %d\n", g_last_exit_value);
+			// printf("single builtin : all condtion : g_last_exit_value : %d\n", g_last_exit_value);
 			return (rvalue);	
 		}
 	}
