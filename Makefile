@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+         #
+#    By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/22 02:33:06 by chaejkim          #+#    #+#              #
-#    Updated: 2022/09/19 18:51:04 by chaejkim         ###   ########.fr        #
+#    Updated: 2022/09/20 09:25:39 by hyko             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,13 +16,13 @@ CC = cc
 CFLAGS = #-Wall -Werror -Wextra
 SAN_FLAG = -g3 -fsanitize=address
 
-LFT = lib/libft/libft.a
+LFT = libft/libft.a
 LOCAL_RL_DIR = /opt/homebrew/Cellar/readline/8.1.2
 # CLUSTER_RL_DIR = $(HOME)/.brew/opt/readline
 #CLUSTER_RL_DIR =  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/readline
 
-INC = -Iinclude -Ilib/libft -I$(CLUSTER_RL_DIR)/include
-LIB = -Llib/libft -lft -L$(CLUSTER_RL_DIR)/lib -lreadline
+INC = -Iinclude -Ilibft -I$(CLUSTER_RL_DIR)/include
+LIB = -Llibft -lft -L$(CLUSTER_RL_DIR)/lib -lreadline
 
 #MAIN_SRC = $(addprefix src/main/, main.c readcmdline.c set_sigaction.c shell_sigaction.c)
 #ENV_SRC = $(addprefix src/env/, env.c is_valid_env_name.c keylen.c)
@@ -91,14 +91,14 @@ $(NAME) : $(OBJ)
 	@$(CC) $(CFLAGS) $(SAN_FLAG) -o $@ $^ $(LIB)
 
 $(LFT):
-	@$(MAKE) -s -C lib/libft bonus
+	@$(MAKE) -s -C libft bonus
 
 clean:
-	@$(MAKE) -s -C lib/libft $@
+	@$(MAKE) -s -C libft $@
 	rm -rf obj
 
 fclean: clean
-	@$(MAKE) -s -C lib/libft $@
+	@$(MAKE) -s -C libft $@
 	@rm -rf $(NAME)
 
 obj:

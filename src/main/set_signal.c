@@ -45,7 +45,7 @@ static void	signal_handler(int signo)
 			ft_putstr_fd("minishell$   \b\b\n", STDOUT_FILENO);
 			// ft_putstr_fd("", STDOUT_FILENO);
 			rl_on_new_line();
-			rl_replace_line("", 0);
+			// rl_replace_line("", 0);
 			rl_redisplay();
 			g_last_exit_value = 1;
 		}
