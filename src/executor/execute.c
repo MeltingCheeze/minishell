@@ -39,10 +39,10 @@ void	 child_process(t_sh *sh, t_script *cur_cmd, int *pipeline)
 	} 
 
 	argv = make_arguments(cur_cmd);
-	cmd_path = cmd_to_path(sh, cur_cmd->head);
 	builtin = is_builtin(cur_cmd->head);
 	if (builtin)
 		exit(execve_builtin(argv, sh, cur_cmd, builtin));
+	cmd_path = cmd_to_path(sh, cur_cmd->head);
 	if (execve(cmd_path, argv, sh->env_info.envp) < 0)
 	{
 		if (argv && !argv[0])
@@ -55,9 +55,8 @@ void	parent_process(t_script *cur_cmd, int *pipeline, int *std_dup)
 {
 	if (cur_cmd->next != NULL)
 	{
-		/* close output pipe -> no use */
 		close(pipeline[WRITE]);
-		/* change input fd */
+
 		dup2(pipeline[READ], STDIN_FILENO);
 		close(pipeline[READ]);
 	}
@@ -80,7 +79,6 @@ static void	wait_child(t_sh *sh)
 	{
 		wait(&statloc);
 		g_last_exit_value = WEXITSTATUS(statloc);
-		// printf("=======g_last_exit_value : %d\n=======", g_last_exit_value);
 		curr = curr->next;
 	}
 }
@@ -95,16 +93,15 @@ static int	only_builtin(t_sh *sh, t_script *cur_cmd, int *std_dup)
 	rvalue = redirection(cur_cmd);
 	if (rvalue)
 		return (rvalue);
+
+	dup2(cur_cmd->fd_in, STDIN_FILENO);
 	if (cur_cmd->fd_in != STDIN_FILENO)
-	{
-		dup2(cur_cmd->fd_in, STDIN_FILENO);
 		close(cur_cmd->fd_in);
-	}
+
+	dup2(cur_cmd->fd_out, STDOUT_FILENO);
 	if (cur_cmd->fd_out != STDOUT_FILENO)
-	{
-		dup2(cur_cmd->fd_out, STDOUT_FILENO);
 		close(cur_cmd->fd_out);
-	}
+
 	argv = make_arguments(cur_cmd);
 	builtin = is_builtin(cur_cmd->head);
 	rvalue = execve_builtin(argv, sh, cur_cmd, builtin);
@@ -134,7 +131,7 @@ int execute(t_sh *sh)
 
 	while (cur_cmd)
 	{
-		if (cur_cmd->next != NULL) //not last cmd
+		if (cur_cmd->next != NULL)
 			pipe(pipeline);
 		pid = fork();
 
@@ -144,7 +141,6 @@ int execute(t_sh *sh)
 			parent_process(cur_cmd, pipeline, std_dup);
 		cur_cmd = cur_cmd->next;
 	}
-
 	wait_child(sh);
 	return (0);
 }
