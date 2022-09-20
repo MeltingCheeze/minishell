@@ -116,8 +116,8 @@ static int	only_builtin(t_sh *sh, t_script *cur_cmd, int *std_dup)
 int execute(t_sh *sh)
 {
 	t_script	*cur_cmd;
-	int			pipeline[2];
 	pid_t		pid;
+	int			pipeline[2];
 	int 		std_dup[2];
 	
 	std_dup[0] = dup(0);
@@ -125,10 +125,10 @@ int execute(t_sh *sh)
 
 	cur_cmd = sh->script;
 	g_last_exit_value = 0;
-
+	
 	if (!sh->multi_cmd_flag && is_builtin(cur_cmd->head))
 		return (only_builtin(sh, cur_cmd, std_dup));
-
+	
 	while (cur_cmd)
 	{
 		if (cur_cmd->next != NULL)
@@ -141,6 +141,7 @@ int execute(t_sh *sh)
 			parent_process(cur_cmd, pipeline, std_dup);
 		cur_cmd = cur_cmd->next;
 	}
+	
 	wait_child(sh);
 	return (0);
 }
