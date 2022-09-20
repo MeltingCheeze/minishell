@@ -81,6 +81,7 @@ int	heredoc_readline(t_sh *sh)
 				{
 					doc = attach_str(doc, line);
 					doc = attach_str(doc, "\n");
+					free(line);
 				}
 			}
 			cur_cmd->herecnt--;

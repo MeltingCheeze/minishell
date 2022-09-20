@@ -1,5 +1,5 @@
-#ifndef BUILTINS_H
-# define BUILTINS_H
+#ifndef builtin_H
+# define builtin_H
 
 # include "struct.h"
 

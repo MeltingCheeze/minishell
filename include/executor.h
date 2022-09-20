@@ -19,7 +19,6 @@ int	redirection(t_script *cur_cmd);
 int	open_error(char *fname);
 
 t_bool		is_file_exists(char *file_name); // utils
-t_builtin	is_builtins(t_token *token);
 
 int		is_path(char *s);
 
@@ -28,5 +27,8 @@ char	*cmd_to_path(t_sh *sh, t_token *token);
 char	**make_arguments(t_script *script);
 
 int		execute_error(char *cmd);
+
+int execve_builtin(char **argv, t_sh *sh, t_script *cur_cmd, t_builtin builtin);
+t_builtin	is_builtin(t_token *token);
 
 #endif

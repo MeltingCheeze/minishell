@@ -42,16 +42,15 @@ static void	signal_handler(int signo)
 		if (pid == -1)
 		{
 			// ft_putstr_fd("\n\b\b", STDOUT_FILENO);
-			ft_putstr_fd("minishell$   \b\b\n", STDOUT_FILENO);
+			ft_putstr_fd("minishell$\n", STDOUT_FILENO);
 			// ft_putstr_fd("", STDOUT_FILENO);
 			rl_on_new_line();
-			// rl_replace_line("", 0);
+			rl_replace_line("", 0);
 			rl_redisplay();
 			g_last_exit_value = 1;
 		}
 		else
-		{
-			ft_putstr_fd("fdfd$ ", STDOUT_FILENO);
+		{			ft_putstr_fd("fdfd$ ", STDOUT_FILENO);
 			ft_putchar_fd('\n', STDOUT_FILENO);
 		}
 	}

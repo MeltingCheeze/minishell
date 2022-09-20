@@ -39,7 +39,7 @@
         "string.h": "c",
         "stdio.h": "c",
         "errno.h": "c",
-        "builtins.h": "c",
+        "builtin.h": "c",
         "locale": "c",
         "memory": "c",
         "types.h": "c",

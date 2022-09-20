@@ -6,7 +6,7 @@
 #    By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/22 02:33:06 by chaejkim          #+#    #+#              #
-#    Updated: 2022/09/20 09:25:39 by hyko             ###   ########.fr        #
+#    Updated: 2022/09/20 11:03:37 by hyko             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,12 +14,15 @@ NAME = minishell
 
 CC = cc
 CFLAGS = #-Wall -Werror -Wextra
-SAN_FLAG = -g3 -fsanitize=address
+SAN_FLAG = #-g3 -fsanitize=address
 
 LFT = libft/libft.a
 LOCAL_RL_DIR = /opt/homebrew/Cellar/readline/8.1.2
 # CLUSTER_RL_DIR = $(HOME)/.brew/opt/readline
 #CLUSTER_RL_DIR =  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/readline
+
+LDFLAGS="-L/Users/hyko/.brew/opt/readline/lib"
+CPPFLAGS="-I/Users/hyko/.brew/opt/readline/include"
 
 INC = -Iinclude -Ilibft -I$(CLUSTER_RL_DIR)/include
 LIB = -Llibft -lft -L$(CLUSTER_RL_DIR)/lib -lreadline
@@ -58,37 +61,37 @@ SRC = src/main/main.c \
 	  src/utils/is_file_exist.c \
 	  src/tmp/print.c \
 	  src/executor/execute.c \
+	  src/executor/execute_builtin.c \
 	  src/executor/execute_err.c \
-	  src/executor/is_builtins.c \
 	  src/executor/is_path.c \
 	  src/executor/cmd_to_path.c \
 	  src/executor/make_arguments.c \
 	  src/executor/redir_err.c \
 	  src/executor/redirection.c \
-	  src/builtins/builtin_env.c \
-	  src/builtins/builtin_export.c \
-	  src/builtins/builtin_export_utils.c \
-	  src/builtins/builtin_unset.c \
-	  src/builtins/builtin_echo.c \
-	  src/builtins/builtin_cd.c \
-	  src/builtins/builtin_pwd.c \
-	  src/builtins/builtin_exit.c \
+	  src/builtin/builtin_env.c \
+	  src/builtin/builtin_export.c \
+	  src/builtin/builtin_export_utils.c \
+	  src/builtin/builtin_unset.c \
+	  src/builtin/builtin_echo.c \
+	  src/builtin/builtin_cd.c \
+	  src/builtin/builtin_pwd.c \
+	  src/builtin/builtin_exit.c \
 	  src/heredoc/heredoc.c \
 
 #  src/exec/exec.c \
 #  src/iostream/pipe.c \
 #  src/iostream/redirect.c \
-#  src/builtins/
+#  src/builtin/
 
 OBJ = $(patsubst src%, obj%, $(SRC:.c=.o))
 
 obj/%.o : src/%.c
-	@$(CC) $(CFLAGS) $(SAN_FLAG) $(INC) -o $@ -c $<
+	@$(CC) $(CFLAGS) $(SAN_FLAG) $(LDFLAGS) -Qunused-arguments $(CPPFLAGS) $(INC) -o $@ -c $<
 
 all: $(LFT) obj $(NAME)
 
 $(NAME) : $(OBJ)
-	@$(CC) $(CFLAGS) $(SAN_FLAG) -o $@ $^ $(LIB)
+	@$(CC) $(CFLAGS) $(SAN_FLAG) $(LDFLAGS) -Qunused-arguments $(CPPFLAGS) -o $@ $^ $(LIB)
 
 $(LFT):
 	@$(MAKE) -s -C libft bonus
@@ -104,7 +107,7 @@ fclean: clean
 obj:
 	@mkdir -p obj
 	@mkdir -p obj/main
-	@mkdir -p obj/builtins
+	@mkdir -p obj/builtin
 	@mkdir -p obj/heredoc
 	@mkdir -p obj/executor
 	@mkdir -p obj/env

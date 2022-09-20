@@ -1,7 +1,7 @@
 #include "env.h"
 #include "libft.h"
 #include "parser.h"
-#include "builtins.h"
+#include "builtin.h"
 
 #define SHELL_NAME "minishell: "
 

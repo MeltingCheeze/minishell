@@ -1,5 +1,5 @@
 #include "libft.h"
-#include "builtins.h"
+#include "builtin.h"
 #include <stdio.h>
 
 int	builtin_echo(char **argv, t_script *cur_cmd)
