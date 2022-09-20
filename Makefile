@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+         #
+#    By: hyko <hyko@student.42seoul.kr>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/22 02:33:06 by chaejkim          #+#    #+#              #
-#    Updated: 2022/09/20 11:03:37 by hyko             ###   ########.fr        #
+#    Updated: 2022/09/20 14:10:58 by hyko             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,15 +14,21 @@ NAME = minishell
 
 CC = cc
 CFLAGS = #-Wall -Werror -Wextra
-SAN_FLAG = #-g3 -fsanitize=address
+SAN_FLAG = -g3 -fsanitize=address
 
 LFT = libft/libft.a
 LOCAL_RL_DIR = /opt/homebrew/Cellar/readline/8.1.2
 # CLUSTER_RL_DIR = $(HOME)/.brew/opt/readline
 #CLUSTER_RL_DIR =  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/readline
 
-LDFLAGS="-L/Users/hyko/.brew/opt/readline/lib"
-CPPFLAGS="-I/Users/hyko/.brew/opt/readline/include"
+# cluster
+# LDFLAGS="-L/Users/hyko/.brew/opt/readline/lib"
+# CPPFLAGS="-I/Users/hyko/.brew/opt/readline/include"
+
+# mac
+LDFLAGS="-L/opt/homebrew/opt/readline/lib"
+CPPFLAGS="-I/opt/homebrew/opt/readline/include"
+
 
 INC = -Iinclude -Ilibft -I$(CLUSTER_RL_DIR)/include
 LIB = -Llibft -lft -L$(CLUSTER_RL_DIR)/lib -lreadline

@@ -44,6 +44,8 @@ char	*cmd_to_path(t_sh *sh, t_token *token)
 
 	while (token && (token->type != CMD))
 		token = token->next;
+	if (!token) // ls | << eof 헸을때 세그폴트 떠서 일단 막아놨어! 문제 있음 수정해줘~~
+		return (NULL);
 	if (*token->content == '\0')
 		return (NULL);
 	cmd_path = token->content;
