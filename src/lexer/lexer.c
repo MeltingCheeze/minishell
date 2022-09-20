@@ -66,7 +66,6 @@ static int	check_cmd(t_token *token)
 	}
 	if (curr == NULL)
 		return (0);
-
 	curr->type = CMD;
 
 	while (curr)
@@ -75,13 +74,18 @@ static int	check_cmd(t_token *token)
 		{
 			while (curr->type != WORD)
 			{
-				curr = curr->next;
+				if (curr->next)
+					curr = curr->next;
+				else
+					return (0);
 			}
 			curr->type = CMD;
 		}
-		// if (curr->next)
-		// 	return (0);
-		curr = curr->next;
+		if (curr->next)
+			curr = curr->next;
+		else
+			break ;
+		// printf("%s : %u\n", curr->content, curr->type);
 	}
 	return (0);
 }
@@ -139,9 +143,19 @@ static void	print_type(t_token *token)
 int	lexcial_analyze(t_token *token)
 {
 	check_type(token);
-	if (check_filename(token) || check_cmd(token) || check_grammar(token))
+	if (check_filename(token) < -1)
 	{
-		printf("error -> lexer\n"); //에러처리 수정필요!!!
+		printf("lexer error -> check_filename\n"); //나중에 삭제!!!
+		return (-1);
+	}
+	if (check_cmd(token) < -1)
+	{
+		printf("lexer error -> check_cmd\n"); //나중에 삭제!!!
+		return (-1);
+	}
+	if (check_grammar(token) < -1)
+	{
+		printf("lexer error -> check_grammar\n"); //나중에 삭제!!!
 		return (-1);
 	}
 
