@@ -4,13 +4,12 @@
 #include <sys/types.h> 
 #include <sys/wait.h>
 
-
 void	 child_process(t_sh *sh, t_script *cur_cmd, int *pipeline)
 {
 	char		**argv;
 	char		*cmd_path;
-	t_builtin	builtin;
 	int			redir;
+	t_builtin	builtin;
 
 	redir = 0;
 	argv = 0;
@@ -37,8 +36,7 @@ void	 child_process(t_sh *sh, t_script *cur_cmd, int *pipeline)
 	{
 		dup2(pipeline[WRITE], STDOUT_FILENO);
 		close(pipeline[WRITE]);
-	}
- 
+	} 
 
 	argv = make_arguments(cur_cmd);
 	cmd_path = cmd_to_path(sh, cur_cmd->head);
@@ -65,8 +63,6 @@ void	parent_process(t_script *cur_cmd, int *pipeline, int *std_dup)
 	}
 	else
 	{
-		close(pipeline[0]);
-		close(pipeline[1]);
 		dup2(std_dup[0], STDIN_FILENO);
 		dup2(std_dup[1], STDOUT_FILENO);
 		close(std_dup[0]);
