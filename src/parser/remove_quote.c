@@ -10,20 +10,12 @@ static void	rm_token_quote(char *dest, char *src, char quote)
 			quote = *src;
 			src++;
 			while (*src != quote)
-			{
-				*dest = *src;
-				src++;
-				dest++;
-			}
+				*(dest++) = *(src++);
 			quote = 0;
 			src++;
 		}
 		else
-		{
-			*dest = *src;
-			src++;
-			dest++;
-		}
+			*(dest++) = *(src++);
 	}
 	*dest = *src;
 }

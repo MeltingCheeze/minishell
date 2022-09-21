@@ -8,7 +8,7 @@
 # define SYNTAX_ERROR_MSG "syntax error near unexpected token `"
 
 # define SEPS " \t\n"
-# define DELIMS " \t\n><|"
+# define DELIMS " \t\n><|\0"
 
 int		parser(t_sh *sh, char *line);
 

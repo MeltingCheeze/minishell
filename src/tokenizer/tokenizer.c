@@ -1,13 +1,13 @@
 #include "parser.h"
 #include "libft.h"
+#include <stdio.h>
 
-static int	destroy_token(t_token **token, char *line, int cnt)
+static int	syntax_err(char *s, int cnt)
 {
-	tokenclear(token);
-	*(line + cnt - 1) = 0;
+	*(s + cnt - 1) = 0;
 	ft_putstr_fd("minishell: syntax error near unexpected token ", 2);
-	ft_putendl_fd(line, 2);
-	// g_last_exit_value = 258;
+	ft_putendl_fd(s, 2);
+	g_last_exit_value = 258;
 	return (258);
 }
 
@@ -15,40 +15,41 @@ static int	count_special_char(char *str)
 {
 	int	cnt;
 
-	if (cnt != '<' && cnt != '>' && cnt != '|')
+	if (*str != '<' && *str != '>' && *str != '|')
 		return (0);
 	cnt = 1;
 	while (*str == *(str + cnt))
 		cnt++;
-	//if (cnt > 2 || (cnt > 1 && (*str == '|')))
-	//	//destroy_token(token, str, cnt);
-	//	cnt = -1;
+	if (cnt > 2 || (cnt > 1 && (*str == '|')))
+	{
+		syntax_err(str, cnt);
+		return (-1);
+	}
 	return (cnt);
 }
 
 static void	add_tokens(t_token **token, char *start, char *cur, int cnt)
 {
-
 	if (start != cur)
 		tokenadd_back(token, tokennew(ft_substr(start, 0, cur - start)));
 	if (cnt)
 		tokenadd_back(token, tokennew(ft_substr(cur, 0, cnt)));
 }
 
-
-static void	check_line(t_token **token, char *line)
+static int	check_line(t_token **token, char *line)
 {
 	char	quote;
 	char	*cur;
 	int		cnt;
 
 	quote = 0;
+	cnt = 0;
 	if (*line == 0)
-		return ;
+		return (0);
 	while (*line && ft_strchr(SEPS, *line))
 		line++;
 	cur = line;
-	while (*cur)
+	while (1)
 	{
 		if (!quote && (*cur == '"' || *cur == '\''))
 			quote = *cur;
@@ -57,20 +58,23 @@ static void	check_line(t_token **token, char *line)
 		else if (quote == 0 && ft_strchr(DELIMS, *cur))
 		{
 			cnt = count_special_char(cur);
+			if (cnt < 0)
+				return (-1);
 			add_tokens(token, line, cur, cnt);
 			return (check_line(token, cur + cnt));
 		}
 		cur++;
 	}
-	if (cur - line)
-		tokenadd_back(token, tokennew(ft_strdup(line)));
 }
 
 t_token	*tokenizer(char *line)
 {
 	t_token	*token;
+	int		rvalue;
 
 	token = 0;
-	check_line(&token, line);
+	rvalue = check_line(&token, line);
+	if (rvalue < 0)
+		tokenclear(&token);
 	return (token);
 }

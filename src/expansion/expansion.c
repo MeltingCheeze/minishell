@@ -17,6 +17,12 @@ static void	parameter_expansion(t_env *env, t_token **token)
 			quote = *cur;
 		else if (quote == *cur)
 			quote = 0;
+		else if (quote == 0 && *cur == '$' && is_valid_env_name(*(cur + 1)))
+		{
+			result = attach_str(result, "\"");
+			result = do_expand(env, result, &start, &cur);
+			result = attach_str(result, "\"");
+		}
 		else if (quote != '\'' && *cur == '$' && is_valid_env_name(*(cur + 1)))
 			result = do_expand(env, result, &start, &cur);
 		cur++;
