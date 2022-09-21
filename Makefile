@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hyko <hyko@student.42seoul.kr>             +#+  +:+       +#+         #
+#    By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/22 02:33:06 by chaejkim          #+#    #+#              #
-#    Updated: 2022/09/20 14:10:58 by hyko             ###   ########.fr        #
+#    Updated: 2022/09/21 15:54:03 by hyko             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,16 +22,16 @@ LOCAL_RL_DIR = /opt/homebrew/Cellar/readline/8.1.2
 #CLUSTER_RL_DIR =  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/readline
 
 # cluster
-# LDFLAGS="-L/Users/hyko/.brew/opt/readline/lib"
-# CPPFLAGS="-I/Users/hyko/.brew/opt/readline/include"
+LDFLAGS="-L/Users/hyko/.brew/opt/readline/lib"
+CPPFLAGS="-I/Users/hyko/.brew/opt/readline/include"
 
 # mac
-LDFLAGS="-L/opt/homebrew/opt/readline/lib"
-CPPFLAGS="-I/opt/homebrew/opt/readline/include"
+# LDFLAGS="-L/opt/homebrew/opt/readline/lib"
+# CPPFLAGS="-I/opt/homebrew/opt/readline/include"
 
 
-INC = -Iinclude -Ilibft -I$(CLUSTER_RL_DIR)/include
-LIB = -Llibft -lft -L$(CLUSTER_RL_DIR)/lib -lreadline
+INC = -Iinclude -Ilibft
+LIB = -Llibft -lft -lreadline
 
 #MAIN_SRC = $(addprefix src/main/, main.c readcmdline.c set_sigaction.c shell_sigaction.c)
 #ENV_SRC = $(addprefix src/env/, env.c is_valid_env_name.c keylen.c)
