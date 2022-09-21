@@ -6,7 +6,7 @@
 #    By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/22 02:33:06 by chaejkim          #+#    #+#              #
-#    Updated: 2022/09/21 19:50:43 by chaejkim         ###   ########.fr        #
+#    Updated: 2022/09/21 20:21:47 by chaejkim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,86 +17,43 @@ CFLAGS = #-Wall -Werror -Wextra
 SAN_FLAG = -g3 -fsanitize=address
 
 LFT = libft/libft.a
-LOCAL_RL_DIR = /opt/homebrew/Cellar/readline/8.1.2
-# CLUSTER_RL_DIR = $(HOME)/.brew/opt/readline
-#CLUSTER_RL_DIR =  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include/readline
+LOCAL_RL_DIR = /opt/homebrew/opt/readline
+CLUSTER_RL_DIR = $(HOME)/.brew/opt/readline
 
-# cluster
-LDFLAGS="-L/Users/hyko/.brew/opt/readline/lib"
-CPPFLAGS="-I/Users/hyko/.brew/opt/readline/include"
+# local mac
+# INC = -Iinclude -Ilibft -I$(LOCAL_RL_DIR)/include
+# LIB = -Llibft -lft -L$(LOCAL_RL_DIR)/lib -lreadline
 
-# mac
-# LDFLAGS="-L/opt/homebrew/opt/readline/lib"
-# CPPFLAGS="-I/opt/homebrew/opt/readline/include"
+INC = -Iinclude -Ilibft -I$(CLUSTER_RL_DIR)/include
+LIB = -Llibft -lft -L$(CLUSTER_RL_DIR)/lib -lreadline
 
+MAIN_SRC = $(addprefix src/main/, main.c readcmdline.c set_signal.c set_heredoc_signal.c)
+ENV_SRC = $(addprefix src/env/, env.c env_utils.c env_name_utils.c export.c)
+UTILS_SRC = $(addprefix src/utils/,ft_error.c is_file_exist.c)
+TMP_SRC = $(addprefix src/tmp/, print.c)
+PARSER_SRC = $(addprefix src/parser/, parser.c tokens_to_cmds.c remove_quote.c)
+TOKEN_SRC = $(addprefix src/tokenizer/, token.c tokenizer.c)
+LEXER_SRC = $(addprefix src/lexer/, lexer.c)
+EXPANS_SRC = $(addprefix src/expansion/, expansion.c expansion_utils.c)
+HEREDOC_SRC = $(addprefix src/heredoc/, heredoc.c)
+EXCUTOT_SRC = $(addprefix src/executor/, execute.c execute_builtin.c execute_err.c \
+			  is_path.c cmd_to_path.c make_arguments.c redir_err.c redirection.c)
+BUILTIN_SRC = $(addprefix src/builtin/, builtin_env.c builtin_export.c builtin_export_utils.c \
+			  builtin_unset.c builtin_echo.c builtin_cd.c builtin_pwd.c builtin_exit.c)
 
-INC = -Iinclude -Ilibft
-LIB = -Llibft -lft -lreadline
-
-#MAIN_SRC = $(addprefix src/main/, main.c readcmdline.c set_sigaction.c shell_sigaction.c)
-#ENV_SRC = $(addprefix src/env/, env.c is_valid_env_name.c keylen.c)
-#TOKEN_SRC = $(addprefix src/tokenizer/, token.c tokenizer.c)
-#LEXER_SRC = $(addprefix src/lexer/, lexer.c)
-#EXPANS_SRC = $(addprefix src/expansion/, expansion.c \
-#			 parameter_expansion.c cmdpath_expansion.c input_file_checker.c)
-#PARSER_SRC = $(addprefix src/parser/, parser.c tokens_to_cmds.c remove_quote.c)
-#EXCUTOT_SRC = $(addprefix src/executor/, redirection.c)
-#utils_SRC = $(addprefix src/utils/, main.c ft_error.c is_file_exist.c)
-#TMP_SRC = $(addprefix src/tmp/, print.c)
-
-#SRC = MAIN_SRC ENV_SRC TOKEN_SRC LEXER_SRC EXPANS_SRC PARSER_SRC EXCUTOT_SRC utils_SRC TMP_SRC
-
-SRC = src/main/main.c \
-	  src/main/readcmdline.c \
-	  src/main/set_signal.c \
-	  src/main/set_heredoc_signal.c \
-	  src/env/env.c \
-	  src/env/env_utils.c \
-	  src/env/env_name_utils.c \
-	  src/env/export.c \
-	  src/tokenizer/token.c \
-	  src/tokenizer/tokenizer.c \
-	  src/lexer/lexer.c \
-	  src/expansion/expansion.c \
-	  src/expansion/expansion_utils.c \
-	  src/parser/parser.c \
-	  src/parser/tokens_to_cmds.c \
-	  src/parser/remove_quote.c \
-	  src/utils/ft_error.c \
-	  src/utils/is_file_exist.c \
-	  src/tmp/print.c \
-	  src/executor/execute.c \
-	  src/executor/execute_builtin.c \
-	  src/executor/execute_err.c \
-	  src/executor/is_path.c \
-	  src/executor/cmd_to_path.c \
-	  src/executor/make_arguments.c \
-	  src/executor/redir_err.c \
-	  src/executor/redirection.c \
-	  src/builtin/builtin_env.c \
-	  src/builtin/builtin_export.c \
-	  src/builtin/builtin_export_utils.c \
-	  src/builtin/builtin_unset.c \
-	  src/builtin/builtin_echo.c \
-	  src/builtin/builtin_cd.c \
-	  src/builtin/builtin_pwd.c \
-	  src/builtin/builtin_exit.c \
-	  src/heredoc/heredoc.c \
-
-#  src/exec/exec.c \
-#  src/iostream/pipe.c \
-#  src/iostream/redirect.c \
-#  src/builtin/
+SRC = $(MAIN_SRC) $(ENV_SRC) $(UTILS_SRC) $(TMP_SRC) \
+	  $(PARSER_SRC) $(TOKEN_SRC) $(LEXER_SRC) $(EXPANS_SRC) \
+	  $(HEREDOC_SRC) $(BUILTIN_SRC) $(EXCUTOT_SRC) 
 
 OBJ = $(patsubst src%, obj%, $(SRC:.c=.o))
 
 obj/%.o : src/%.c
-	@$(CC) $(CFLAGS) $(SAN_FLAG) $(LDFLAGS) -Qunused-arguments $(CPPFLAGS) $(INC) -o $@ -c $<
+	@$(CC) $(CFLAGS) $(SAN_FLAG) -Qunused-arguments $(INC) -o $@ -c $<
 
 all: $(LFT) obj $(NAME)
 
 $(NAME) : $(OBJ)
-	@$(CC) $(CFLAGS) $(SAN_FLAG) $(LDFLAGS) -Qunused-arguments $(CPPFLAGS) -o $@ $^ $(LIB)
+	@$(CC) $(CFLAGS) $(SAN_FLAG) -Qunused-arguments -o $@ $^ $(LIB)
 
 $(LFT):
 	@$(MAKE) -s -C libft bonus
