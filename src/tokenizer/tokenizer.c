@@ -1,74 +1,80 @@
 #include "parser.h"
 #include "libft.h"
+#include <stdio.h>
 
-static int	destroy_token(t_token **token, char *line, int cnt)
+static int	syntax_err(char *s, int cnt)
 {
-	tokenclear(token);
-	*(line + cnt - 1) = 0;
+	*(s + cnt - 1) = 0;
 	ft_putstr_fd("minishell: syntax error near unexpected token ", 2);
-	ft_putendl_fd(line, 2);
-	// g_last_exit_value = 258;
+	ft_putendl_fd(s, 2);
+	g_last_exit_value = 258;
 	return (258);
 }
 
-static int	add_token(t_token **token, char **start, char **cur, size_t len)
+static int	count_special_char(char *str)
 {
 	int	cnt;
 
+	if (*str != '<' && *str != '>' && *str != '|')
+		return (0);
 	cnt = 1;
-	if (ft_strchr(SEPS, **cur))
-		tokenadd_back(token, tokennew(ft_substr(*start, 0, len)));
-	else
+	while (*str == *(str + cnt))
+		cnt++;
+	if (cnt > 2 || (cnt > 1 && (*str == '|')))
 	{
-		while (**cur == *(*cur + cnt))
-			cnt++;
-		if (cnt > 2 || (cnt > 1 && (**cur == '|')))
-		{
-			destroy_token(token, *cur, cnt);
-			return (1);
-		}
-		if (len && !ft_strchr(SEPS, **cur))
-			tokenadd_back(token, tokennew(ft_substr(*start, 0, len)));
-		tokenadd_back(token, tokennew(ft_substr(*cur, 0, cnt)));
+		syntax_err(str, cnt);
+		return (-1);
 	}
-	*start += len + cnt;
-	while (**start && ft_strchr(SEPS, **start))
-		(*start)++;
-	*cur = *start - 1;
-	return (0);
+	return (cnt);
 }
 
-static void	make_token(t_token **token, char *cur)
+static void	add_tokens(t_token **token, char *start, char *cur, int cnt)
+{
+	if (start != cur)
+		tokenadd_back(token, tokennew(ft_substr(start, 0, cur - start)));
+	if (cnt)
+		tokenadd_back(token, tokennew(ft_substr(cur, 0, cnt)));
+}
+
+static int	check_line(t_token **token, char *line)
 {
 	char	quote;
-	char	*start;
+	char	*cur;
+	int		cnt;
 
 	quote = 0;
-	while (*cur && ft_strchr(SEPS, *cur))
-		cur++;
-	start = cur;
-	while (*cur)
+	cnt = 0;
+	if (*line == 0)
+		return (0);
+	while (*line && ft_strchr(SEPS, *line))
+		line++;
+	cur = line;
+	while (1)
 	{
 		if (!quote && (*cur == '"' || *cur == '\''))
 			quote = *cur;
 		else if (quote && (quote == *cur))
 			quote = 0;
-		else if (!quote && ft_strchr(DELIMS, *cur))
+		else if (quote == 0 && ft_strchr(DELIMS, *cur))
 		{
-			if (add_token(token, &start, &cur, cur - start) != 0)
-				return ;
+			cnt = count_special_char(cur);
+			if (cnt < 0)
+				return (-1);
+			add_tokens(token, line, cur, cnt);
+			return (check_line(token, cur + cnt));
 		}
 		cur++;
 	}
-	if (cur - start)
-		tokenadd_back(token, tokennew(ft_strdup(start)));
 }
 
 t_token	*tokenizer(char *line)
 {
 	t_token	*token;
+	int		rvalue;
 
 	token = 0;
-	make_token(&token, line);
+	rvalue = check_line(&token, line);
+	if (rvalue < 0)
+		tokenclear(&token);
 	return (token);
 }

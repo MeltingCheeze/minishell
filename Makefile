@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+         #
+#    By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/22 02:33:06 by chaejkim          #+#    #+#              #
-#    Updated: 2022/09/21 15:54:03 by hyko             ###   ########.fr        #
+#    Updated: 2022/09/21 19:50:43 by chaejkim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,8 +58,7 @@ SRC = src/main/main.c \
 	  src/tokenizer/tokenizer.c \
 	  src/lexer/lexer.c \
 	  src/expansion/expansion.c \
-	  src/expansion/do_expand.c \
-	  src/expansion/attach_str.c \
+	  src/expansion/expansion_utils.c \
 	  src/parser/parser.c \
 	  src/parser/tokens_to_cmds.c \
 	  src/parser/remove_quote.c \

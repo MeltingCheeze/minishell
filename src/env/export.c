@@ -16,17 +16,13 @@ void	export_new(t_env_info *env_info, char *envp)
 	if (new_env)
 	{
 		value = set_env_value(envp);
-		printf("key : %s, value : %s, new_env->value : %s\n", key, value, new_env->value);
 		if (new_env->value)
 			free(new_env->value);
 		new_env->value = value;
+		return ;
 	}
-	else
-	{
-		new_env = env_new(envp);
-		env_add_back(&env_info->head, new_env);
-		env_info->size++;
-	}
-	free(key);
+	new_env = env_new(envp);
+	env_add_back(&env_info->head, new_env);
 	env_info->size++;
+	free(key);
 }
