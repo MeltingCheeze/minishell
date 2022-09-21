@@ -16,6 +16,7 @@ int	env_init(t_env_info *env_info, char **envp)
 			env_add_back(&env_info->head, new);
 		i++;
 	}
+	env_del(env_info->head, "OLDPWD");
 	env_info->size = i;
 	env_info->envp = make_envp(env_info->head, env_info->size);
 	return (0);
