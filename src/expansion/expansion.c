@@ -1,7 +1,4 @@
 #include "expansion.h"
-#include "parser.h"
-#include <stdio.h> // test
-#include "minishell.h" // test
 
 static void	parameter_expansion(t_env *env, t_token **token)
 {
