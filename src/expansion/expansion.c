@@ -1,72 +1,78 @@
 #include "expansion.h"
 #include "libft.h"
+#include "utils.h"
 
-static void	parameter_expansion(t_env *env, t_token **token)
+void	last_exit_value_expansion(t_env *env, char **dst)
 {
-	char	*start;
-	char	*cur;
-	char	*result;
-	char	quote;
-
-	quote = 0;
-	result = 0;
-	cur = (*token)->content;
-	start = cur;
-	while (*cur)
-	{
-		if (!quote && (*cur == '"' || *cur == '\''))
-			quote = *cur;
-		else if (quote == *cur)
-			quote = 0;
-		else if (quote != '\'' && *cur == '$' && *(cur + 1) == '?')
-		{
-			result = attach_str(result, ft_itoa(g_last_exit_value));
-			start = cur + 2;
-			cur = start - 1;
-		}
-		else if (quote == 0 && *cur == '$' && is_valid_env_name(*(cur + 1)))
-		{
-			result = attach_str(result, "\"");
-			result = do_expand(env, result, &start, &cur);
-			result = attach_str(result, "\"");
-		}
-		else if (quote != '\'' && *cur == '$' && is_valid_env_name(*(cur + 1)))
-			result = do_expand(env, result, &start, &cur);
-		cur++;
-	}
-	if (start)
-		result = attach_str(result, start);
-	if (!result)
-		return ;
-	free((*token)->content);
-	(*token)->content = result;
+	*dst = attach_str(*dst, ft_itoa(g_last_exit_value));
 }
 
-static int	expand_tokens(t_sh *sh, t_script *script)
+void	param_expansion(t_env *env, char **dst, char *src, char *cur)
 {
-	t_token	*token;
-	char	*cmd;
+	*dst = attach_param_prestr(*dst, src, cur);
+	*dst = attach_param_str(env, *dst, src, cur);
+}
 
-	token = script->head;
-	cmd = 0;
-	while (token)
+static void	param_expansion_in_quote(t_env *env, char **dst, char *src, char *cur)
+{
+	*dst = attach_param_prestr(*dst, src, cur);
+	*dst = attach_str(*dst, "\"");
+	*dst = attach_param_str(env, *dst, src, cur);
+	*dst = attach_str(*dst, "\"");
+}
+
+static void	check_content(t_env *env, char **dst, char *src, char *cur)
+{
+	char	quote;
+	int		len;
+
+	quote = 0;
+	if (*src == 0)
+		return ;
+	while (*cur)
 	{
-		if (token->type <= WORD)
-			parameter_expansion(sh->env_info.head, &token);
-		token = token->next;
+		if (*cur == '"' || *cur == '\'')
+			quote = set_quote(quote, *cur);
+		else if (quote != '\'' && *cur == '$')
+		{
+			len = count_key_len(cur + 1);
+			if (*(cur + 1) == '?')
+				last_exit_value_expansion(env, dst);
+			else if (len && quote == '"')
+				param_expansion(env, dst, src, cur);
+			else if (len && quote == 0)
+				param_expansion_in_quote(env, dst, src, cur);
+			return (check_content(env, dst, cur + len + 1, cur + len + 1));
+		}
+		cur++;
 	}
-	return (0);
+	*dst = attach_str(*dst, src);
 }
 
 int	expansion(t_sh *sh)
 {
 	t_script	*script;
+	t_token		*token;
+	char		*expand_str;
 
 	script = sh->script;
 	while (script)
 	{
-		if (expand_tokens(sh, script))
-			return (1);
+		token = script->head;
+		while (token)
+		{
+			expand_str = 0;
+			if (token->type <= WORD)
+			{
+				check_content(sh->env_info.head, &expand_str, token->content, token->content);
+				if (expand_str)
+				{
+					free(token->content);
+					token->content = expand_str;
+				}
+			}
+			token = token->next;
+		}
 		script = script->next;
 	}
 	return (0);

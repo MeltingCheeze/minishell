@@ -4,47 +4,45 @@
 #include <readline/readline.h>
 #include "minishell.h"
 
-static char	*expand_line(t_env *env, char *line)
+static void	expand_line(t_env *env, char **dst, char *src)
 {
-	char	*start;
 	char	*cur;
-	char	*result;
+	int		len;
 
-	result = 0;
-	cur = line;
-	start = line;
-	cur = ft_strchr(line, '$');
-	if (!cur)
-		return (line);
-	while (cur && is_valid_env_name(*(cur + 1)))
+	if (*src == 0)
+		return ;
+	cur = src;
+	while (*cur)
 	{
-		result = do_expand(env, result, &start, &cur);
-		cur = ft_strchr(cur, '$');
+		if (*cur == '$')
+		{
+			len = count_key_len(cur + 1);
+			if (*(cur + 1) == '?')
+				last_exit_value_expansion(env, dst);
+			else if (len)
+				param_expansion(env, dst, src, cur);
+			return (expand_line(env, dst, cur + len + 1));
+		}
+		cur++;
 	}
-	if (start)
-		result = attach_str(result, start);
-	free(line);
-	return (result);
+	*dst = attach_str(*dst, src);
 }
 
 static void	heredoc_write(t_sh *sh, char *doc)
 {
-	int	fd;
+	char	*expanded_str;
+	int		fd;
 
-	doc = expand_line(sh->env_info.head, doc);
+	expanded_str = 0;
 	fd = open("/tmp/msh_heredoc", O_RDWR | O_CREAT | O_TRUNC, 0644);
-	// if (fd < 0)
-	// {
-	// 	open_error("heredoc");
-	// 	return ;
-	// }
-	// if (!doc)
-	// {
-	// 	ft_putstr_fd("!doc\n", 2);
-	// 	return ;
-	// }
-	ft_putstr_fd(doc, fd);
-	free(doc);
+	if (ft_strchr(doc, '$') == 0)
+		ft_putstr_fd(doc, fd);
+	else
+	{
+		expand_line(sh->env_info.head, &expanded_str, doc);
+		ft_putstr_fd(expanded_str, fd);
+		free(expanded_str);
+	}
 	close(fd);
 }
 

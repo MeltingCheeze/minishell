@@ -1,5 +1,6 @@
 #include "minishell.h"
 #include "executor.h"
+#include "tokenizer.h" //tokenclear()
 #include <termios.h>
 
 int g_last_exit_value;
