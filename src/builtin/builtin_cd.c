@@ -25,7 +25,6 @@ static void	update_pwd(t_env_info *env_info)
 		// posix error
 		return ;
 	}
-	printf("path : %s\n", pwd);
 	env = ft_strjoin("PWD=", pwd);
 	free(pwd);
 	export_new(env_info, env);

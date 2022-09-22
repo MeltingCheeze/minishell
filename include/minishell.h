@@ -33,7 +33,7 @@ int	execute(t_sh *sh);
 int		redirection(t_script *cur_cmd);
 
 /* heredoc */
-int		heredoc_readline(t_sh *sh);
+void	heredoc_readline(t_sh *sh);
 
 /* signal */
 void	terminal_setting(t_sh *sh);

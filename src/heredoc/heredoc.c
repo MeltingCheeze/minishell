@@ -32,15 +32,26 @@ static void	heredoc_write(t_sh *sh, char *doc)
 	int	fd;
 
 	doc = expand_line(sh->env_info.head, doc);
-	fd = open("tmp", O_RDWR | O_CREAT | O_TRUNC, 0644);
+	fd = open("/tmp/msh_heredoc", O_RDWR | O_CREAT | O_TRUNC, 0644);
+	// if (fd < 0)
+	// {
+	// 	open_error("heredoc");
+	// 	return ;
+	// }
+	// if (!doc)
+	// {
+	// 	ft_putstr_fd("!doc\n", 2);
+	// 	return ;
+	// }
 	ft_putstr_fd(doc, fd);
 	free(doc);
 	close(fd);
 }
 
 // TODO : set_heredoc_signal() 로 핸들러 재설정 필요 SIGINT(ctrl + C) 동작 변경
-int	heredoc_readline(t_sh *sh)
+void	heredoc_readline(t_sh *sh)
 {
+	int			statloc;
 	char 		*line;
 	char		*doc;
 	char		*delimiter;
@@ -48,47 +59,50 @@ int	heredoc_readline(t_sh *sh)
 	t_token		*cur_token;
 
 	cur_cmd = sh->script;
-	doc = 0;
-	while (cur_cmd)
+	if (fork() == 0)
 	{
-		if (doc != 0)
-			free(doc);
-		cur_token = cur_cmd->head;
-		while (cur_cmd->herecnt > 0)
+		set_heredoc_signal();
+		while (cur_cmd)
 		{
-			doc = 0;
-			while (cur_token) //find heredoc
+			cur_token = cur_cmd->head;
+			while (cur_cmd->herecnt > 0)
 			{
-				if (cur_token->type == RD_HEREDOC)
-					break ;
+				doc = 0;
+				while (cur_token) //find heredoc
+				{
+					if (cur_token->type == RD_HEREDOC)
+						break ;
+					cur_token = cur_token->next;
+				}
 				cur_token = cur_token->next;
-			}
-			cur_token = cur_token->next;
-			delimiter = cur_token->content;
-			while (1) //read_line
-			{
-				line = readline("> ");
-				if (line == NULL)
+				delimiter = cur_token->content;
+				while (1) //read_line
 				{
-					break ;
-				}
-				if (!ft_strcmp(line, delimiter))
-				{
-					free(line);
-					break ;
-				}
-				if (*line)
-				{
-					doc = attach_str(doc, line);
+					line = readline("> ");
+					if (line == NULL)
+					{
+						break ;
+					}
+					if (!ft_strcmp(line, delimiter))
+					{
+						free(line);
+						break ;
+					}
+					if (*line)
+					{
+						doc = attach_str(doc, line);
+						free(line);
+					}
 					doc = attach_str(doc, "\n");
-					free(line);
 				}
+				cur_cmd->herecnt--;
 			}
-			cur_cmd->herecnt--;
+			cur_cmd = cur_cmd->next;
 		}
-		cur_cmd = cur_cmd->next;
+		if (doc)
+			heredoc_write(sh, doc);
+		exit(0);
 	}
-	if (doc)
-		heredoc_write(sh, doc);
-	return (0);
+	wait(&statloc);
+	g_last_exit_value = WEXITSTATUS(statloc);
 }

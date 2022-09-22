@@ -1,4 +1,5 @@
 #include "expansion.h"
+#include "libft.h"
 
 static void	parameter_expansion(t_env *env, t_token **token)
 {
@@ -17,6 +18,12 @@ static void	parameter_expansion(t_env *env, t_token **token)
 			quote = *cur;
 		else if (quote == *cur)
 			quote = 0;
+		else if (quote != '\'' && *cur == '$' && *(cur + 1) == '?')
+		{
+			result = attach_str(result, ft_itoa(g_last_exit_value));
+			start = cur + 2;
+			cur = start - 1;
+		}
 		else if (quote == 0 && *cur == '$' && is_valid_env_name(*(cur + 1)))
 		{
 			result = attach_str(result, "\"");

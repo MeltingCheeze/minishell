@@ -67,14 +67,11 @@ static int	check_line(t_token **token, char *line)
 	}
 }
 
-t_token	*tokenizer(char *line)
+int	tokenizer(t_token **token,char *line)
 {
-	t_token	*token;
 	int		rvalue;
 
-	token = 0;
-	rvalue = check_line(&token, line);
-	if (rvalue < 0)
-		tokenclear(&token);
-	return (token);
+	*token = 0;
+	rvalue = check_line(token, line);
+	return (rvalue);
 }

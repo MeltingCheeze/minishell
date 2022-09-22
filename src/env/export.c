@@ -19,6 +19,7 @@ void	export_new(t_env_info *env_info, char *envp)
 		if (new_env->value)
 			free(new_env->value);
 		new_env->value = value;
+		free(key);
 		return ;
 	}
 	new_env = env_new(envp);

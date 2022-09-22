@@ -7,14 +7,7 @@
 //print_type(token);
 //scriptprint(sh->script);
 
-static int	quote_err(void)
-{
-	ft_putstr_fd("minishell: syntax error quote opened\n", STDERR_FILENO);
-	// g_last_exit_value = 258;
-	return (258);
-}
-
-static int	is_unvalid_quote(char *line)
+static int	valid_quote(char *line)
 {
 	char	quote;
 
@@ -33,7 +26,13 @@ static int	is_unvalid_quote(char *line)
 		}
 		line++;
 	}
-	return (quote);
+	if (quote)
+	{
+		ft_putstr_fd("minishell: syntax error quote opened\n", STDERR_FILENO);
+		g_last_exit_value = 258;
+		return (1);
+	}
+	return (0);
 }
 
 int	parser(t_sh *sh, char *line)
@@ -42,11 +41,13 @@ int	parser(t_sh *sh, char *line)
 	t_list	*expand_lst;
 
 	(void)sh;
-	if (is_unvalid_quote(line) && quote_err())
-		return (258);
-	token = tokenizer(line);
-	if (token == NULL || lexcial_analyze(token))
+	if (valid_quote(line))
 		return (1);
+	if (tokenizer(&token, line) != 0 || lexcial_analyze(token) != 0)
+	{
+		tokenclear(&token);
+		return (1);
+	}
 	tokens_to_cmds(sh, token);
 	expansion(sh);
 	remove_quote(sh->script);

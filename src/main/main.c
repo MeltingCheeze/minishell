@@ -1,11 +1,32 @@
 #include "minishell.h"
 #include "executor.h"
+#include <termios.h>
 
 int g_last_exit_value;
+
+static void	free_all(t_script **script, char *line)
+{
+	t_script	*cur;
+	t_script	*tmp;
+
+	cur = *script;
+	while (cur)
+	{
+		tmp = cur;
+		cur = cur->next;
+		tokenclear(&tmp->head);
+		tmp->head = 0;
+		free(tmp);
+	}
+	*script = 0;
+	free(line);
+	unlink("/tmp/msh_heredoc");
+}
 
 static int	minishell(t_sh *sh)
 {
 	char	*line;
+
 	line = NULL;
 	g_last_exit_value = 0;
 	terminal_setting(sh);
@@ -15,7 +36,7 @@ static int	minishell(t_sh *sh)
 		line = readcmdline();
 		if (line == NULL || !*line)
 			continue ;
-		if (parser(sh, line))
+		if (parser(sh, line) != 0)
 			continue ;
 
 		/* builtin exit 함수 구현에 필요 */
@@ -26,8 +47,7 @@ static int	minishell(t_sh *sh)
 		/* heredoc read line */
 		heredoc_readline(sh);
 		execute(sh);
-		free(line);
-		unlink("tmp");
+		free_all(&sh->script, line);
 	}
 }
 

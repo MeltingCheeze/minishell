@@ -6,7 +6,7 @@
 #    By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/22 02:33:06 by chaejkim          #+#    #+#              #
-#    Updated: 2022/09/21 20:21:47 by chaejkim         ###   ########.fr        #
+#    Updated: 2022/09/22 14:56:36 by chaejkim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = minishell
 
 CC = cc
 CFLAGS = #-Wall -Werror -Wextra
-SAN_FLAG = -g3 -fsanitize=address
+SAN_FLAG = #-g3 -fsanitize=address
 
 LFT = libft/libft.a
 LOCAL_RL_DIR = /opt/homebrew/opt/readline

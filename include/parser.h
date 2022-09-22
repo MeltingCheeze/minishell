@@ -12,7 +12,7 @@
 
 int		parser(t_sh *sh, char *line);
 
-t_token	*tokenizer(char *line);
+int		tokenizer(t_token **token,char *line);
 
 void	token_init(t_token *token);
 t_token	*tokennew(char *content);

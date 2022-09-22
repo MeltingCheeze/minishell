@@ -37,9 +37,9 @@ int	redirection(t_script *cur_cmd)
 		{
 			if (cur_cmd->fd_in != 0)
 				close(cur_cmd->fd_in);
-			cur_cmd->fd_in = open("tmp", O_RDONLY, 0644);
+			cur_cmd->fd_in = open("/tmp/msh_heredoc", O_RDONLY, 0644);
 			if (cur_cmd->fd_in < 0)
-				return (open_error("tmp"));
+				return (open_error("heredoc"));
 		}
 		cur_token = cur_token->next;
 	}
