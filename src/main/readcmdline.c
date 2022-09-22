@@ -6,6 +6,8 @@ char	*readcmdline(void)
 {
 	char	*line;
 
+	signal(SIGINT, &signal_readline);
+	signal(SIGQUIT, SIG_IGN);
 	line = readline("minishell$ ");
 	if (line == NULL)
 	{

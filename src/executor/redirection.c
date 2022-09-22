@@ -3,13 +3,6 @@
 #include <readline/history.h>
 #include "executor.h"
 
-
-int test()
-{
-	printf("abc\n");
-	return (-1);
-}
-
 int	redirection(t_script *cur_cmd)
 {
 	t_token *cur_token;

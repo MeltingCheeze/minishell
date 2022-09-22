@@ -5,11 +5,11 @@ int g_last_exit_value;
 
 static int	minishell(t_sh *sh)
 {
-	char				*line;
-
-	set_signal();
+	char	*line;
 	line = NULL;
 	g_last_exit_value = 0;
+	terminal_setting(sh);
+	tcsetattr(STDOUT_FILENO, TCSANOW, &sh->echo_off);
 	while (42)
 	{
 		line = readcmdline();

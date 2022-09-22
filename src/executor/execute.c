@@ -119,7 +119,11 @@ int execute(t_sh *sh)
 	pid_t		pid;
 	int			pipeline[2];
 	int 		std_dup[2];
-	
+
+	signal(SIGINT, &signal_execute);
+	signal(SIGQUIT, &signal_execute);
+	tcsetattr(STDOUT_FILENO, TCSANOW, &sh->echo_on);
+
 	std_dup[0] = dup(0);
 	std_dup[1] = dup(1);
 
@@ -143,5 +147,6 @@ int execute(t_sh *sh)
 	}
 	
 	wait_child(sh);
+	tcsetattr(STDOUT_FILENO, TCSANOW, &sh->echo_off);
 	return (0);
 }

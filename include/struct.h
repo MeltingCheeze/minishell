@@ -2,6 +2,7 @@
 # define STRUCT_H
 
 # include <sys/types.h>
+# include <termios.h>
 
 int	g_last_exit_value;
 
@@ -14,7 +15,7 @@ typedef enum e_bool
 typedef enum e_builtin
 {
 	NONE,
-	ECHO,
+	B_ECHO,
 	CD,
 	PWD,
 	EXPORT,
@@ -71,6 +72,8 @@ typedef struct s_sh
 	t_script	*script;
 	t_env_info	env_info;
 	int			multi_cmd_flag;
+	struct termios	echo_on;
+	struct termios	echo_off;
 }				t_sh;
 
 #endif

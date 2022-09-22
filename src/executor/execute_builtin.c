@@ -13,7 +13,7 @@ int execve_builtin(char **argv, t_sh *sh, t_script *cur_cmd, t_builtin builtin)
 		rvalue = builtin_env(argv, &sh->env_info);
 	else if (builtin == UNSET)
 		rvalue = builtin_unset(argv, &sh->env_info);
-	else if (builtin == ECHO)
+	else if (builtin == B_ECHO)
 		rvalue = builtin_echo(argv, cur_cmd);
 	else if (builtin == PWD)
 		rvalue = builtin_pwd(cur_cmd);
@@ -34,7 +34,7 @@ t_builtin	is_builtin(t_token *token)
 	if (!token)
 		return (result);
 	if (!ft_strcmp(token->content, "echo"))
-		result = ECHO;
+		result = B_ECHO;
 	else if (!ft_strcmp(token->content, "cd"))
 		result = CD;
 	else if (!ft_strcmp(token->content, "pwd"))

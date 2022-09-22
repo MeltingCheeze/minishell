@@ -7,7 +7,6 @@
 
 # include "libft.h"
 # include "struct.h"
-# include "signal.h"
 # include "parser.h"
 # include "env.h"
 
@@ -36,5 +35,10 @@ int		redirection(t_script *cur_cmd);
 /* heredoc */
 int		heredoc_readline(t_sh *sh);
 
+/* signal */
+void	terminal_setting(t_sh *sh);
+void	signal_readline(int	signo);
+void	signal_execute(int	signo);
+void	signal_heredoc(int	signo);
 
 #endif
