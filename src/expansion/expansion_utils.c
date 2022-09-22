@@ -26,7 +26,7 @@ char	*attach_param_prestr(char *joined, char *start, char *cur)
 	return (result);
 }
 
-char	*attach_param_str(t_env *env, char *joined, char *start, char *cur)
+char	*attach_param_str(t_env *env, char *joined, char *cur)
 {
 	char	*key;
 	char	*value;
@@ -34,6 +34,7 @@ char	*attach_param_str(t_env *env, char *joined, char *start, char *cur)
 
 	key = set_env_key(cur + 1);
 	value = find_env_value(env, key);
+	result = joined;
 	if (*key && value)
 		result = attach_str(joined, value);
 	return (result);

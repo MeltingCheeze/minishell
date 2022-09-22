@@ -41,7 +41,7 @@ void	 child_process(t_sh *sh, t_script *cur_cmd, int *pipeline)
 	argv = make_arguments(cur_cmd);
 	builtin = is_builtin(cur_cmd->head);
 	if (builtin)
-		exit(execve_builtin(argv, sh, cur_cmd, builtin));
+		exit(execve_builtin(argv, sh, builtin));
 	cmd_path = cmd_to_path(sh, cur_cmd->head);
 	if (execve(cmd_path, argv, sh->env_info.envp) < 0)
 	{
@@ -104,7 +104,7 @@ static int	only_builtin(t_sh *sh, t_script *cur_cmd, int *std_dup)
 
 	argv = make_arguments(cur_cmd);
 	builtin = is_builtin(cur_cmd->head);
-	rvalue = execve_builtin(argv, sh, cur_cmd, builtin);
+	rvalue = execve_builtin(argv, sh, builtin);
 	free(argv); // argv=0;
 	dup2(std_dup[0], STDIN_FILENO);
 	dup2(std_dup[1], STDOUT_FILENO);

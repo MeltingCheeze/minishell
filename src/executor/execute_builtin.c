@@ -2,7 +2,7 @@
 #include "executor.h"
 #include "builtin.h"
 
-int execve_builtin(char **argv, t_sh *sh, t_script *cur_cmd, t_builtin builtin)
+int execve_builtin(char **argv, t_sh *sh, t_builtin builtin)
 {
 	int	rvalue;
 
@@ -14,9 +14,9 @@ int execve_builtin(char **argv, t_sh *sh, t_script *cur_cmd, t_builtin builtin)
 	else if (builtin == UNSET)
 		rvalue = builtin_unset(argv, &sh->env_info);
 	else if (builtin == B_ECHO)
-		rvalue = builtin_echo(argv, cur_cmd);
+		rvalue = builtin_echo(argv);
 	else if (builtin == PWD)
-		rvalue = builtin_pwd(cur_cmd);
+		rvalue = builtin_pwd();
 	else if (builtin == CD)
 		rvalue = builtin_cd(argv, &sh->env_info);
 	else if (builtin == EXIT)

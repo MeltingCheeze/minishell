@@ -28,7 +28,7 @@ char	**make_arguments(t_script *script);
 
 int		execute_error(char *cmd);
 
-int execve_builtin(char **argv, t_sh *sh, t_script *cur_cmd, t_builtin builtin);
+int execve_builtin(char **argv, t_sh *sh, t_builtin builtin);
 t_builtin	is_builtin(t_token *token);
 
 #endif

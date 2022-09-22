@@ -128,18 +128,6 @@ static int	check_grammar(t_token *token)
 	return (0);
 }
 
-static void	print_type(t_token *token)
-{
-	t_token *curr;
-
-	curr = token;
-	while (curr)
-	{
-		printf("%s : %u\n", curr->content, curr->type);
-		curr = curr->next;
-	}
-}
-
 int	lexcial_analyze(t_token *token)
 {
 	check_type(token);

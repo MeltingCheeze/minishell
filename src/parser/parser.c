@@ -39,7 +39,6 @@ static int	valid_quote(char *line)
 int	parser(t_sh *sh, char *line)
 {
 	t_token	*token;
-	t_list	*expand_lst;
 
 	(void)sh;
 	if (valid_quote(line))

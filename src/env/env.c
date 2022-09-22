@@ -59,7 +59,6 @@ t_env	*env_new(char *s)
 void	env_add_back(t_env **env, t_env *new)
 {
 	t_env	*cur;
-	t_env	*prev;
 
 	if (env == NULL)
 		return ;
@@ -77,7 +76,6 @@ void	env_add_back(t_env **env, t_env *new)
 void	env_del(t_env *env, char *key)
 {
 	t_env	*prev;
-	t_env	*next;
 	int		need_del;
 
 	need_del = 0;

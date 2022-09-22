@@ -2,7 +2,7 @@
 #include "libft.h"
 #include "utils.h"
 
-void	last_exit_value_expansion(t_env *env, char **dst)
+void	last_exit_value_expansion(char **dst)
 {
 	*dst = attach_str(*dst, ft_itoa(g_last_exit_value));
 }
@@ -10,14 +10,14 @@ void	last_exit_value_expansion(t_env *env, char **dst)
 void	param_expansion(t_env *env, char **dst, char *src, char *cur)
 {
 	*dst = attach_param_prestr(*dst, src, cur);
-	*dst = attach_param_str(env, *dst, src, cur);
+	*dst = attach_param_str(env, *dst, cur);
 }
 
 static void	param_expansion_in_quote(t_env *env, char **dst, char *src, char *cur)
 {
 	*dst = attach_param_prestr(*dst, src, cur);
 	*dst = attach_str(*dst, "\"");
-	*dst = attach_param_str(env, *dst, src, cur);
+	*dst = attach_param_str(env, *dst, cur);
 	*dst = attach_str(*dst, "\"");
 }
 
@@ -37,7 +37,7 @@ static void	check_content(t_env *env, char **dst, char *src, char *cur)
 		{
 			len = count_key_len(cur + 1);
 			if (*(cur + 1) == '?')
-				last_exit_value_expansion(env, dst);
+				last_exit_value_expansion(dst);
 			else if (len && quote == '"')
 				param_expansion(env, dst, src, cur);
 			else if (len && quote == 0)

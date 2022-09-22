@@ -23,8 +23,6 @@ static void	envp_print(char	**envp)
 
 int	builtin_env(char **argv, t_env_info *env_info)
 {
-	t_env	*new;
-
 	++argv;
 	if (*argv && **argv)
 		return (env_err());

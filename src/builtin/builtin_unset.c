@@ -29,10 +29,7 @@ static int	check_env_name(char *s)
 
 static void	unset_env(t_env_info *env_info, char **envp)
 {
-	int		len;
 	char	*key;
-	t_env	*env;
-	t_env	*next;
 
 	if (**envp == '_' && *(*envp + 1) == '\0')
 		return ; // 이거 어떻게 할지 모르겠음

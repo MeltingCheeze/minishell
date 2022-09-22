@@ -5,7 +5,7 @@
 
 #define	BUFFER_SIZE 1024
 
-int	builtin_pwd(t_script *cur_cmd)
+int	builtin_pwd(void)
 {
 	char	*buf;
 

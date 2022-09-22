@@ -18,7 +18,7 @@ static void	expand_line(t_env *env, char **dst, char *src)
 		{
 			len = count_key_len(cur + 1);
 			if (*(cur + 1) == '?')
-				last_exit_value_expansion(env, dst);
+				last_exit_value_expansion(dst);
 			else if (len)
 				param_expansion(env, dst, src, cur);
 			return (expand_line(env, dst, cur + len + 1));

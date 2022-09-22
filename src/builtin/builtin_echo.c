@@ -2,7 +2,7 @@
 #include "builtin.h"
 #include <stdio.h>
 
-int	builtin_echo(char **argv, t_script *cur_cmd)
+int	builtin_echo(char **argv)
 {
 	int	i;
 	int	nl_flag;

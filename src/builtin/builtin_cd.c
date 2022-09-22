@@ -34,8 +34,6 @@ static void	update_pwd(t_env_info *env_info)
 int	builtin_cd(char **argv, t_env_info *env_info)
 {
 	char	*path;
-	char	*absolute_path;
-	char	*pwd;
 	int		rvalue;
 
 	rvalue = 0;
