@@ -92,7 +92,10 @@ static int	only_builtin(t_sh *sh, t_script *cur_cmd, int *std_dup)
 	rvalue = 0;
 	rvalue = redirection(cur_cmd);
 	if (rvalue)
+	{
+		tcsetattr(STDOUT_FILENO, TCSANOW, &sh->echo_off);
 		return (rvalue);
+	}
 
 	dup2(cur_cmd->fd_in, STDIN_FILENO);
 	if (cur_cmd->fd_in != STDIN_FILENO)
@@ -110,6 +113,7 @@ static int	only_builtin(t_sh *sh, t_script *cur_cmd, int *std_dup)
 	close(std_dup[0]);
 	close(std_dup[1]);
 	g_last_exit_value = rvalue;
+	tcsetattr(STDOUT_FILENO, TCSANOW, &sh->echo_off);
 	return (rvalue);
 }
 
@@ -150,3 +154,4 @@ int execute(t_sh *sh)
 	tcsetattr(STDOUT_FILENO, TCSANOW, &sh->echo_off);
 	return (0);
 }
+
