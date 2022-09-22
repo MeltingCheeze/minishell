@@ -6,7 +6,7 @@
 #    By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/22 02:33:06 by chaejkim          #+#    #+#              #
-#    Updated: 2022/09/22 16:51:59 by hyko             ###   ########.fr        #
+#    Updated: 2022/09/22 20:55:49 by hyko             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,15 +35,15 @@ PARSER_SRC = $(addprefix src/parser/, parser.c tokens_to_cmds.c remove_quote.c)
 TOKEN_SRC = $(addprefix src/tokenizer/, token.c tokenizer.c)
 LEXER_SRC = $(addprefix src/lexer/, lexer.c)
 EXPANS_SRC = $(addprefix src/expansion/, expansion.c expansion_utils.c)
-HEREDOC_SRC = $(addprefix src/heredoc/, heredoc.c)
-EXCUTOT_SRC = $(addprefix src/executor/, execute.c execute_builtin.c execute_err.c \
-			  is_path.c cmd_to_path.c make_arguments.c redir_err.c redirection.c)
+REDIRECTION_SRC = $(addprefix src/redirection/, redir_heredoc.c redir_err.c redirection.c)
+EXCUTOT_SRC = $(addprefix src/executor/, execute.c exec_builtin.c exec_err.c \
+				exec_child.c exec_parent.c exec_utils.c)
 BUILTIN_SRC = $(addprefix src/builtin/, builtin_env.c builtin_export.c builtin_export_utils.c \
 			  builtin_unset.c builtin_echo.c builtin_cd.c builtin_pwd.c builtin_exit.c)
 
 SRC = $(MAIN_SRC) $(ENV_SRC) $(UTILS_SRC) $(TMP_SRC) \
 	  $(PARSER_SRC) $(TOKEN_SRC) $(LEXER_SRC) $(EXPANS_SRC) \
-	  $(HEREDOC_SRC) $(BUILTIN_SRC) $(EXCUTOT_SRC) 
+	  $(REDIRECTION_SRC) $(BUILTIN_SRC) $(EXCUTOT_SRC) 
 
 OBJ = $(patsubst src%, obj%, $(SRC:.c=.o))
 
@@ -70,7 +70,7 @@ obj:
 	@mkdir -p obj
 	@mkdir -p obj/main
 	@mkdir -p obj/builtin
-	@mkdir -p obj/heredoc
+	@mkdir -p obj/redirection
 	@mkdir -p obj/executor
 	@mkdir -p obj/env
 	@mkdir -p obj/expansion
