@@ -29,3 +29,9 @@ g_last_exit_value == 0
 	rvalue(g_last_exit_value) = execute(sh);
 
 // script_clear();
+
+export a=123
+echo $a
+echo 123
+
+

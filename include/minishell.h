@@ -30,15 +30,18 @@ void	scriptprint(t_script *script);
 
 /* execute -> 헤더 쪼개기 */
 int	execute(t_sh *sh);
-int		redirection(t_script *cur_cmd);
 
-/* heredoc */
-void	heredoc_readline(t_sh *sh);
 
 /* signal */
 void	terminal_setting(t_sh *sh);
 void	signal_readline(int	signo);
 void	signal_execute(int	signo);
 void	signal_heredoc(int	signo);
+
+/* redirection ->헤더 분리 */
+void	heredoc_readline(t_sh *sh);
+int	redirection(t_script *cur_cmd);
+void	heredoc_readline(t_sh *sh);
+int	open_error(char *fname);
 
 #endif

@@ -46,7 +46,7 @@ void	 child_process(t_sh *sh, t_script *cur_cmd, int *pipeline)
 	if (execve(cmd_path, argv, sh->env_info.envp) < 0)
 	{
 		if (argv && !argv[0])
-			exit(EXIT_SUCCESS);
+			exit(ESS);EXIT_SUCC
 		exit(execute_error(argv[0])); // g_last_exit_value = execute_error(argv[0]);;
 	}
 }
