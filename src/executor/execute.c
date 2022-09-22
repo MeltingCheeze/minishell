@@ -108,6 +108,7 @@ static int	only_builtin(t_sh *sh, t_script *cur_cmd, int *std_dup)
 	argv = make_arguments(cur_cmd);
 	builtin = is_builtin(cur_cmd->head);
 	rvalue = execve_builtin(argv, sh, cur_cmd, builtin);
+	free(argv);
 	dup2(std_dup[0], STDIN_FILENO);
 	dup2(std_dup[1], STDOUT_FILENO);
 	close(std_dup[0]);
