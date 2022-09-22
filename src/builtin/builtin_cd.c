@@ -5,11 +5,18 @@
 
 static void	update_oldpwd(t_env_info *env_info)
 {
+	char	*old_pwd;
 	char	*pwd;
 	char	*env;
 
+	old_pwd = find_env_value(env_info->head, "OLDPWD");
+	if (old_pwd == NULL)
+		return ;
 	pwd = find_env_value(env_info->head, "PWD");
-	env = ft_strjoin("OLDPWD=", pwd);
+	if (pwd)
+		env = ft_strjoin("OLDPWD=", pwd);
+	else
+		env = ft_strdup("OLDPWD=");
 	export_new(env_info, env);
 	free(env);
 }

@@ -56,7 +56,6 @@ int	builtin_unset(char **argv, t_env_info *env_info)
 			rvalue = unset_err(*envp);
 	}
 	ft_free_pptr((void ***)&env_info->envp);
-	free(argv);
 	env_info->envp = make_envp(env_info->head, env_info->size);
 	return (rvalue);
 }
