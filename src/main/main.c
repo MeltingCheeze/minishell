@@ -21,6 +21,7 @@ static void	free_all(t_script **script, char *line)
 	}
 	*script = 0;
 	free(line);
+	line = 0;
 	unlink("/tmp/msh_heredoc");
 }
 
@@ -35,8 +36,11 @@ static int	minishell(t_sh *sh)
 	while (42)
 	{
 		line = readcmdline();
-		if (line == NULL || !*line)
+		if (!*line)
+		{
+			free(line);
 			continue ;
+		}
 		if (parser(sh, line) != 0)
 			continue ;
 
