@@ -44,7 +44,8 @@
         "memory": "c",
         "types.h": "c",
         "__node_handle": "c",
-        "history.h": "c"
+        "history.h": "c",
+        "termios.h": "c"
     },
     "editor.insertSpaces": false
 }

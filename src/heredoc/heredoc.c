@@ -61,7 +61,7 @@ void	heredoc_readline(t_sh *sh)
 	cur_cmd = sh->script;
 	if (fork() == 0)
 	{
-		set_heredoc_signal();
+		signal(SIGINT, &signal_heredoc);
 		while (cur_cmd)
 		{
 			cur_token = cur_cmd->head;
