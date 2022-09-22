@@ -1,5 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokenizer.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/22 22:17:59 by chaejkim          #+#    #+#             */
+/*   Updated: 2022/09/22 22:18:00 by chaejkim         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "tokenizer.h"
 #include "libft.h"
+#include "utils.h"
 #include <stdio.h>
 
 static int	syntax_err(char *s, int cnt)
@@ -51,10 +64,8 @@ static int	check_line(t_token **token, char *line)
 	cur = line;
 	while (1)
 	{
-		if (!quote && (*cur == '"' || *cur == '\''))
-			quote = *cur;
-		else if (quote && (quote == *cur))
-			quote = 0;
+		if (*cur == '"' || *cur == '\'')
+			quote = set_quote(quote, *cur);
 		else if (quote == 0 && ft_strchr(DELIMS, *cur))
 		{
 			cnt = count_special_char(cur);
@@ -67,7 +78,7 @@ static int	check_line(t_token **token, char *line)
 	}
 }
 
-int	tokenizer(t_token **token,char *line)
+int	tokenizer(t_token **token, char *line)
 {
 	int		rvalue;
 

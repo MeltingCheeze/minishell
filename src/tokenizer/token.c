@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   token.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/22 22:17:41 by chaejkim          #+#    #+#             */
+/*   Updated: 2022/09/22 22:17:46 by chaejkim         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdlib.h>
 #include "parser.h"
 
@@ -12,8 +24,6 @@ t_token	*tokennew(char *content)
 	t_token	*new;
 
 	new = (t_token *)malloc(sizeof(t_token));
-	// if (!new)
-	// 	ft_error("malloc error(tokennew) : ");
 	new->content = content;
 	new->type = 0;
 	new->next = 0;

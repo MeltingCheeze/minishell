@@ -1,5 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   remove_quote.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/22 20:45:01 by chaejkim          #+#    #+#             */
+/*   Updated: 2022/09/22 22:17:25 by chaejkim         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "parser.h"
-#include "libft.h" // 나중에 고치기
 
 static void	rm_token_quote(char *dest, char *src, char quote)
 {
@@ -19,7 +30,6 @@ static void	rm_token_quote(char *dest, char *src, char quote)
 	}
 	*dest = *src;
 }
-
 
 static void	rm_cmd_quote(t_token *cmd)
 {

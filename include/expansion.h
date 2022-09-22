@@ -5,7 +5,7 @@
 # include "struct.h"
 # include "env.h"
 
-int		expansion(t_sh *sh);
+int		expansion(t_script *script, t_env *env);
 void	last_exit_value_expansion(char **dst);
 void	param_expansion(t_env *env, char **dst, char *src, char *cur);
 

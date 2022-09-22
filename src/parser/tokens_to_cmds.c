@@ -1,79 +1,68 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokens_to_cmds.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/22 20:45:05 by chaejkim          #+#    #+#             */
+/*   Updated: 2022/09/22 22:17:32 by chaejkim         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "parser.h"
 
-// 이거 draft 임
-
-static t_script	*scriptnew(t_token *cmd, int argc, int herecnt)
+static void	set_cnt(t_type type, int *argc, int *herecnt)
 {
-	t_script	*new;
-
-	new = (t_script *)malloc(sizeof(t_script));
-	new->head = cmd;
-	new->next = 0;
-	new->fd_in = 0;
-	new->fd_out = 1;
-	new->argc = argc;
-	new->herecnt = herecnt;
-	return (new);
+	if (type <= WORD)
+		(*argc) += 1;
+	else if (type == RD_HEREDOC)
+		(*herecnt) += 1;
 }
 
-
-static void	scriptadd_back(t_script **script, t_script *new)
+static t_token	*find_tail(t_token *token, int *argc, int *herecnt)
 {
-	t_script	*cur;
-
-	if (*script == NULL)
+	while (token->next && (token->next->type != PIPE))
 	{
-		*script = new;
-		return ;
+		token = token->next;
+		set_cnt(token->type, argc, herecnt);
 	}
-	cur = *script;
-	while (cur->next)
-		cur = cur->next;
-	cur->next = new;
+	return (token);
+}
+
+static void	del_pipetkn(t_token **pipetkn, t_token *tail)
+{
+	tail->next = 0;
+	free((*pipetkn)->content);
+	(*pipetkn)->content = 0;
+	free(*pipetkn);
+	*pipetkn = 0;
 }
 
 void	tokens_to_cmds(t_sh *sh, t_token *token)
 {
-	t_token		*cur;
-	t_token		*base;
-	t_token		*next;
-	t_script	*new;
-	int			argc;
-	int			herecnt;
+	t_token	*head;
+	t_token	*tail;
+	int		argc;
+	int		herecnt;
 
 	sh->script = 0;
-	cur = token;
-	while (cur)
+	while (token)
 	{
 		argc = 0;
 		herecnt = 0;
-		if (cur->type <= WORD)
-			argc++;
-		else if (cur->type == RD_HEREDOC)
-			herecnt++;
-		base = cur;
-		while (cur->next && (cur->next->type != PIPE))
+		set_cnt(token->type, &argc, &herecnt);
+		head = token;
+		tail = find_tail(token, &argc, &herecnt);
+		add_script(&sh->script, head, argc, herecnt);
+		token = tail->next;
+		if (token)
 		{
-			cur = cur->next;
-			if (cur->type <= WORD)
-				argc++;
-			else if (cur->type == RD_HEREDOC)
-				herecnt++;
-		}
-		new = scriptnew(base, argc, herecnt);
-		scriptadd_back(&sh->script, new);
-		base = cur;
-		cur = cur->next;
-		if (cur)
-		{
-			base->next = 0;
-			next = cur->next;
-			free(cur->content);
-			cur->content = 0;
-			free(cur);
+			head = token->next;
+			del_pipetkn(&token, tail);
 		}
 		else
-			next = 0;
-		cur = next;
+			head = 0;
+		token = head;
 	}
 }

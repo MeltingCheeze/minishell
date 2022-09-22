@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expansion.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/22 22:18:49 by chaejkim          #+#    #+#             */
+/*   Updated: 2022/09/22 22:22:52 by chaejkim         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "expansion.h"
 #include "libft.h"
 #include "utils.h"
@@ -13,7 +25,8 @@ void	param_expansion(t_env *env, char **dst, char *src, char *cur)
 	*dst = attach_param_str(env, *dst, cur);
 }
 
-static void	param_expansion_in_quote(t_env *env, char **dst, char *src, char *cur)
+static void	param_expansion_in_quote(t_env *env,
+	char **dst, char *src, char *cur)
 {
 	*dst = attach_param_prestr(*dst, src, cur);
 	*dst = attach_str(*dst, "\"");
@@ -49,26 +62,24 @@ static void	check_content(t_env *env, char **dst, char *src, char *cur)
 	*dst = attach_str(*dst, src);
 }
 
-int	expansion(t_sh *sh)
+int	expansion(t_script *script, t_env *env)
 {
-	t_script	*script;
 	t_token		*token;
-	char		*expand_str;
+	char		*expanded;
 
-	script = sh->script;
 	while (script)
 	{
 		token = script->head;
 		while (token)
 		{
-			expand_str = 0;
+			expanded = 0;
 			if (token->type <= WORD)
 			{
-				check_content(sh->env_info.head, &expand_str, token->content, token->content);
-				if (expand_str)
+				check_content(env, &expanded, token->content, token->content);
+				if (expanded)
 				{
 					free(token->content);
-					token->content = expand_str;
+					token->content = expanded;
 				}
 			}
 			token = token->next;

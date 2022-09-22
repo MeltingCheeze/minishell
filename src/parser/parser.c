@@ -1,12 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/22 20:44:59 by chaejkim          #+#    #+#             */
+/*   Updated: 2022/09/22 22:22:23 by chaejkim         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "parser.h"
 #include "tokenizer.h"
 #include "expansion.h"
 #include "libft.h"
-#include "minishell.h" //test print
-
-//tokenprint(token);
-//print_type(token);
-//scriptprint(sh->script);
 
 static int	valid_quote(char *line)
 {
@@ -49,7 +56,7 @@ int	parser(t_sh *sh, char *line)
 		return (1);
 	}
 	tokens_to_cmds(sh, token);
-	expansion(sh);
+	expansion(sh->script, sh->env_info.head);
 	remove_quote(sh->script);
 	return (0);
 }
