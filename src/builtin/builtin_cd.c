@@ -37,17 +37,20 @@ int	builtin_cd(char **argv, t_env_info *env_info)
 	char	*path;
 	char	*absolute_path;
 	char	*pwd;
+	int		rvalue;
 
+	rvalue = 0;
 	path = argv[1];
 	if (!path || !ft_strcmp(path, "~") || !ft_strcmp(path, "~/")) // $HOME
 		path = find_env_value(env_info->head, "HOME");
 		// path = getenv("HOME");
-	if (chdir(path) < 0)
+	rvalue = chdir(path);
+	if (rvalue < 0)
 	{
 		ft_putstr_fd("cd: ", 2);
 		ft_putstr_fd(path, 2);
 		ft_putstr_fd(": no such file or directory\n", 2);
-		return (1); // 이거 왜 errno 가 아닐까 -> EXIT_FAILURE ??
+		return (rvalue); // 이거 왜 errno 가 아닐까 -> EXIT_FAILURE ??
 	}
 	update_oldpwd(env_info);
 	update_pwd(env_info);
