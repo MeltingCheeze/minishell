@@ -37,6 +37,7 @@ char	*attach_param_str(t_env *env, char *joined, char *cur)
 	result = joined;
 	if (*key && value)
 		result = attach_str(joined, value);
+	free(key);
 	return (result);
 }
 
