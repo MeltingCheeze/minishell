@@ -6,7 +6,7 @@
 /*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 16:42:43 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/23 16:42:44 by hyko             ###   ########.fr       */
+/*   Updated: 2022/09/23 16:53:49 by hyko             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,6 @@ static void	unset_env(t_env_info *env_info, char **envp)
 {
 	char	*key;
 
-	if (**envp == '_' && *(*envp + 1) == '\0')
-		return ; // 이거 어떻게 할지 모르겠음
 	key = set_env_key(*envp);
 	env_del(env_info, key);
 	free(key);

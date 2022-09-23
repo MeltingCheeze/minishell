@@ -6,7 +6,7 @@
 #    By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/22 02:33:06 by chaejkim          #+#    #+#              #
-#    Updated: 2022/09/23 15:41:46 by hyko             ###   ########.fr        #
+#    Updated: 2022/09/23 16:45:06 by hyko             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,6 @@ LIB = -Llibft -lft -L$(CLUSTER_RL_DIR)/lib -lreadline
 MAIN_SRC = $(addprefix src/main/, main.c readcmdline.c set_signal.c)
 ENV_SRC = $(addprefix src/env/, env.c env_utils.c env_name_utils.c export.c env_del.c)
 UTILS_SRC = $(addprefix src/utils/,ft_error.c is_file_exist.c set_quote.c)
-TMP_SRC = $(addprefix src/tmp/, print.c)
 PARSER_SRC = $(addprefix src/parser/, parser.c script.c tokens_to_cmds.c remove_quote.c)
 TOKEN_SRC = $(addprefix src/tokenizer/, token.c tokenizer.c)
 LEXER_SRC = $(addprefix src/lexer/, lexer.c)

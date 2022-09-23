@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/23 16:52:59 by hyko              #+#    #+#             */
+/*   Updated: 2022/09/23 16:53:42 by hyko             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "env.h"
 #include "libft.h"
 
@@ -7,8 +19,6 @@ void	export_new(t_env_info *env_info, char *envp)
 	char	*key;
 	char	*value;
 
-	if (*envp == '_' && *(envp + 1) == '\0')
-		return ; // 이거 어떻게 할지 모르겠음
 	key = set_env_key(envp);
 	new_env = find_env(env_info->head, key);
 	if (new_env)

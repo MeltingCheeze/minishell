@@ -6,7 +6,7 @@
 /*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 16:42:23 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/23 16:42:24 by hyko             ###   ########.fr       */
+/*   Updated: 2022/09/23 16:51:18 by hyko             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,6 @@ static void	update_pwd(t_env_info *env_info)
 	char	*env;
 
 	pwd = getcwd(NULL, 0);
-	if (pwd == NULL)
-	{
-		// posix error
-		return ;
-	}
 	env = ft_strjoin("PWD=", pwd);
 	free(pwd);
 	export_new(env_info, env);
