@@ -38,10 +38,5 @@ void	signal_readline(int	signo);
 void	signal_execute(int	signo);
 void	signal_heredoc(int	signo);
 
-/* redirection ->헤더 분리 */
-void	heredoc_readline(t_sh *sh);
-int	redirection(t_script *cur_cmd);
-void	heredoc_readline(t_sh *sh);
-int	open_error(char *fname);
 
 #endif

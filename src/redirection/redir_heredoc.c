@@ -6,7 +6,7 @@
 /*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 21:12:49 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/22 21:13:00 by hyko             ###   ########.fr       */
+/*   Updated: 2022/09/23 15:53:59 by hyko             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,30 +15,7 @@
 #include <stdio.h>
 #include <readline/readline.h>
 #include "minishell.h"
-
-static void	expand_line(t_env *env, char **dst, char *src)
-{
-	char	*cur;
-	int		len;
-
-	if (*src == 0)
-		return ;
-	cur = src;
-	while (*cur)
-	{
-		if (*cur == '$')
-		{
-			len = count_key_len(cur + 1);
-			if (*(cur + 1) == '?')
-				last_exit_value_expansion(dst);
-			else if (len)
-				param_expansion(env, dst, src, cur);
-			return (expand_line(env, dst, cur + len + 1));
-		}
-		cur++;
-	}
-	*dst = attach_str(*dst, src);
-}
+#include "redirection.h"
 
 static void	heredoc_write(t_sh *sh, char *doc)
 {
@@ -58,55 +35,78 @@ static void	heredoc_write(t_sh *sh, char *doc)
 	close(fd);
 }
 
-// TODO : set_heredoc_signal() 로 핸들러 재설정 필요 SIGINT(ctrl + C) 동작 변경
-void	heredoc_readline(t_sh *sh)
+static t_token	*find_heredoc(t_token *token)
+{
+	while (token)
+	{
+		if (token->type == RD_HEREDOC)
+			break ;
+		token = token->next;
+	}
+	token = token->next;
+	return (token);
+}
+
+static char	*read_line(char *delimiter)
+{
+	char	*line;
+	char	*doc;
+
+	doc = 0;
+	while (1)
+	{
+		line = readline("> ");
+		if (line == NULL)
+		{
+			break ;
+		}
+		if (!ft_strcmp(line, delimiter))
+		{
+			free(line);
+			break ;
+		}
+		if (*line)
+		{
+			doc = attach_str(doc, line);
+			free(line);
+		}
+		doc = attach_str(doc, "\n");
+	}
+	return (doc);
+}
+
+static char	*do_heredoc(t_script *cur_cmd, char *delimiter)
+{
+	char	*doc;
+	t_token	*cur_token;
+
+	cur_token = cur_cmd->head;
+	while (cur_cmd->herecnt > 0)
+	{
+		doc = 0;
+		cur_token = find_heredoc(cur_token);
+		delimiter = cur_token->content;
+		doc = read_line(delimiter);
+		cur_cmd->herecnt--;
+	}
+	return (doc);
+}
+
+void	heredoc_read_line(t_sh *sh)
 {
 	int			statloc;
-	char 		*line;
 	char		*doc;
 	char		*delimiter;
 	t_script	*cur_cmd;
-	t_token		*cur_token;
 
 	cur_cmd = sh->script;
+	delimiter = 0;
 	if (fork() == 0)
 	{
 		signal(SIGINT, &signal_heredoc);
 		while (cur_cmd)
 		{
-			cur_token = cur_cmd->head;
-			while (cur_cmd->herecnt > 0)
-			{
-				doc = 0;
-				while (cur_token) //find heredoc
-				{
-					if (cur_token->type == RD_HEREDOC)
-						break ;
-					cur_token = cur_token->next;
-				}
-				cur_token = cur_token->next;
-				delimiter = cur_token->content;
-				while (1) //read_line
-				{
-					line = readline("> ");
-					if (line == NULL)
-					{
-						break ;
-					}
-					if (!ft_strcmp(line, delimiter))
-					{
-						free(line);
-						break ;
-					}
-					if (*line)
-					{
-						doc = attach_str(doc, line);
-						free(line);
-					}
-					doc = attach_str(doc, "\n");
-				}
-				cur_cmd->herecnt--;
-			}
+			doc = do_heredoc(cur_cmd, delimiter);
 			cur_cmd = cur_cmd->next;
 		}
 		if (doc)

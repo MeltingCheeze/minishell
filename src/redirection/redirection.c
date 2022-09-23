@@ -6,14 +6,14 @@
 /*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 20:56:30 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/22 21:14:44 by hyko             ###   ########.fr       */
+/*   Updated: 2022/09/23 11:49:22 by hyko             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "redirection.h"
 #include "minishell.h"
 #include <readline/readline.h>
 #include <readline/history.h>
-#include "executor.h"
 
 static int	redir_out(t_script *cur_cmd, t_token *cur_token)
 {
@@ -64,33 +64,17 @@ int	redirection(t_script *cur_cmd)
 
 	cur_token = cur_cmd->head;
 	rvalue = 0;
-	while (cur_token)
+	while (cur_token && rvalue == 0)
 	{
 		if (cur_token->type == RD_OUT)
-		{
 			rvalue = redir_out(cur_cmd, cur_token);
-			if (rvalue != 0)
-				return (rvalue);
-		}
 		else if (cur_token->type == RD_APPEND)
-		{
 			rvalue = redir_append(cur_cmd, cur_token);
-			if (rvalue != 0)
-				return (rvalue);
-		}		
 		else if (cur_token->type == RD_IN)
-		{
 			rvalue = redir_in(cur_cmd, cur_token);
-			if (rvalue != 0)
-				return (rvalue);
-		}
 		else if (cur_token->type == RD_HEREDOC)
-		{
 			rvalue = redir_heredoc(cur_cmd);
-			if (rvalue != 0)
-				return (rvalue);
-		}
 		cur_token = cur_token->next;
 	}
-	return (0);
+	return (rvalue);
 }

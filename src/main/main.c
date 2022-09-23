@@ -1,6 +1,7 @@
 #include "minishell.h"
 #include "executor.h"
 #include "tokenizer.h" //tokenclear()
+#include "redirection.h"
 #include <termios.h>
 
 int g_last_exit_value;
@@ -47,7 +48,7 @@ static int	minishell(t_sh *sh)
 			sh->multi_cmd_flag = 1;
 
 		/* heredoc read line */
-		heredoc_readline(sh);
+		heredoc_read_line(sh);
 		execute(sh);
 		free_all(&sh->script, line);
 	}

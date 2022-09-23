@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+         #
+#    By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/22 02:33:06 by chaejkim          #+#    #+#              #
-#    Updated: 2022/09/23 13:24:28 by chaejkim         ###   ########.fr        #
+#    Updated: 2022/09/23 15:41:46 by hyko             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ PARSER_SRC = $(addprefix src/parser/, parser.c script.c tokens_to_cmds.c remove_
 TOKEN_SRC = $(addprefix src/tokenizer/, token.c tokenizer.c)
 LEXER_SRC = $(addprefix src/lexer/, lexer.c)
 EXPANS_SRC = $(addprefix src/expansion/, expansion.c expansion_utils.c)
-REDIRECTION_SRC = $(addprefix src/redirection/, redir_heredoc.c redir_err.c redirection.c)
+REDIRECTION_SRC = $(addprefix src/redirection/, redir_heredoc.c redir_err.c redirection.c redir_utils.c)
 EXCUTOT_SRC = $(addprefix src/executor/, execute.c exec_builtin.c exec_err.c \
 				exec_child.c exec_parent.c exec_utils.c)
 BUILTIN_SRC = $(addprefix src/builtin/, builtin_env.c builtin_export.c builtin_export_utils.c \
