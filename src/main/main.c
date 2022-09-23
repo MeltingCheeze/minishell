@@ -36,14 +36,11 @@ static int	minishell(t_sh *sh)
 	while (42)
 	{
 		line = readcmdline();
-		if (!*line)
+		if (!*line || parser(sh, line) != 0)
 		{
 			free(line);
 			continue ;
 		}
-		if (parser(sh, line) != 0)
-			continue ;
-
 		/* builtin exit 함수 구현에 필요 */
 		sh->multi_cmd_flag = 0;
 		if (sh->script->next)
