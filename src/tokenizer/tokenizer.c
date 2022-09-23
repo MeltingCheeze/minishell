@@ -6,7 +6,7 @@
 /*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 22:17:59 by chaejkim          #+#    #+#             */
-/*   Updated: 2022/09/22 22:18:00 by chaejkim         ###   ########.fr       */
+/*   Updated: 2022/09/23 14:32:59 by chaejkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 #include "utils.h"
 #include <stdio.h>
 
-static int	syntax_err(char *s, int cnt)
+static void	syntax_err(char *s, int cnt)
 {
 	*(s + cnt - 1) = 0;
-	ft_putstr_fd("minishell: syntax error near unexpected token ", 2);
-	ft_putendl_fd(s, 2);
+	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
+	ft_putstr_fd(s, 2);
+	ft_putstr_fd("'\n", 2);
 	g_last_exit_value = 258;
-	return (258);
 }
 
 static int	count_special_char(char *str)
