@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   struct.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/23 16:55:04 by hyko              #+#    #+#             */
+/*   Updated: 2022/09/23 16:57:57 by hyko             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef STRUCT_H
 # define STRUCT_H
 
@@ -27,7 +39,7 @@ typedef enum e_builtin
 typedef enum e_type
 {
 	CMD,
-	WORD, //execve 의 argv
+	WORD,
 	FILENAME,
 	PIPE,
 	RD_IN,
@@ -45,10 +57,10 @@ typedef struct s_token
 
 typedef struct s_script
 {
-	t_token			*head; /* token devided by pipe */
+	t_token			*head;
 	int				fd_in;
 	int				fd_out;
-	int				herecnt; // 마지막 heredoc 아니면 herepipe[0] 닫아버리기
+	int				herecnt;
 	int				argc;
 	struct s_script	*next;
 }				t_script;
@@ -62,16 +74,16 @@ typedef struct s_env
 
 typedef struct s_env_info
 {
-	t_env	*head; // export 모든 정보  char **
+	t_env	*head;
 	size_t	size;
-	char	**envp; // 유효한 정보
+	char	**envp;
 }				t_env_info;
 
 typedef struct s_sh
 {
-	t_script	*script;
-	t_env_info	env_info;
-	int			multi_cmd_flag;
+	t_script		*script;
+	t_env_info		env_info;
+	int				multi_cmd_flag;
 	struct termios	echo_on;
 	struct termios	echo_off;
 }				t_sh;
