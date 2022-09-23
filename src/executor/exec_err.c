@@ -6,7 +6,7 @@
 /*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 20:33:11 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/22 21:16:21 by hyko             ###   ########.fr       */
+/*   Updated: 2022/09/23 16:43:14 by hyko             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ int	execute_error(char *cmd)
 {
 	if (!ft_strcmp(cmd, "."))
 	{
-		err_msg(cmd, "filename argument required\n.: usage: . filename [arguments]");
+		err_msg(cmd,
+			"filename argument required\n.: usage: . filename [arguments]");
 		return (2);
 	}
 	else if (!is_path(cmd))
@@ -44,12 +45,10 @@ int	execute_error(char *cmd)
 			err_msg(cmd, strerror(errno));
 		return (126);
 	}
-	else if (!is_file_exists(cmd)) // 이거 나중에 else로 바꾸기
+	else
 	{
 		err_msg(cmd, "No such file or directory");
 		return (127);
 	}
-	else
-		ft_putendl_fd("Undefined Behavior", STDERR_FILENO);       // 이거 나중에 없애기
 	return (1);
 }

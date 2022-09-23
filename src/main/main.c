@@ -1,10 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/23 16:21:06 by hyko              #+#    #+#             */
+/*   Updated: 2022/09/23 16:43:28 by hyko             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include "executor.h"
 #include "tokenizer.h" //tokenclear()
 #include "redirection.h"
 #include <termios.h>
-
-int g_last_exit_value;
 
 static void	free_all(t_script **script, char *line)
 {
@@ -42,12 +52,9 @@ static int	minishell(t_sh *sh)
 			free(line);
 			continue ;
 		}
-		/* builtin exit 함수 구현에 필요 */
 		sh->multi_cmd_flag = 0;
 		if (sh->script->next)
 			sh->multi_cmd_flag = 1;
-
-		/* heredoc read line */
 		heredoc_read_line(sh);
 		execute(sh);
 		free_all(&sh->script, line);

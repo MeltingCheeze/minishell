@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   set_signal.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/23 16:27:02 by hyko              #+#    #+#             */
+/*   Updated: 2022/09/23 16:43:31 by hyko             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include <readline/readline.h>
 
@@ -9,7 +21,7 @@ void	terminal_setting(t_sh *sh)
 	sh->echo_off.c_lflag &= (~ECHOCTL);
 }
 
-void	signal_readline(int	signo)
+void	signal_readline(int signo)
 {
 	if (signo == SIGINT)
 	{

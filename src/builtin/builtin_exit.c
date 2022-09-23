@@ -1,14 +1,46 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_exit.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/23 16:18:33 by hyko              #+#    #+#             */
+/*   Updated: 2022/09/23 16:42:40 by hyko             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "builtin.h"
 #include "libft.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <limits.h>
 
+static int	ft_atoll_sub(const char *str)
+{
+	int	result;
+	int	length;
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] < '0' || str[i] > '9')
+			return (-1);
+		result = result * 10 + (str[i] - 48);
+		i++;
+		length++;
+		if (length > 19)
+			return (-1);
+	}
+	return (result);
+}
+
 static int	ft_atoll(const char *str)
 {
-	int	i;
-	int	sign;
-	int	length;
+	int			i;
+	int			sign;
+	int			length;
 	long long	result;
 
 	i = 0;
@@ -25,21 +57,13 @@ static int	ft_atoll(const char *str)
 		if (str[i] == '\0')
 			return (-1);
 	}
-	while (str[i])
-	{
-		if (str[i] < '0' || str[i] > '9')
-			return (-1);
-		result = result * 10 + (str[i] - 48);
-		i++;
-		length++;
-		// ft_atoi 참고 (이전값, 현재값 비교시 부호 다르면 오버플로우)
-		if (length > 19) //exit 인자가 long long 범위 벗어나면 error처리 해야하는데 정확한 값 비교하기 힘들어서 그냥 자릿수로 비교함
-			return (-1);
-	}
+	result = ft_atoll_sub(str[i]);
+	if (result < 0)
+		return (-1);
 	return (result * sign);
 }
 
-int	builtin_exit(char **argv,t_sh *sh)
+int	builtin_exit(char **argv, t_sh *sh)
 {
 	long long	exit_status;
 
