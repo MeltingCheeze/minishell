@@ -6,7 +6,7 @@
 /*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 17:55:09 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/23 16:46:28 by hyko             ###   ########.fr       */
+/*   Updated: 2022/09/23 17:13:16 by hyko             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,6 @@ int	execute(t_sh *sh)
 	tcsetattr(STDOUT_FILENO, TCSANOW, &sh->echo_on);
 	std_dup[0] = dup(0);
 	std_dup[1] = dup(1);
-	g_last_exit_value = 0;
 	if (!sh->multi_cmd_flag && is_builtin(sh->script->head))
 		return (only_builtin(sh, sh->script, std_dup));
 	pipe_and_fork(sh, std_dup);
