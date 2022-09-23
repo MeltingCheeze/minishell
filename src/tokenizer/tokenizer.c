@@ -6,7 +6,7 @@
 /*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 22:17:59 by chaejkim          #+#    #+#             */
-/*   Updated: 2022/09/23 14:32:59 by chaejkim         ###   ########.fr       */
+/*   Updated: 2022/09/23 15:04:55 by chaejkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,10 @@ static int	check_line(t_token **token, char *line)
 
 	quote = 0;
 	cnt = 0;
-	if (*line == 0)
-		return (0);
 	while (*line && ft_strchr(SEPS, *line))
 		line++;
+	if (*line == 0)
+		return (0);
 	cur = line;
 	while (1)
 	{

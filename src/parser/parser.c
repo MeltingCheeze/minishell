@@ -6,7 +6,7 @@
 /*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 20:44:59 by chaejkim          #+#    #+#             */
-/*   Updated: 2022/09/22 22:22:23 by chaejkim         ###   ########.fr       */
+/*   Updated: 2022/09/23 15:16:04 by chaejkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	parser(t_sh *sh, char *line)
 	(void)sh;
 	if (valid_quote(line))
 		return (1);
-	if (tokenizer(&token, line) != 0 || lexcial_analyze(token) != 0)
+	if (tokenizer(&token, line) != 0 || !token || lexcial_analyze(token) != 0)
 	{
 		tokenclear(&token);
 		return (1);
