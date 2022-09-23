@@ -1,7 +1,6 @@
 #include "builtin.h"
 #include "libft.h"
 #include "env.h"
-#include <stdio.h>
 
 static void	update_oldpwd(t_env_info *env_info)
 {
@@ -45,16 +44,20 @@ int	builtin_cd(char **argv, t_env_info *env_info)
 
 	rvalue = 0;
 	path = argv[1];
-	if (!path || !ft_strcmp(path, "~") || !ft_strcmp(path, "~/")) // $HOME
+	if (!path || !ft_strcmp(path, "~") || !ft_strcmp(path, "~/"))
 		path = find_env_value(env_info->head, "HOME");
-		// path = getenv("HOME");
 	rvalue = chdir(path);
 	if (rvalue < 0)
 	{
-		ft_putstr_fd("cd: ", 2);
-		ft_putstr_fd(path, 2);
-		ft_putstr_fd(": no such file or directory\n", 2);
-		return (rvalue); // 이거 왜 errno 가 아닐까 -> EXIT_FAILURE ??
+		ft_putstr_fd("mihishell: cd: ", 2);
+		if (path)
+		{
+			ft_putstr_fd(path, 2);
+			ft_putstr_fd(": no such file or directory\n", 2);
+		}
+		else
+			ft_putstr_fd(": HOME not set\n", 2);
+		return (EXIT_FAILURE);
 	}
 	update_oldpwd(env_info);
 	update_pwd(env_info);
