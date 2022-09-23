@@ -7,7 +7,7 @@ int		env_init(t_env_info *env_info, char **envp);
 int		env_terminate(t_env **env);
 t_env	*env_new(char *s);
 void	env_add_back(t_env **env, t_env *new);
-void	env_del(t_env *env, char *key);
+void	env_del(t_env_info *env_info, char *key);
 
 void	env_print(t_env *env);
 

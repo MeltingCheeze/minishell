@@ -1,6 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_export_utils.c                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/23 13:34:26 by chaejkim          #+#    #+#             */
+/*   Updated: 2022/09/23 13:35:04 by chaejkim         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "env.h"
 #include "libft.h"
-#include "parser.h"
 
 static void	bubble_sort(char **envp, int size)
 {
@@ -26,7 +37,7 @@ static void	bubble_sort(char **envp, int size)
 	}
 }
 
-static char	**make_envarr(t_env *env, int env_size)
+static char	**make_export_arr(t_env *env, int env_size)
 {
 	char	**result;
 	size_t	len;
@@ -34,7 +45,7 @@ static char	**make_envarr(t_env *env, int env_size)
 
 	result = (char **)malloc(sizeof(char *) * (env_size + 1));
 	i = 0;
-	while (env)
+	while (i < env_size)
 	{
 		if (env->value)
 			len = ft_strlen(env->key) + ft_strlen(env->value) + 2;
@@ -55,31 +66,36 @@ static char	**make_envarr(t_env *env, int env_size)
 	return (result);
 }
 
+static void	print_export_value(char *value)
+{
+	ft_putstr_fd("=\"", STDOUT_FILENO);
+	ft_putstr_fd(value, STDOUT_FILENO);
+	ft_putchar_fd('"', STDOUT_FILENO);
+}
+
 void	no_argv_print(t_env_info *env_info)
 {
-	char	**envarr;
-	char	**tmp;
+	char	**export_arr;
 	char	*key;
 	char	*value;
+	size_t	i;
 
-	envarr = make_envarr(env_info->head, env_info->size);
-	bubble_sort(envarr, env_info->size);
-	tmp = envarr;
-	while (*(tmp))
+	if (env_info->size == 0)
+		return ;
+	export_arr = make_export_arr(env_info->head, env_info->size);
+	bubble_sort(export_arr, env_info->size);
+	i = 0;
+	while (*export_arr && i < env_info->size)
 	{
 		ft_putstr_fd("declare -x ", STDOUT_FILENO);
-		key = set_env_key(*tmp);
+		key = set_env_key(*(export_arr + i));
 		ft_putstr_fd(key, STDOUT_FILENO);
-		// value = getenv(key);
 		value = find_env_value(env_info->head, key);
 		if (value)
-		{
-			ft_putstr_fd("=\"", STDOUT_FILENO);
-			ft_putstr_fd(value, STDOUT_FILENO);
-			ft_putchar_fd('"', STDOUT_FILENO);
-		}
+			print_export_value(value);
 		ft_putchar_fd('\n', STDOUT_FILENO);
 		free(key);
-		tmp++;
+		i++;
 	}
+	ft_free_pptr((void ***)&export_arr);
 }

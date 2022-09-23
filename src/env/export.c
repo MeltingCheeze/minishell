@@ -1,8 +1,6 @@
 #include "env.h"
 #include "libft.h"
-#include <stdio.h> //test
 
-// 1, 2, 3
 void	export_new(t_env_info *env_info, char *envp)
 {
 	t_env	*new_env;
