@@ -6,7 +6,7 @@
 /*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 16:18:33 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/23 16:42:40 by hyko             ###   ########.fr       */
+/*   Updated: 2022/09/23 16:46:08 by hyko             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static int	ft_atoll_sub(const char *str)
 	int	i;
 
 	i = 0;
+	length = 0;
 	while (str[i])
 	{
 		if (str[i] < '0' || str[i] > '9')
@@ -40,12 +41,10 @@ static int	ft_atoll(const char *str)
 {
 	int			i;
 	int			sign;
-	int			length;
 	long long	result;
 
 	i = 0;
 	sign = 1;
-	length = 0;
 	result = 0;
 	while ((9 <= str[i] && str[i] <= 13) || str[i] == 32)
 		i++;
@@ -57,7 +56,7 @@ static int	ft_atoll(const char *str)
 		if (str[i] == '\0')
 			return (-1);
 	}
-	result = ft_atoll_sub(str[i]);
+	result = ft_atoll_sub(&str[i]);
 	if (result < 0)
 		return (-1);
 	return (result * sign);

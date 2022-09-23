@@ -6,13 +6,14 @@
 /*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 17:58:15 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/23 16:43:16 by hyko             ###   ########.fr       */
+/*   Updated: 2022/09/23 16:47:29 by hyko             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "executor.h"
 #include "builtin.h"
+#include "redirection.h"
 #include <sys/types.h> 
 #include <sys/wait.h>
 
