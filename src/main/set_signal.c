@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_signal.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 16:27:02 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/23 16:43:31 by hyko             ###   ########.fr       */
+/*   Updated: 2022/09/24 17:09:06 by chaejkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	signal_readline(int signo)
 	if (signo == SIGINT)
 	{
 		g_last_exit_value = 1;
-		printf("\n");
+		ft_putchar_fd('\n', 2);
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
@@ -36,9 +36,12 @@ void	signal_readline(int signo)
 void	signal_execute(int signo)
 {
 	if (signo == SIGINT)
-		printf("\n");
+	{
+		g_last_exit_value = 130;
+		ft_putchar_fd('\n', 2);
+	}
 	else if (signo == SIGQUIT)
-		printf("Quit: 3\n");
+		ft_putstr_fd("Quit: 3\n", 2);
 }
 
 void	signal_heredoc(int signo)
@@ -46,7 +49,7 @@ void	signal_heredoc(int signo)
 	if (signo == SIGINT)
 	{
 		g_last_exit_value = 1;
-		printf("\n");
-		exit(g_last_exit_value);
+		ft_putchar_fd('\n', 2);
+		exit(EXIT_FAILURE);
 	}
 }

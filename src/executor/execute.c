@@ -6,7 +6,7 @@
 /*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 17:55:09 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/24 16:44:41 by chaejkim         ###   ########.fr       */
+/*   Updated: 2022/09/24 17:04:18 by chaejkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ static void	wait_child(t_sh *sh)
 	while (curr)
 	{
 		wait(&statloc);
-		g_last_exit_value = WEXITSTATUS(statloc);
+		if (WIFSIGNALED(statloc) == 0)
+			g_last_exit_value = WEXITSTATUS(statloc);
 		curr = curr->next;
 	}
 }
