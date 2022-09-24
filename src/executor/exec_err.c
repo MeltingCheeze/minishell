@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_err.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 20:33:11 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/23 16:43:14 by hyko             ###   ########.fr       */
+/*   Updated: 2022/09/24 16:32:19 by chaejkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,31 +24,25 @@ static void	err_msg(char *content, char *msg)
 	ft_putendl_fd(msg, STDERR_FILENO);
 }
 
+static int	errno_to_exit_value(int	err)
+{
+	if (err == ENOENT)
+		return (127);
+	return (126);
+}
+
 int	execute_error(char *cmd)
 {
-	if (!ft_strcmp(cmd, "."))
-	{
-		err_msg(cmd,
-			"filename argument required\n.: usage: . filename [arguments]");
-		return (2);
-	}
-	else if (!is_path(cmd))
+	if (!is_path(cmd))
 	{
 		err_msg(cmd, CMD_NOT_FOUND_MSG);
 		return (127);
 	}
-	else if (is_file_exists(cmd))
+	else if (is_directory(cmd))
 	{
-		if (!*(strrchr(cmd, '/') + 1))
-			err_msg(cmd, "is a directory");
-		else
-			err_msg(cmd, strerror(errno));
+		err_msg(cmd, "is a directory");
 		return (126);
 	}
-	else
-	{
-		err_msg(cmd, "No such file or directory");
-		return (127);
-	}
-	return (1);
+	err_msg(cmd, strerror(errno));
+	return (errno_to_exit_value(errno));
 }

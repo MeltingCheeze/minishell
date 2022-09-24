@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 16:55:08 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/23 16:55:09 by hyko             ###   ########.fr       */
+/*   Updated: 2022/09/24 15:22:44 by chaejkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,5 +19,6 @@ void	ft_error(char *msg);
 //void	ft_free_pptr(char *msg);
 char	set_quote(char old_quote, char new_quote);
 t_bool	is_file_exists(char *file_name);
+t_bool	is_directory(const char *path);
 
 #endif

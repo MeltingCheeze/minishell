@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_child.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 17:58:15 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/23 16:47:29 by hyko             ###   ########.fr       */
+/*   Updated: 2022/09/24 16:34:47 by chaejkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	child_process(t_sh *sh, t_script *cur_cmd, int *pipeline)
 	argv = 0;
 	redir = redirection(cur_cmd);
 	if (redir)
-		exit(redir);
+		exit(EXIT_FAILURE);
 	child_dup_fd(cur_cmd, pipeline);
 	argv = make_arguments(cur_cmd);
 	if (*argv == 0)
