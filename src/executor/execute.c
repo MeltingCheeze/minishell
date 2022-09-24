@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 17:55:09 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/23 17:13:16 by hyko             ###   ########.fr       */
+/*   Updated: 2022/09/24 16:44:41 by chaejkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,6 @@ static int	only_builtin(t_sh *sh, t_script *cur_cmd, int *std_dup)
 	}
 	builtin_dup_fd(cur_cmd);
 	argv = make_arguments(cur_cmd);
-	if (*argv == 0)
-		exit(EXIT_SUCCESS);
 	builtin = is_builtin(cur_cmd->head);
 	rvalue = execve_builtin(argv, sh, builtin);
 	free(argv);
