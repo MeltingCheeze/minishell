@@ -3,40 +3,43 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 16:42:23 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/23 16:51:18 by hyko             ###   ########.fr       */
+/*   Updated: 2022/09/24 14:47:06 by chaejkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 #include "libft.h"
 #include "env.h"
+#include <errno.h>
+#include <string.h>
 
 static void	update_oldpwd(t_env_info *env_info)
 {
-	char	*old_pwd;
+	t_env	*oldpwd_env;
 	char	*pwd;
 	char	*env;
 
-	old_pwd = find_env_value(env_info->head, "OLDPWD");
-	if (old_pwd == NULL)
+	oldpwd_env = find_env(env_info->head, "OLDPWD");
+	if (oldpwd_env == NULL)
 		return ;
 	pwd = find_env_value(env_info->head, "PWD");
-	if (pwd)
-		env = ft_strjoin("OLDPWD=", pwd);
-	else
-		env = ft_strdup("OLDPWD=");
+	env = ft_strjoin("OLDPWD=", pwd);
 	export_new(env_info, env);
 	free(env);
 }
 
 static void	update_pwd(t_env_info *env_info)
 {
+	t_env	*pwd_env;
 	char	*pwd;
 	char	*env;
 
+	pwd_env = find_env(env_info->head, "PWD");
+	if (pwd_env == NULL)
+		return ;
 	pwd = getcwd(NULL, 0);
 	env = ft_strjoin("PWD=", pwd);
 	free(pwd);
@@ -47,20 +50,18 @@ static void	update_pwd(t_env_info *env_info)
 int	builtin_cd(char **argv, t_env_info *env_info)
 {
 	char	*path;
-	int		rvalue;
 
-	rvalue = 0;
 	path = argv[1];
 	if (!path || !ft_strcmp(path, "~") || !ft_strcmp(path, "~/"))
 		path = find_env_value(env_info->head, "HOME");
-	rvalue = chdir(path);
-	if (rvalue < 0)
+	if (chdir(path) < 0)
 	{
 		ft_putstr_fd("mihishell: cd: ", 2);
 		if (path)
 		{
 			ft_putstr_fd(path, 2);
-			ft_putstr_fd(": no such file or directory\n", 2);
+			ft_putstr_fd(": ", 2);
+			ft_putendl_fd(strerror(errno), STDERR_FILENO);
 		}
 		else
 			ft_putstr_fd(": HOME not set\n", 2);
