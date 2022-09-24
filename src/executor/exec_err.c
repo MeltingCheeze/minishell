@@ -6,7 +6,7 @@
 /*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 20:33:11 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/24 16:32:19 by chaejkim         ###   ########.fr       */
+/*   Updated: 2022/09/24 17:48:58 by chaejkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	err_msg(char *content, char *msg)
 	ft_putendl_fd(msg, STDERR_FILENO);
 }
 
-static int	errno_to_exit_value(int	err)
+static int	errno_to_exit_value(int err)
 {
 	if (err == ENOENT)
 		return (127);
