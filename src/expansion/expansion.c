@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 22:18:49 by chaejkim          #+#    #+#             */
-/*   Updated: 2022/09/23 16:43:22 by hyko             ###   ########.fr       */
+/*   Updated: 2022/09/24 15:19:38 by chaejkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,11 @@
 
 void	last_exit_value_expansion(char **dst)
 {
-	*dst = attach_str(*dst, ft_itoa(g_last_exit_value));
+	char	*exit_value;
+
+	exit_value = ft_itoa(g_last_exit_value);
+	*dst = attach_str(*dst, exit_value);
+	free(exit_value);
 }
 
 void	param_expansion(t_env *env, char **dst, char *src, char *cur)
