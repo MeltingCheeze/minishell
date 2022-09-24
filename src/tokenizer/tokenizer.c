@@ -6,7 +6,7 @@
 /*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 22:17:59 by chaejkim          #+#    #+#             */
-/*   Updated: 2022/09/23 15:04:55 by chaejkim         ###   ########.fr       */
+/*   Updated: 2022/09/24 20:24:26 by chaejkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,11 @@ static void	add_tokens(t_token **token, char *start, char *cur, int cnt)
 		tokenadd_back(token, tokennew(ft_substr(cur, 0, cnt)));
 }
 
-static int	check_line(t_token **token, char *line)
+static int	check_line(t_token **token, char *line, char *quote)
 {
-	char	quote;
 	char	*cur;
 	int		cnt;
 
-	quote = 0;
 	cnt = 0;
 	while (*line && ft_strchr(SEPS, *line))
 		line++;
@@ -64,15 +62,17 @@ static int	check_line(t_token **token, char *line)
 	cur = line;
 	while (1)
 	{
-		if (*cur == '"' || *cur == '\'')
-			quote = set_quote(quote, *cur);
+		if (!quote && (*cur == '"' || *cur == '\''))
+			quote = cur;
+		else if (quote && (*quote == *cur))
+			quote = 0;
 		else if (quote == 0 && ft_strchr(DELIMS, *cur))
 		{
 			cnt = count_special_char(cur);
 			if (cnt < 0)
 				return (-1);
 			add_tokens(token, line, cur, cnt);
-			return (check_line(token, cur + cnt));
+			return (check_line(token, cur + cnt, quote));
 		}
 		cur++;
 	}
@@ -83,6 +83,6 @@ int	tokenizer(t_token **token, char *line)
 	int		rvalue;
 
 	*token = 0;
-	rvalue = check_line(token, line);
+	rvalue = check_line(token, line, 0);
 	return (rvalue);
 }
