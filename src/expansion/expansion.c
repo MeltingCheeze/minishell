@@ -6,7 +6,7 @@
 /*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 22:18:49 by chaejkim          #+#    #+#             */
-/*   Updated: 2022/09/24 15:19:38 by chaejkim         ###   ########.fr       */
+/*   Updated: 2022/09/24 18:24:32 by chaejkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,11 @@
 #include "libft.h"
 #include "utils.h"
 
-void	last_exit_value_expansion(char **dst)
+void	last_exit_value_expansion(char **dst, char *src, char *cur)
 {
 	char	*exit_value;
 
+	*dst = attach_param_prestr(*dst, src, cur);
 	exit_value = ft_itoa(g_last_exit_value);
 	*dst = attach_str(*dst, exit_value);
 	free(exit_value);
@@ -54,7 +55,7 @@ static void	check_content(t_env *env, char **dst, char *src, char *cur)
 		{
 			len = count_key_len(cur + 1);
 			if (*(cur + 1) == '?')
-				last_exit_value_expansion(dst);
+				last_exit_value_expansion(dst, src, cur);
 			else if (len && quote == '"')
 				param_expansion(env, dst, src, cur);
 			else if (len && quote == 0)
