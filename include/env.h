@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   env.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 16:54:47 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/23 16:54:48 by hyko             ###   ########.fr       */
+/*   Updated: 2022/09/24 13:15:14 by chaejkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ENV_H
 # define ENV_H
 
-# include "struct.h"
+# include "msh_struct.h"
 
 int		env_init(t_env_info *env_info, char **envp);
 int		env_terminate(t_env **env);

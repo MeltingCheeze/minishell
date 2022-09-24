@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 16:54:44 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/23 16:55:50 by hyko             ###   ########.fr       */
+/*   Updated: 2022/09/24 13:15:14 by chaejkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BUILTIN_H
 # define BUILTIN_H
 
-# include "struct.h"
+# include "msh_struct.h"
 
 int		builtin_export(char **argv, t_env_info *env_info);
 void	no_argv_print(t_env_info *env_info);

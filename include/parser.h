@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 16:54:59 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/23 16:55:00 by hyko             ###   ########.fr       */
+/*   Updated: 2022/09/24 13:15:14 by chaejkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define PARSER_H
 
 # include <stdlib.h>
-# include "struct.h"
+# include "msh_struct.h"
 
 int		parser(t_sh *sh, char *line);
 

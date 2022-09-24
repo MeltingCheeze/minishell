@@ -6,11 +6,11 @@
 /*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 22:17:51 by chaejkim          #+#    #+#             */
-/*   Updated: 2022/09/22 22:17:52 by chaejkim         ###   ########.fr       */
+/*   Updated: 2022/09/24 13:15:14 by chaejkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "struct.h"
+#include "msh_struct.h"
 #include "stdlib.h"
 
 static t_script	*scriptnew(t_token *cmd, int argc, int herecnt)

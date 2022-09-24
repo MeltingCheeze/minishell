@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 16:54:57 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/23 16:57:06 by hyko             ###   ########.fr       */
+/*   Updated: 2022/09/24 13:15:14 by chaejkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <signal.h>
 
 # include "libft.h"
-# include "struct.h"
+# include "msh_struct.h"
 # include "parser.h"
 # include "env.h"
 

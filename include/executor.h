@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 20:52:10 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/23 16:54:53 by hyko             ###   ########.fr       */
+/*   Updated: 2022/09/24 16:41:45 by chaejkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include <unistd.h>
 
-# include "struct.h"
+# include "msh_struct.h"
 # include "env.h"
 # include "libft.h"
 
