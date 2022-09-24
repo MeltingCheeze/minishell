@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 20:19:41 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/23 16:43:18 by hyko             ###   ########.fr       */
+/*   Updated: 2022/09/24 19:21:17 by chaejkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int	execve_builtin(char **argv, t_sh *sh, t_builtin builtin)
 	int	rvalue;
 
 	rvalue = 0;
+	// 수정 필요!!!!!!!! (ex. argv = {"echo", "\0", "a", "b", NULL} )
 	if (builtin == EXPORT)
 		rvalue = builtin_export(argv, &sh->env_info);
 	else if (builtin == ENV)

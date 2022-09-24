@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 16:42:36 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/23 16:42:37 by hyko             ###   ########.fr       */
+/*   Updated: 2022/09/24 19:19:25 by chaejkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,14 @@ int	builtin_export(char **argv, t_env_info *env_info)
 
 	rvalue = 0;
 	envp = argv;
-	if (!*(envp + 1) || !**(envp + 1))
+	if (!*(envp + 1) || !**(envp + 1)) // 수정 필요!!!!!!!!
 	{
 		no_argv_print(env_info);
 		return (rvalue);
 	}
 	while (*(++envp))
 	{
-		if (is_valid_env_first_name(**envp) && !check_env_name(*envp))
+		if (is_valid_env_first_name(**envp) && !check_env_name(*envp)) // 수정 필요!!!!!!!!
 			export_new(env_info, *envp);
 		else
 			rvalue = export_err(*envp);

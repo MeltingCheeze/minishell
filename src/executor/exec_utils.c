@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 20:46:40 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/23 16:43:11 by hyko             ###   ########.fr       */
+/*   Updated: 2022/09/24 19:19:10 by chaejkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ char	**make_arguments(t_script *script)
 	{
 		while (token && (token->type > WORD))
 			token = token->next;
-		if (*token->content)
+		if (*token->content) // 수정 필요!!!!!!!!
 			result[i++] = token->content;
 		token = token->next;
 	}
