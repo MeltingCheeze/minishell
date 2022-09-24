@@ -6,7 +6,7 @@
 /*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 17:55:09 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/24 17:04:18 by chaejkim         ###   ########.fr       */
+/*   Updated: 2022/09/24 17:32:10 by chaejkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ int	execute(t_sh *sh)
 {
 	int			std_dup[2];
 
+	if (g_last_exit_value)
+		return (0);
 	signal(SIGINT, &signal_execute);
 	signal(SIGQUIT, &signal_execute);
 	tcsetattr(STDOUT_FILENO, TCSANOW, &sh->echo_on);
