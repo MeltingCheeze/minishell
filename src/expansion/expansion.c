@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 22:18:49 by chaejkim          #+#    #+#             */
-/*   Updated: 2022/09/25 17:54:55 by chaejkim         ###   ########.fr       */
+/*   Updated: 2022/09/25 20:15:00 by hyko             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,6 @@ static void	check_content(t_env *env, char **dst, char *src, char quote)
 	char	*cur;
 	int		len;
 
-	if (*src == 0)
-		return ;
 	cur = src;
 	while (*cur)
 	{
@@ -49,14 +47,16 @@ static void	check_content(t_env *env, char **dst, char *src, char quote)
 		{
 			quote = set_quote(quote, *cur);
 			*dst = attach_param_prestr(*dst, src, cur);
-			return (check_content(env, dst, cur + 1, quote));
+			check_content(env, dst, cur + 1, quote);
+			return ;
 		}
 		else if (*cur == '$' && quote != '\'')
 		{
 			len = count_key_len(cur + 1);
 			if (len)
 				param_expansion(env, dst, src, cur);
-			return (check_content(env, dst, cur + len + 1, quote));
+			check_content(env, dst, cur + len + 1, quote);
+			return ;
 		}
 		cur++;
 	}

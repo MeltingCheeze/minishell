@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 15:40:39 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/24 18:24:49 by chaejkim         ###   ########.fr       */
+/*   Updated: 2022/09/25 20:26:10 by hyko             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ void	expand_line(t_env *env, char **dst, char *src)
 				last_exit_value_expansion(dst, src, cur);
 			else if (len)
 				param_expansion(env, dst, src, cur);
-			return (expand_line(env, dst, cur + len + 1));
+			expand_line(env, dst, cur + len + 1);
+			return ;
 		}
 		cur++;
 	}

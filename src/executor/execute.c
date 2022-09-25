@@ -6,7 +6,7 @@
 /*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 17:55:09 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/25 14:32:30 by hyko             ###   ########.fr       */
+/*   Updated: 2022/09/25 20:53:17 by hyko             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,22 +54,33 @@ static int	only_builtin(t_sh *sh, t_script *cur_cmd, int *std_dup)
 	return (result);
 }
 
-static void	wait_child(t_sh *sh)
+static int	wait_child(t_sh *sh, pid_t pid)
 {
 	t_script	*curr;
 	int			statloc;
+	int			last_stat;
 
 	curr = sh->script;
 	while (curr)
 	{
-		wait(&statloc);
-		if (WIFSIGNALED(statloc) == 0)
-			g_last_exit_value = WEXITSTATUS(statloc);
+		if (wait(&statloc) == pid)
+			last_stat = statloc;
 		curr = curr->next;
 	}
+	if (WIFEXITED(last_stat))
+		return (WEXITSTATUS(last_stat));
+	if (WIFSIGNALED(last_stat))
+	{
+		if (WTERMSIG(last_stat) == SIGQUIT)
+			printf("Quit: 3\n");
+		else
+			printf("\n");
+		return (WTERMSIG(last_stat) + 128);
+	}
+	return (WEXITSTATUS(last_stat));
 }
 
-static	void	pipe_and_fork(t_sh *sh, int	*std_dup)
+static pid_t	pipe_and_fork(t_sh *sh, int	*std_dup)
 {
 	t_script	*cur_cmd;
 	pid_t		pid;
@@ -82,11 +93,20 @@ static	void	pipe_and_fork(t_sh *sh, int	*std_dup)
 			pipe(pipeline);
 		pid = fork();
 		if (pid == 0)
+		{
+			signal(SIGINT, SIG_DFL);
+			signal(SIGQUIT, SIG_DFL);
+			close(std_dup[0]);
+			close(std_dup[1]);
 			child_process(sh, cur_cmd, pipeline);
+		}
 		else if (pid > 0)
+		{
 			parent_process(cur_cmd, pipeline, std_dup);
+		}
 		cur_cmd = cur_cmd->next;
 	}
+	return (pid);
 }
 
 int	execute(t_sh *sh)
@@ -95,15 +115,16 @@ int	execute(t_sh *sh)
 
 	if (g_last_exit_value)
 		return (0);
-	signal(SIGINT, &signal_execute);
-	signal(SIGQUIT, &signal_execute);
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 	tcsetattr(STDOUT_FILENO, TCSANOW, &sh->echo_on);
 	std_dup[0] = dup(0);
 	std_dup[1] = dup(1);
 	if (!sh->multi_cmd_flag && is_builtin(sh->script->head))
 		return (only_builtin(sh, sh->script, std_dup));
-	pipe_and_fork(sh, std_dup);
-	wait_child(sh);
+	g_last_exit_value = wait_child(sh, pipe_and_fork(sh, std_dup));
+	signal(SIGINT, signal_readline);
+	signal(SIGQUIT, SIG_IGN);
 	tcsetattr(STDOUT_FILENO, TCSANOW, &sh->echo_off);
 	return (0);
 }

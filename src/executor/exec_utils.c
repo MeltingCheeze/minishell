@@ -6,7 +6,7 @@
 /*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 20:46:40 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/25 16:00:16 by hyko             ###   ########.fr       */
+/*   Updated: 2022/09/25 20:08:43 by hyko             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,6 @@ char	*cmd_to_path(t_sh *sh, t_token *token)
 	ft_free_pptr((void ***)&paths);
 	if (!cmd_path)
 		return (token->content);
-	free(token->content);
-	token->content = cmd_path;
 	return (cmd_path);
 }
 

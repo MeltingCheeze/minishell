@@ -6,7 +6,7 @@
 /*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 16:18:33 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/23 16:46:08 by hyko             ###   ########.fr       */
+/*   Updated: 2022/09/25 20:52:53 by hyko             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,16 @@
 #include <stdio.h>
 #include <limits.h>
 
-static int	ft_atoll_sub(const char *str)
+static void	numeric_error(char *str)
+{
+	ft_putstr_fd("minishell: exit: ", 2);
+	ft_putstr_fd(str, 2);
+	ft_putstr_fd(": numeric argument required\n", 2);
+	g_last_exit_value = 255;
+	exit(255);
+}
+
+static int	ft_atoll_sub(char *str)
 {
 	int	result;
 	int	length;
@@ -37,7 +46,7 @@ static int	ft_atoll_sub(const char *str)
 	return (result);
 }
 
-static int	ft_atoll(const char *str)
+static int	ft_atoll(char *str)
 {
 	int			i;
 	int			sign;
@@ -54,11 +63,11 @@ static int	ft_atoll(const char *str)
 			sign = sign * -1;
 		i++;
 		if (str[i] == '\0')
-			return (-1);
+			numeric_error(str);
 	}
 	result = ft_atoll_sub(&str[i]);
 	if (result < 0)
-		return (-1);
+		numeric_error(str);
 	return (result * sign);
 }
 
@@ -70,21 +79,14 @@ int	builtin_exit(char **argv, t_sh *sh)
 		ft_putstr_fd("exit\n", 1);
 	if (!argv[1])
 		exit(g_last_exit_value);
+	if (!ft_strcmp("-1", argv[1]))
+		exit(-1);
 	exit_status = ft_atoll(argv[1]);
-	if (exit_status < 0)
-	{
-		ft_putstr_fd("minishell: exit: ", 2);
-		ft_putstr_fd(argv[1], 2);
-		ft_putstr_fd(": numeric argument required\n", 2);
-		g_last_exit_value = 255;
-		exit(255);
-	}
 	if (argv[2] != NULL)
 	{
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 		return (1);
 	}
-	exit_status %= 256;
 	g_last_exit_value = exit_status;
 	exit(exit_status);
 }

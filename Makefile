@@ -14,7 +14,7 @@ NAME = minishell
 
 CC = cc
 CFLAGS = -Wall -Werror -Wextra
-SAN_FLAG = #-g3 -fsanitize=address
+SAN_FLAG = -g3 -pedantic -fsanitize=address -fsanitize=undefined
 
 LFT = libft/libft.a
 LOCAL_RL_DIR = /opt/homebrew/opt/readline

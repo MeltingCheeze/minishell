@@ -6,7 +6,7 @@
 /*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 21:12:49 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/23 15:53:59 by hyko             ###   ########.fr       */
+/*   Updated: 2022/09/25 20:33:08 by hyko             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ static char	*do_heredoc(t_script *cur_cmd, char *delimiter)
 	char	*doc;
 	t_token	*cur_token;
 
+	doc = 0;
 	cur_token = cur_cmd->head;
 	while (cur_cmd->herecnt > 0)
 	{
@@ -101,6 +102,7 @@ void	heredoc_read_line(t_sh *sh)
 
 	cur_cmd = sh->script;
 	delimiter = 0;
+	signal(SIGINT, SIG_IGN);
 	if (fork() == 0)
 	{
 		signal(SIGINT, &signal_heredoc);
@@ -114,5 +116,6 @@ void	heredoc_read_line(t_sh *sh)
 		exit(0);
 	}
 	wait(&statloc);
+	signal(SIGINT, signal_readline);
 	g_last_exit_value = WEXITSTATUS(statloc);
 }

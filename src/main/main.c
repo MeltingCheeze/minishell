@@ -6,7 +6,7 @@
 /*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 16:21:06 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/25 15:52:58 by hyko             ###   ########.fr       */
+/*   Updated: 2022/09/25 20:25:49 by hyko             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,20 @@ static void	free_all(t_script **script, char *line)
 	unlink("/tmp/msh_heredoc");
 }
 
+static void	set_pwd(t_sh *sh)
+{
+	char	*path;
+
+	path = getcwd(NULL, 0);
+	if (path)
+	{
+		free(sh->cur_pwd);
+		sh->cur_pwd = path;
+	}
+	else
+		free(path);
+}
+
 static int	minishell(t_sh *sh)
 {
 	char	*line;
@@ -58,6 +72,7 @@ static int	minishell(t_sh *sh)
 		heredoc_read_line(sh);
 		execute(sh);
 		free_all(&sh->script, line);
+		set_pwd(sh);
 	}
 }
 
@@ -67,7 +82,9 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
+	sh.cur_pwd = getcwd(NULL, 0);
 	env_init(&sh.env_info, envp);
 	minishell(&sh);
 	env_terminate(&sh.env_info.head);
+	free(sh.cur_pwd);
 }

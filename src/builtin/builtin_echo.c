@@ -6,7 +6,7 @@
 /*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 16:10:19 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/25 16:21:39 by hyko             ###   ########.fr       */
+/*   Updated: 2022/09/25 20:18:43 by hyko             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	builtin_echo(char **argv)
 
 	i = 1;
 	nl_flag = 0;
-	while (is_option(argv[i]))
+	while (argv[i] && is_option(argv[i]))
 	{
 		nl_flag = 1;
 		i++;
