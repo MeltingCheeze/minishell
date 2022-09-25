@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: chaejkim <chaejkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 20:46:40 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/25 20:08:43 by hyko             ###   ########.fr       */
+/*   Updated: 2022/09/25 23:17:04 by chaejkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static char	**find_paths(t_env *env)
 
 	value = find_env_value(env, "PATH");
 	if (value == NULL)
-		value = getenv("PATH");
+		return (NULL);
 	paths = ft_split(value, ':');
 	return (paths);
 }
@@ -42,6 +42,8 @@ static char	*match_path(char **paths, char *cmd, size_t cmd_len)
 	size_t	path_len;
 
 	i = -1;
+	if (!paths)
+		return (NULL);
 	while (paths[++i])
 	{
 		path_len = ft_strlen(paths[i]);
