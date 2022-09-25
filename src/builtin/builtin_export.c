@@ -6,7 +6,7 @@
 /*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 16:42:36 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/25 14:32:30 by hyko             ###   ########.fr       */
+/*   Updated: 2022/09/25 16:00:09 by hyko             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,14 @@ int	builtin_export(char **argv, t_env_info *env_info)
 
 	result = 0;
 	envp = argv;
-	if (!*(envp + 1) || !**(envp + 1)) // 수정 필요!!!!!!!!
+	if (!*(envp + 1))
 	{
 		no_argv_print(env_info);
 		return (result);
 	}
 	while (*(++envp))
 	{
-		if (is_valid_env_first_name(**envp) && !check_env_name(*envp)) // 수정 필요!!!!!!!!
+		if (is_valid_env_first_name(**envp) && !check_env_name(*envp))
 			export_new(env_info, *envp);
 		else
 			result = export_err(*envp);

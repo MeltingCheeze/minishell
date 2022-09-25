@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 16:10:19 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/24 19:19:16 by chaejkim         ###   ########.fr       */
+/*   Updated: 2022/09/25 16:04:41 by hyko             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	builtin_echo(char **argv)
 
 	i = 1;
 	nl_flag = 0;
-	if (argv[i] && ft_strcmp(argv[i], "-n") == 0) // 수정 필요!!!!!!!!
+	if (argv[i] && ft_strcmp(argv[i], "-n") == 0)
 	{
 		nl_flag = 1;
 		i++;

@@ -6,7 +6,7 @@
 /*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 20:19:41 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/25 14:57:12 by hyko             ###   ########.fr       */
+/*   Updated: 2022/09/25 16:00:22 by hyko             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int	execve_builtin(char **argv, t_sh *sh, t_builtin builtin)
 	int	result;
 
 	result = 0;
-	// 수정 필요!!!!!!!! (ex. argv = {"echo", "\0", "a", "b", NULL} )
 	if (builtin == EXPORT)
 		result = builtin_export(argv, &sh->env_info);
 	else if (builtin == ENV)
