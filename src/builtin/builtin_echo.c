@@ -6,13 +6,32 @@
 /*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 16:10:19 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/25 16:04:41 by hyko             ###   ########.fr       */
+/*   Updated: 2022/09/25 16:21:39 by hyko             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "builtin.h"
 #include <stdio.h>
+
+static int	is_option(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (str[i] == '-')
+		i++;
+	else
+		return (0);
+	while (str[i])
+	{
+		if (str[i] == 'n')
+			i++;
+		else
+			return (0);
+	}
+	return (1);
+}
 
 int	builtin_echo(char **argv)
 {
@@ -21,7 +40,7 @@ int	builtin_echo(char **argv)
 
 	i = 1;
 	nl_flag = 0;
-	if (argv[i] && ft_strcmp(argv[i], "-n") == 0)
+	while (is_option(argv[i]))
 	{
 		nl_flag = 1;
 		i++;
