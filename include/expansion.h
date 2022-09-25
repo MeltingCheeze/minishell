@@ -6,7 +6,7 @@
 /*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 16:54:55 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/24 18:24:40 by chaejkim         ###   ########.fr       */
+/*   Updated: 2022/09/25 16:08:48 by chaejkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include "msh_struct.h"
 # include "env.h"
 
-int		expansion(t_script *script, t_env *env);
+int		expand_and_rm_quote(t_script *script, t_env *env);
 void	last_exit_value_expansion(char **dst, char *src, char *cur);
 void	param_expansion(t_env *env, char **dst, char *src, char *cur);
 

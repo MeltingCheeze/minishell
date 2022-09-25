@@ -6,7 +6,7 @@
 /*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 20:44:59 by chaejkim          #+#    #+#             */
-/*   Updated: 2022/09/23 15:16:04 by chaejkim         ###   ########.fr       */
+/*   Updated: 2022/09/25 16:08:04 by chaejkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ int	parser(t_sh *sh, char *line)
 		return (1);
 	}
 	tokens_to_cmds(sh, token);
-	expansion(sh->script, sh->env_info.head);
-	remove_quote(sh->script);
+	expand_and_rm_quote(sh->script, sh->env_info.head);
 	return (0);
 }
