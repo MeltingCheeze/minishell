@@ -6,7 +6,7 @@
 /*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 20:19:41 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/25 14:32:30 by hyko             ###   ########.fr       */
+/*   Updated: 2022/09/25 14:57:12 by hyko             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ int	execve_builtin(char **argv, t_sh *sh, t_builtin builtin)
 	else if (builtin == B_ECHO)
 		result = builtin_echo(argv);
 	else if (builtin == PWD)
-		result = builtin_pwd();
+		result = builtin_pwd(sh);
 	else if (builtin == CD)
-		result = builtin_cd(argv, &sh->env_info);
+		result = builtin_cd(argv, &sh->env_info, sh);
 	else if (builtin == EXIT)
 		result = builtin_exit(argv, sh);
 	return (result);

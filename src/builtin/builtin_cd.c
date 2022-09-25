@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 16:42:23 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/24 14:47:06 by chaejkim         ###   ########.fr       */
+/*   Updated: 2022/09/25 15:03:40 by hyko             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,23 +31,20 @@ static void	update_oldpwd(t_env_info *env_info)
 	free(env);
 }
 
-static void	update_pwd(t_env_info *env_info)
+static void	update_pwd(t_sh *sh, t_env_info *env_info)
 {
 	t_env	*pwd_env;
-	char	*pwd;
 	char	*env;
 
 	pwd_env = find_env(env_info->head, "PWD");
 	if (pwd_env == NULL)
 		return ;
-	pwd = getcwd(NULL, 0);
-	env = ft_strjoin("PWD=", pwd);
-	free(pwd);
+	env = ft_strjoin("PWD=", sh->cur_pwd);
 	export_new(env_info, env);
 	free(env);
 }
 
-int	builtin_cd(char **argv, t_env_info *env_info)
+int	builtin_cd(char **argv, t_env_info *env_info, t_sh *sh)
 {
 	char	*path;
 
@@ -68,7 +65,7 @@ int	builtin_cd(char **argv, t_env_info *env_info)
 		return (EXIT_FAILURE);
 	}
 	update_oldpwd(env_info);
-	update_pwd(env_info);
+	update_pwd(sh, env_info);
 	ft_free_pptr((void ***)&env_info->envp);
 	env_info->envp = make_envp(env_info->head, env_info->size);
 	return (0);

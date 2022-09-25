@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 16:54:44 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/24 13:15:14 by chaejkim         ###   ########.fr       */
+/*   Updated: 2022/09/25 14:57:07 by hyko             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ int		builtin_env(char **argv, t_env_info *env_info);
 int		builtin_unset(char **argv, t_env_info *env_info);
 
 int		builtin_echo(char **argv);
-int		builtin_pwd(void);
-int		builtin_cd(char **argv, t_env_info *env_info);
+int		builtin_pwd(t_sh *sh);
+int		builtin_cd(char **argv, t_env_info *env_info, t_sh *sh);
 int		builtin_exit(char **argv, t_sh *sh);
 
 #endif

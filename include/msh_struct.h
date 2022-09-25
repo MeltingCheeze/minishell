@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   msh_struct.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 16:55:04 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/24 13:15:32 by chaejkim         ###   ########.fr       */
+/*   Updated: 2022/09/25 14:51:33 by hyko             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ typedef struct s_sh
 	t_script		*script;
 	t_env_info		env_info;
 	int				multi_cmd_flag;
+	char			*cur_pwd;
 	struct termios	echo_on;
 	struct termios	echo_off;
 }				t_sh;
