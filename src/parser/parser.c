@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chaejkim <chaejkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 20:44:59 by chaejkim          #+#    #+#             */
-/*   Updated: 2022/09/23 15:16:04 by chaejkim         ###   ########.fr       */
+/*   Updated: 2022/09/25 13:55:22 by chaejkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,6 @@ int	parser(t_sh *sh, char *line)
 	}
 	tokens_to_cmds(sh, token);
 	expansion(sh->script, sh->env_info.head);
-	remove_quote(sh->script);
+	//remove_quote(sh->script);
 	return (0);
 }

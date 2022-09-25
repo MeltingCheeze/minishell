@@ -45,7 +45,8 @@
         "types.h": "c",
         "__node_handle": "c",
         "history.h": "c",
-        "termios.h": "c"
+        "termios.h": "c",
+        "msh_struct.h": "c"
     },
     "editor.insertSpaces": false
 }

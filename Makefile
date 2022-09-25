@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+         #
+#    By: chaejkim <chaejkim@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/22 02:33:06 by chaejkim          #+#    #+#              #
-#    Updated: 2022/09/24 15:23:26 by chaejkim         ###   ########.fr        #
+#    Updated: 2022/09/25 14:22:44 by chaejkim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = minishell
 
 CC = cc
 CFLAGS = -Wall -Werror -Wextra
-SAN_FLAG = #-g3 -fsanitize=address
+SAN_FLAG = -g3 -fsanitize=address
 
 LFT = libft/libft.a
 LOCAL_RL_DIR = /opt/homebrew/opt/readline
@@ -42,7 +42,7 @@ BUILTIN_SRC = $(addprefix src/builtin/, builtin_env.c builtin_export.c builtin_e
 
 SRC = $(MAIN_SRC) $(ENV_SRC) $(UTILS_SRC) $(TMP_SRC) \
 	  $(PARSER_SRC) $(TOKEN_SRC) $(LEXER_SRC) $(EXPANS_SRC) \
-	  $(REDIRECTION_SRC) $(BUILTIN_SRC) $(EXCUTOT_SRC) 
+	  $(REDIRECTION_SRC) $(BUILTIN_SRC) $(EXCUTOT_SRC)
 
 OBJ = $(patsubst src%, obj%, $(SRC:.c=.o))
 
