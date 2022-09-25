@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 17:55:09 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/24 17:32:10 by chaejkim         ###   ########.fr       */
+/*   Updated: 2022/09/25 14:32:30 by hyko             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,28 +30,28 @@ static void	builtin_dup_fd(t_script *cur_cmd)
 static int	only_builtin(t_sh *sh, t_script *cur_cmd, int *std_dup)
 {
 	t_builtin	builtin;
-	int			rvalue;
+	int			result;
 	char		**argv;
 
-	rvalue = 0;
-	rvalue = redirection(cur_cmd);
-	if (rvalue)
+	result = 0;
+	result = redirection(cur_cmd);
+	if (result)
 	{
 		tcsetattr(STDOUT_FILENO, TCSANOW, &sh->echo_off);
-		return (rvalue);
+		return (result);
 	}
 	builtin_dup_fd(cur_cmd);
 	argv = make_arguments(cur_cmd);
 	builtin = is_builtin(cur_cmd->head);
-	rvalue = execve_builtin(argv, sh, builtin);
+	result = execve_builtin(argv, sh, builtin);
 	free(argv);
 	dup2(std_dup[0], STDIN_FILENO);
 	dup2(std_dup[1], STDOUT_FILENO);
 	close(std_dup[0]);
 	close(std_dup[1]);
-	g_last_exit_value = rvalue;
+	g_last_exit_value = result;
 	tcsetattr(STDOUT_FILENO, TCSANOW, &sh->echo_off);
-	return (rvalue);
+	return (result);
 }
 
 static void	wait_child(t_sh *sh)

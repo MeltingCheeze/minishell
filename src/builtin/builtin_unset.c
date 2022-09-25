@@ -6,7 +6,7 @@
 /*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 16:42:43 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/23 16:53:49 by hyko             ###   ########.fr       */
+/*   Updated: 2022/09/25 14:32:30 by hyko             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,21 +51,21 @@ static void	unset_env(t_env_info *env_info, char **envp)
 int	builtin_unset(char **argv, t_env_info *env_info)
 {
 	char	**envp;
-	int		rvalue;
+	int		result;
 
-	rvalue = 0;
+	result = 0;
 	envp = argv;
 	if (!*(envp + 1))
-		return (rvalue);
+		return (result);
 	while (*(++envp))
 	{
 		if (!**envp
 			|| (is_valid_env_first_name(**envp) && !check_env_name(*envp)))
 			unset_env(env_info, envp);
 		else
-			rvalue = unset_err(*envp);
+			result = unset_err(*envp);
 	}
 	ft_free_pptr((void ***)&env_info->envp);
 	env_info->envp = make_envp(env_info->head, env_info->size);
-	return (rvalue);
+	return (result);
 }

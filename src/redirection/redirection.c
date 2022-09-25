@@ -6,7 +6,7 @@
 /*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 20:56:30 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/23 11:49:22 by hyko             ###   ########.fr       */
+/*   Updated: 2022/09/25 14:32:30 by hyko             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,21 +60,21 @@ static int	redir_heredoc(t_script *cur_cmd)
 int	redirection(t_script *cur_cmd)
 {
 	t_token	*cur_token;
-	int		rvalue;
+	int		result;
 
 	cur_token = cur_cmd->head;
-	rvalue = 0;
-	while (cur_token && rvalue == 0)
+	result = 0;
+	while (cur_token && result == 0)
 	{
 		if (cur_token->type == RD_OUT)
-			rvalue = redir_out(cur_cmd, cur_token);
+			result = redir_out(cur_cmd, cur_token);
 		else if (cur_token->type == RD_APPEND)
-			rvalue = redir_append(cur_cmd, cur_token);
+			result = redir_append(cur_cmd, cur_token);
 		else if (cur_token->type == RD_IN)
-			rvalue = redir_in(cur_cmd, cur_token);
+			result = redir_in(cur_cmd, cur_token);
 		else if (cur_token->type == RD_HEREDOC)
-			rvalue = redir_heredoc(cur_cmd);
+			result = redir_heredoc(cur_cmd);
 		cur_token = cur_token->next;
 	}
-	return (rvalue);
+	return (result);
 }

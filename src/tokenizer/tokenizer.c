@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 22:17:59 by chaejkim          #+#    #+#             */
-/*   Updated: 2022/09/23 15:04:55 by chaejkim         ###   ########.fr       */
+/*   Updated: 2022/09/25 14:32:30 by hyko             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,9 @@ static int	check_line(t_token **token, char *line)
 
 int	tokenizer(t_token **token, char *line)
 {
-	int		rvalue;
+	int		result;
 
 	*token = 0;
-	rvalue = check_line(token, line);
-	return (rvalue);
+	result = check_line(token, line);
+	return (result);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 20:19:41 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/24 19:21:17 by chaejkim         ###   ########.fr       */
+/*   Updated: 2022/09/25 14:32:30 by hyko             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,25 +16,25 @@
 
 int	execve_builtin(char **argv, t_sh *sh, t_builtin builtin)
 {
-	int	rvalue;
+	int	result;
 
-	rvalue = 0;
+	result = 0;
 	// 수정 필요!!!!!!!! (ex. argv = {"echo", "\0", "a", "b", NULL} )
 	if (builtin == EXPORT)
-		rvalue = builtin_export(argv, &sh->env_info);
+		result = builtin_export(argv, &sh->env_info);
 	else if (builtin == ENV)
-		rvalue = builtin_env(argv, &sh->env_info);
+		result = builtin_env(argv, &sh->env_info);
 	else if (builtin == UNSET)
-		rvalue = builtin_unset(argv, &sh->env_info);
+		result = builtin_unset(argv, &sh->env_info);
 	else if (builtin == B_ECHO)
-		rvalue = builtin_echo(argv);
+		result = builtin_echo(argv);
 	else if (builtin == PWD)
-		rvalue = builtin_pwd();
+		result = builtin_pwd();
 	else if (builtin == CD)
-		rvalue = builtin_cd(argv, &sh->env_info);
+		result = builtin_cd(argv, &sh->env_info);
 	else if (builtin == EXIT)
-		rvalue = builtin_exit(argv, sh);
-	return (rvalue);
+		result = builtin_exit(argv, sh);
+	return (result);
 }
 
 t_builtin	is_builtin(t_token *token)

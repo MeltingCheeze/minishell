@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 16:42:36 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/24 19:19:25 by chaejkim         ###   ########.fr       */
+/*   Updated: 2022/09/25 14:32:30 by hyko             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,23 +42,23 @@ static int	check_env_name(char *s)
 int	builtin_export(char **argv, t_env_info *env_info)
 {
 	char	**envp;
-	int		rvalue;
+	int		result;
 
-	rvalue = 0;
+	result = 0;
 	envp = argv;
 	if (!*(envp + 1) || !**(envp + 1)) // 수정 필요!!!!!!!!
 	{
 		no_argv_print(env_info);
-		return (rvalue);
+		return (result);
 	}
 	while (*(++envp))
 	{
 		if (is_valid_env_first_name(**envp) && !check_env_name(*envp)) // 수정 필요!!!!!!!!
 			export_new(env_info, *envp);
 		else
-			rvalue = export_err(*envp);
+			result = export_err(*envp);
 	}
 	ft_free_pptr((void ***)&env_info->envp);
 	env_info->envp = make_envp(env_info->head, env_info->size);
-	return (rvalue);
+	return (result);
 }
