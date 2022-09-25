@@ -6,7 +6,7 @@
 /*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 17:58:15 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/25 20:09:19 by hyko             ###   ########.fr       */
+/*   Updated: 2022/09/25 21:11:35 by hyko             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ void	child_process(t_sh *sh, t_script *cur_cmd, int *pipeline)
 	cmd_path = cmd_to_path(sh, cur_cmd->head);
 	if (execve(cmd_path, argv, sh->env_info.envp) < 0)
 	{
-		free(cmd_path);
 		if (argv && !argv[0])
 			exit(EXIT_SUCCESS);
 		exit(execute_error(argv[0]));
