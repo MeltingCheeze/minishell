@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+         #
+#    By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/08/22 02:33:06 by chaejkim          #+#    #+#              #
-#    Updated: 2022/09/26 14:38:10 by chaejkim         ###   ########.fr        #
+#    Updated: 2022/09/26 15:19:58 by hyko             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = minishell
 
 CC = cc
 CFLAGS = -Wall -Werror -Wextra
-SAN_FLAG = -g3 -pedantic -fsanitize=address -fsanitize=undefined
+SAN_FLAG = #-g3 -pedantic -fsanitize=address -fsanitize=undefined
 
 LFT = libft/libft.a
 LOCAL_RL_DIR = /opt/homebrew/opt/readline
@@ -47,39 +47,39 @@ SRC = $(MAIN_SRC) $(ENV_SRC) $(UTILS_SRC) $(TMP_SRC) \
 OBJ = $(patsubst src%, obj%, $(SRC:.c=.o))
 
 obj/%.o : src/%.c
-	@$(CC) $(CFLAGS) $(SAN_FLAG) -Qunused-arguments $(INC) -o $@ -c $<
+	$(CC) $(CFLAGS) $(SAN_FLAG) -Qunused-arguments $(INC) -o $@ -c $<
 
 all: $(LFT) obj $(NAME)
 
 $(NAME) : $(OBJ)
-	@$(CC) $(CFLAGS) $(SAN_FLAG) -Qunused-arguments -o $@ $^ $(LIB)
+	$(CC) $(CFLAGS) $(SAN_FLAG) -Qunused-arguments -o $@ $^ $(LIB)
 
 $(LFT):
-	@$(MAKE) -s -C libft bonus
+	$(MAKE) -s -C libft bonus
 
 clean:
-	@$(MAKE) -s -C libft $@
+	$(MAKE) -s -C libft $@
 	rm -rf obj
 
 fclean: clean
-	@$(MAKE) -s -C libft $@
-	@rm -rf $(NAME)
+	$(MAKE) -s -C libft $@
+	rm -rf $(NAME)
 
 obj:
-	@mkdir -p obj
-	@mkdir -p obj/main
-	@mkdir -p obj/builtin
-	@mkdir -p obj/redirection
-	@mkdir -p obj/executor
-	@mkdir -p obj/env
-	@mkdir -p obj/expansion
-	@mkdir -p obj/tokenizer
-	@mkdir -p obj/lexer
-	@mkdir -p obj/parser
-	@mkdir -p obj/iostream
-	@mkdir -p obj/exec
-	@mkdir -p obj/utils
-	@mkdir -p obj/tmp
+	mkdir -p obj
+	mkdir -p obj/main
+	mkdir -p obj/builtin
+	mkdir -p obj/redirection
+	mkdir -p obj/executor
+	mkdir -p obj/env
+	mkdir -p obj/expansion
+	mkdir -p obj/tokenizer
+	mkdir -p obj/lexer
+	mkdir -p obj/parser
+	mkdir -p obj/iostream
+	mkdir -p obj/exec
+	mkdir -p obj/utils
+	mkdir -p obj/tmp
 
 re: fclean all
 
