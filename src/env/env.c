@@ -6,7 +6,7 @@
 /*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 13:32:56 by chaejkim          #+#    #+#             */
-/*   Updated: 2022/09/23 13:32:57 by chaejkim         ###   ########.fr       */
+/*   Updated: 2022/09/26 14:18:07 by chaejkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,17 @@ int	env_init(t_env_info *env_info, char **envp)
 	{
 		new = env_new(envp[i]);
 		if (new)
+		{
+			if (!ft_strcmp(new->key, "OLDPWD"))
+			{
+				if (new->value)
+					free(new->value);
+				new->value = NULL;
+			}
 			env_add_back(&env_info->head, new);
+		}
 		i++;
 	}
-	export_new(env_info, "OLDPWD");
 	env_info->size += i;
 	env_info->envp = make_envp(env_info->head, env_info->size);
 	return (0);
