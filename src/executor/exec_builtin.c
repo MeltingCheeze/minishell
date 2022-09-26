@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyko <hyko@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: chaejkim <chaejkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/22 20:19:41 by hyko              #+#    #+#             */
-/*   Updated: 2022/09/25 16:00:22 by hyko             ###   ########.fr       */
+/*   Updated: 2022/09/26 15:03:32 by chaejkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	execve_builtin(char **argv, t_sh *sh, t_builtin builtin)
 	else if (builtin == PWD)
 		result = builtin_pwd(sh);
 	else if (builtin == CD)
-		result = builtin_cd(argv, &sh->env_info, sh);
+		result = builtin_cd(argv, &sh->env_info);
 	else if (builtin == EXIT)
 		result = builtin_exit(argv, sh);
 	return (result);
